@@ -1,10 +1,22 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import App from "./App.tsx";
 
-createRoot(document.getElementById('root')!).render(
+import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client/react";
+
+const apiUrl = "http://localhost:4000/gql";
+
+const client = new ApolloClient({
+  link: new HttpLink({ uri: apiUrl }),
+  cache: new InMemoryCache(),
+});
+
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
-)
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+  </StrictMode>
+);
