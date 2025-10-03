@@ -1,16 +1,15 @@
-// pages/StudentPage.tsx
 import { useState } from "react";
 import { useMutation, useQuery } from "@apollo/client/react";
 
+import { Menu } from "../../components/Menu";
 import { CreateStudentModal } from "../../components/modals/CreateStudentModal";
 import { UpdateStudentModal } from "../../components/modals/UpdateStudentModal";
-import { Menu } from "../../components/Menu";
 
 import { PhoneDisplay } from "../../components/PhoneDisplay";
 import { ConfirmationModal } from "../../components/modals/ConfirmationModal";
 
-import type { IListStudentsData } from "../../interfaces/IListStudentsData";
 import type { IStudent } from "../../interfaces/IStudent";
+import type { IListStudentsData } from "../../interfaces/IListStudentsData";
 
 import { LIST_STUDENTS } from "../../graphql/queries/ListStudents";
 import { DESTROY_STUDENT } from "../../graphql/mutations/DestroyStudent";
