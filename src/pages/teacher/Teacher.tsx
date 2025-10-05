@@ -16,7 +16,7 @@ import type { IListTeachersData } from "../../interfaces/IListTeachersData";
 
 import { Mail, Phone, Plus, Trash2, Users } from "lucide-react";
 
-export const TeacherPage = () => {
+export const Teacher = () => {
   const [createTeacherModal, setCreateTeacherModal] = useState(false);
   const [updateTeacherModal, setUpdateTeacherModal] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
