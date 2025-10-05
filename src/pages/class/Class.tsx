@@ -24,7 +24,7 @@ interface ListClassesData {
   };
 }
 
-export const ClassPage = () => {
+export const Class = () => {
   const [createClassModal, setCreateClassModal] = useState(false);
   const [updateClassModal, setUpdateClassModal] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);

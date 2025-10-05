@@ -3,6 +3,7 @@ import { RouterProvider } from "react-router";
 import SignIn from "../pages/signin/SignIn";
 import { Student } from "../pages/student/Student";
 import { Teacher } from "../pages/teacher/Teacher";
+import { Class } from "../pages/class/Class";
 
 export const Router = () => {
   const router = createBrowserRouter([
@@ -17,6 +18,10 @@ export const Router = () => {
     {
       path: "/teachers",
       element: <Teacher />,
+    },
+    {
+      path: "/classes",
+      element: <Class />,
     },
   ]);
 
