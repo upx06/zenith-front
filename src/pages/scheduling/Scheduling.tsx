@@ -1,9 +1,34 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight, Calendar, Clock } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar, Clock, Users, BookOpen, Plus } from 'lucide-react';
 import { Menu } from "../../components/Menu";
+
+interface Room {
+  id: number;
+  name: string;
+  capacity: number;
+  type: string;
+}
+
+interface Booking {
+  subject: string;
+  teacher: string;
+  class: string;
+}
+
+interface BookingsState {
+  [key: string]: Booking;
+}
 
 export const Scheduling = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  
+  const timeSlots = [];
+  for (let hour = 7; hour <= 16; hour++) {
+    timeSlots.push(`${hour.toString().padStart(2, '0')}:00`);
+  }
+  
+  const rooms: Room[] = [];
+  const [bookings, setBookings] = useState<BookingsState>({});
 
   const formatDateInput = (date: Date): string => {
     const year = date.getFullYear();
@@ -21,6 +46,10 @@ export const Scheduling = () => {
   const isToday = (date: Date): boolean => {
     const today = new Date();
     return date.toDateString() === today.toDateString();
+  };
+
+  const getBookingKey = (roomId: number, timeSlot: string): string => {
+    return `${roomId}-${timeSlot}`;
   };
 
   return (
@@ -112,6 +141,118 @@ export const Scheduling = () => {
                 </div>
               </div>
             </div>
+
+            {rooms.length === 0 ? (
+              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
+                <div className="flex flex-col items-center justify-center space-y-4">
+                  <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center">
+                    <BookOpen className="h-8 w-8 text-slate-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                      Nenhuma sala cadastrada
+                    </h3>
+                    <p className="text-sm text-slate-600">
+                      Cadastre salas para começar a fazer agendamentos
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
+                  <div className="grid grid-cols-7 gap-px">
+                    <div className="p-3 md:p-4 bg-white">
+                      <div className="flex items-center space-x-2">
+                        <Clock className="h-4 w-4 text-slate-500" />
+                        <span className="font-semibold text-slate-900 text-sm md:text-base">Horário</span>
+                      </div>
+                    </div>
+                    {rooms.map((room) => (
+                      <div key={room.id} className="p-3 md:p-4 bg-white">
+                        <div className="text-sm font-semibold text-slate-900">{room.name}</div>
+                        <div className="text-xs text-slate-500 mt-1 space-y-1">
+                          <div className="flex items-center space-x-1">
+                            <Users className="h-3 w-3" />
+                            <span>{room.capacity} lugares</span>
+                          </div>
+                          <div className="px-2 py-0.5 bg-slate-100 rounded-full text-xs font-medium text-slate-600 inline-block">
+                            {room.type}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="divide-y divide-slate-200">
+                  {timeSlots.map((timeSlot) => (
+                    <div key={timeSlot} className="grid grid-cols-7 gap-px bg-slate-200">
+                      <div className="p-3 md:p-4 bg-white flex items-center border-r border-slate-100">
+                        <span className="font-semibold text-slate-900 text-sm md:text-base">{timeSlot}</span>
+                      </div>
+                      
+                      {rooms.map((room) => {
+                        const bookingKey = getBookingKey(room.id, timeSlot);
+                        const booking = bookings[bookingKey];
+                        
+                        return (
+                          <div
+                            key={room.id}
+                            className={`p-2 md:p-3 bg-white cursor-pointer transition-all duration-200 min-h-16 md:min-h-20 flex items-center hover:shadow-sm ${
+                              booking 
+                                ? 'bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 border-l-4 border-blue-500' 
+                                : 'hover:bg-slate-50 border border-transparent hover:border-slate-300 rounded-sm'
+                            }`}
+                          >
+                            {booking ? (
+                              <div className="w-full">
+                                <div className="flex items-center space-x-1 mb-1">
+                                  <BookOpen className="h-3 w-3 text-blue-600 flex-shrink-0" />
+                                  <span className="text-xs font-semibold text-blue-900 truncate">
+                                    {booking.subject}
+                                  </span>
+                                </div>
+                                <div className="text-xs text-slate-600 truncate">
+                                  {booking.teacher}
+                                </div>
+                                <div className="text-xs font-medium text-blue-600 truncate">
+                                  {booking.class}
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                                <Plus className="h-4 w-4 text-slate-400" />
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {rooms.length > 0 && (
+              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6">
+                <h3 className="font-semibold text-slate-900 mb-3 text-sm md:text-base">Legenda</h3>
+                <div className="flex flex-wrap gap-4 md:gap-6">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-4 h-4 bg-gradient-to-r from-blue-50 to-blue-100 border-l-4 border-blue-500 rounded-sm"></div>
+                    <span className="text-sm text-slate-600">Ocupado</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-4 h-4 bg-white border border-slate-200 rounded-sm"></div>
+                    <span className="text-sm text-slate-600">Disponível</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Plus className="w-4 h-4 text-slate-400" />
+                    <span className="text-sm text-slate-600">Clique para agendar</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
