@@ -7,6 +7,7 @@ export const LIST_CLASSES = gql`
         id
         name
         level
+        languageId
       }
     }
   }

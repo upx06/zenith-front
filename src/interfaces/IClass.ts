@@ -6,6 +6,7 @@ export interface IClass {
   name: string;
   level: string;
   description: string;
+  languageId: string;
   student: IStudent[];
   teacher: ITeacher;
 }

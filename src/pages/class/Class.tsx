@@ -194,9 +194,9 @@ export const Class = () => {
 
             {updateClassModal && selectedClass && (
               <UpdateClassModal
-              // clas={selectedClass}
-              // closeUpdateClassModal={() => setUpdateClassModal(false)}
-              // refetchClasses={refetch}
+                clas={selectedClass}
+                closeUpdateClassModal={() => setUpdateClassModal(false)}
+                refetchClasses={refetch}
               />
             )}
 
