@@ -12,7 +12,7 @@ import { LIST_TEACHERS } from "../../graphql/queries/ListTeachers";
 import { DESTROY_TEACHER } from "../../graphql/mutations/DestroyTeacher";
 
 import type { ITeacher } from "../../interfaces/ITeacher";
-import type { IListTeachersData } from "../../interfaces/IListTeachersData";
+import type { IListTeachers } from "../../interfaces/IListTeachers";
 
 import { Mail, Phone, Plus, Trash2, Users } from "lucide-react";
 
@@ -23,7 +23,7 @@ export const Teacher = () => {
   const [selectedTeacher, setSelectedTeacher] = useState<ITeacher | null>(null);
 
   const { data, loading, error, refetch } =
-    useQuery<IListTeachersData>(LIST_TEACHERS);
+    useQuery<IListTeachers>(LIST_TEACHERS);
   const [deleteTeacher] = useMutation(DESTROY_TEACHER);
 
   const handleDeleteTeacher = async (id: string) => {

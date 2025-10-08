@@ -5,6 +5,8 @@ import { Student } from "../pages/student/Student";
 import { Teacher } from "../pages/teacher/Teacher";
 import { Class } from "../pages/class/Class";
 import { Home } from "../pages/home/Home";
+import { Scheduling } from "../pages/scheduling/Scheduling";
+import { Classroom } from "../pages/classroom/Classroom";
 
 export const Router = () => {
   const router = createBrowserRouter([
@@ -15,6 +17,14 @@ export const Router = () => {
     {
       path: "home",
       element: <Home />,
+    },
+    {
+      path: "scheduling",
+      element: <Scheduling />,
+    },
+    {
+      path: "classroom",
+      element: <Classroom />,
     },
     {
       path: "/teachers",

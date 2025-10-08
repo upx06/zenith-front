@@ -1,7 +1,9 @@
-import { useMutation } from "@apollo/client/react";
+import { useMutation, useQuery } from "@apollo/client/react";
 import { X } from "lucide-react";
 import { useState } from "react";
 import { CREATE_CLASS } from "../../graphql/mutations/CreateClass";
+import { LIST_LANGUAGES } from "../../graphql/queries/ListLanguage";
+import type { IListLanguages } from "../../interfaces/IListLanguages";
 
 interface ICreateClassModal {
   closeCreateClassModal: () => void;
@@ -12,16 +14,22 @@ export const CreateClassModal = ({
   closeCreateClassModal,
   refetchClasses,
 }: ICreateClassModal) => {
+  const {
+    data: dataLanguage,
+    loading: loadingLanguage,
+    error: errorLanguage,
+  } = useQuery<IListLanguages>(LIST_LANGUAGES);
+
   const [formData, setFormData] = useState({
     name: "",
     level: "",
-    description: "",
+    languageId: "",
   });
 
   const [errors, setErrors] = useState({
     name: "",
     level: "",
-    description: "",
+    languageId: "",
   });
 
   const [createClass, { loading, error }] = useMutation(CREATE_CLASS);
@@ -30,7 +38,7 @@ export const CreateClassModal = ({
     const newErrors = {
       name: "",
       level: "",
-      description: "",
+      languageId: "",
     };
 
     let isValid = true;
@@ -45,8 +53,8 @@ export const CreateClassModal = ({
       isValid = false;
     }
 
-    if (!formData.description.trim()) {
-      newErrors.description = "Descrição é obrigatória";
+    if (!formData.languageId.trim()) {
+      newErrors.languageId = "Linguagem é obrigatória";
       isValid = false;
     }
 
@@ -60,12 +68,14 @@ export const CreateClassModal = ({
     if (!validateForm()) return;
 
     try {
+      console.log(formData);
+
       await createClass({
         variables: {
           input: {
             name: formData.name,
             level: formData.level,
-            description: formData.description,
+            languageId: formData.languageId,
           },
         },
       });
@@ -78,7 +88,9 @@ export const CreateClassModal = ({
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -136,39 +148,61 @@ export const CreateClassModal = ({
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
+              Linguagem
+            </label>
+            <select
+              name="languageId"
+              value={formData.languageId}
+              onChange={handleChange}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base ${
+                errors.languageId ? "border-red-500" : "border-slate-300"
+              }`}
+              disabled={loadingLanguage}
+            >
+              <option value="">Selecione a linguagem</option>
+              {dataLanguage?.listLanguage?.results?.map((language) => (
+                <option key={language.id} value={language.id}>
+                  {language.name}
+                </option>
+              ))}
+            </select>
+            {loadingLanguage && (
+              <p className="text-blue-500 text-xs mt-1">
+                Carregando linguagens...
+              </p>
+            )}
+            {errorLanguage && (
+              <p className="text-red-500 text-xs mt-1">
+                Erro ao carregar linguagens
+              </p>
+            )}
+            {errors.languageId && (
+              <p className="text-red-500 text-xs mt-1">{errors.languageId}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">
               Nível
             </label>
-            <input
-              type="text"
+            <select
               name="level"
               value={formData.level}
               onChange={handleChange}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base ${
                 errors.level ? "border-red-500" : "border-slate-300"
               }`}
-              placeholder="Ex: Iniciante, Intermediário, Avançado"
-            />
+            >
+              <option value="">Selecione o nível</option>
+              <option value="A1">A1</option>
+              <option value="A2">A2</option>
+              <option value="B1">B1</option>
+              <option value="B2">B2</option>
+              <option value="C1">C1</option>
+              <option value="C2">C2</option>
+            </select>
             {errors.level && (
               <p className="text-red-500 text-xs mt-1">{errors.level}</p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
-              Descrição
-            </label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              rows={3}
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base resize-none ${
-                errors.description ? "border-red-500" : "border-slate-300"
-              }`}
-              placeholder="Descrição da turma"
-            />
-            {errors.description && (
-              <p className="text-red-500 text-xs mt-1">{errors.description}</p>
             )}
           </div>
 

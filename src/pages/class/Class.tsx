@@ -17,12 +17,7 @@ import { LIST_CLASSES } from "../../graphql/queries/ListClasses";
 import { DESTROY_CLASS } from "../../graphql/mutations/DestroyClass";
 import { ConfirmationModal } from "../../components/modals/ConfirmationModal";
 import { NavLink } from "react-router";
-
-interface ListClassesData {
-  listClasses: {
-    results: IClass[];
-  };
-}
+import type { IListClass } from "../../interfaces/IListClass";
 
 export const Class = () => {
   const [createClassModal, setCreateClassModal] = useState(false);
@@ -30,8 +25,7 @@ export const Class = () => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [selectedClass, setSelectedClass] = useState<IClass | null>(null);
 
-  const { data, loading, error, refetch } =
-    useQuery<ListClassesData>(LIST_CLASSES);
+  const { data, loading, error, refetch } = useQuery<IListClass>(LIST_CLASSES);
   const [deleteClass] = useMutation(DESTROY_CLASS);
 
   const handleDeleteClass = async (id: string) => {
@@ -69,7 +63,7 @@ export const Class = () => {
     );
   }
 
-  const turmas = data?.listClasses?.results || [];
+  const turmas = data?.listClass?.results || [];
 
   return (
     <div className="min-h-screen bg-slate-50 flex">

@@ -1,6 +1,6 @@
 import type { ITeacher } from "./ITeacher";
 
-export interface IListTeachersData {
+export interface IListTeachers {
   listTeachers: {
     results: ITeacher[];
   };

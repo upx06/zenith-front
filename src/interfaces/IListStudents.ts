@@ -1,7 +1,7 @@
 import type { IStudent } from "./IStudent";
 
-export interface IListStudentsData {
-  listStudents: {
+export interface IListStudents {
+  listStudent: {
     results: IStudent[];
   };
 }

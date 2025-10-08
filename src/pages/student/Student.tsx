@@ -9,7 +9,7 @@ import { PhoneDisplay } from "../../components/PhoneDisplay";
 import { ConfirmationModal } from "../../components/modals/ConfirmationModal";
 
 import type { IStudent } from "../../interfaces/IStudent";
-import type { IListStudentsData } from "../../interfaces/IListStudentsData";
+import type { IListStudents } from "../../interfaces/IListStudents";
 
 import { LIST_STUDENTS } from "../../graphql/queries/ListStudents";
 import { DESTROY_STUDENT } from "../../graphql/mutations/DestroyStudent";
@@ -23,7 +23,7 @@ export const Student = () => {
   const [selectedStudent, setSelectedStudent] = useState<IStudent | null>(null);
 
   const { data, loading, error, refetch } =
-    useQuery<IListStudentsData>(LIST_STUDENTS);
+    useQuery<IListStudents>(LIST_STUDENTS);
   const [deleteStudent] = useMutation(DESTROY_STUDENT);
 
   const handleDeleteStudent = async (id: string) => {
@@ -61,7 +61,7 @@ export const Student = () => {
     );
   }
 
-  const alunos = data?.listStudents?.results || [];
+  const alunos = data?.listStudent?.results || [];
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
