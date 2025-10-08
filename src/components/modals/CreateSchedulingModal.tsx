@@ -7,7 +7,7 @@ interface Scheduling {
   class: string;
 }
 
-interface SchedulingModalProps {
+interface CreateSchedulingModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (scheduling: Scheduling) => void;
@@ -23,7 +23,7 @@ export const CreateSchedulingModal = ({
   roomName,
   timeSlot,
   date
-}: SchedulingModalProps) => {
+}: CreateSchedulingModalProps) => {
   const [formData, setFormData] = useState({
     subject: '',
     teacher: '',
