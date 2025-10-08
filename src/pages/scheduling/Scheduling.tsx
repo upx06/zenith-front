@@ -21,6 +21,10 @@ interface BookingsState {
 
 export const Scheduling = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [selectedSlot, setSelectedSlot] = useState<{ roomId: number; timeSlot: string } | null>(null);
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   
   const timeSlots = [];
   for (let hour = 7; hour <= 16; hour++) {
@@ -50,6 +54,58 @@ export const Scheduling = () => {
 
   const getBookingKey = (roomId: number, timeSlot: string): string => {
     return `${roomId}-${timeSlot}`;
+  };
+
+  const handleSlotClick = (roomId: number, timeSlot: string): void => {
+    const key = getBookingKey(roomId, timeSlot);
+    const booking = bookings[key];
+    
+    if (booking) {
+      setSelectedBooking(booking);
+      setSelectedSlot({ roomId, timeSlot });
+      setShowDetailsModal(true);
+    } else {
+      setSelectedSlot({ roomId, timeSlot });
+      setShowBookingModal(true);
+    }
+  };
+
+  const handleCreateBooking = (bookingData: Booking): void => {
+    if (selectedSlot) {
+      // await createBooking({
+      //   variables: {
+      //   }
+      // });
+      
+      const key = getBookingKey(selectedSlot.roomId, selectedSlot.timeSlot);
+      setBookings(prev => ({ ...prev, [key]: bookingData }));
+      setShowBookingModal(false);
+      setSelectedSlot(null);
+    }
+  };
+
+  const handleDeleteBooking = (): void => {
+    if (selectedSlot) {
+      // await deleteBooking({
+      //   variables: {
+      //     id: bookingId
+      //   }
+      // });
+      
+      const key = getBookingKey(selectedSlot.roomId, selectedSlot.timeSlot);
+      setBookings(prev => {
+        const newBookings = { ...prev };
+        delete newBookings[key];
+        return newBookings;
+      });
+      setShowDetailsModal(false);
+      setSelectedSlot(null);
+      setSelectedBooking(null);
+    }
+  };
+
+  const getRoomName = (roomId: number): string => {
+    return rooms.find(room => room.id === roomId)?.name || 'Sala não encontrada';
   };
 
   return (
@@ -204,6 +260,7 @@ export const Scheduling = () => {
                                 ? 'bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 border-l-4 border-blue-500' 
                                 : 'hover:bg-slate-50 border border-transparent hover:border-slate-300 rounded-sm'
                             }`}
+                            onClick={() => handleSlotClick(room.id, timeSlot)}
                           >
                             {booking ? (
                               <div className="w-full">
