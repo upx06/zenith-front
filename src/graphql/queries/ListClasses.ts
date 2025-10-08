@@ -1,20 +1,12 @@
 import { gql } from "@apollo/client";
 
 export const LIST_CLASSES = gql`
-  query ListClasses {
-    listClasses {
+  query ListClass {
+    listClass {
       results {
         id
         name
         level
-        student {
-          email
-          name
-        }
-        teacher {
-          email
-          name
-        }
       }
     }
   }
