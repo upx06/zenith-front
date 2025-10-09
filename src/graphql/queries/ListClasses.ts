@@ -14,6 +14,9 @@ export const LIST_CLASSES = gql`
             id
           }
         }
+        language {
+          name
+        }
       }
     }
   }
