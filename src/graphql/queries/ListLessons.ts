@@ -2,7 +2,15 @@ import { gql } from "@apollo/client";
 
 export const LIST_LESSON = gql`
   query ListLesson {
-    listLesson {
+    query ListLessons($startDate: UtcDatetime!, $endDate: UtcDatetime!) {
+    listLesson(
+      filter: { 
+        and: [
+          { datetime: { greaterThanOrEqual: $startDate } }
+          { datetime: { lessThanOrEqual: $endDate } }
+        ]
+      }
+    ) {
       count
       endKeyset
       startKeyset
