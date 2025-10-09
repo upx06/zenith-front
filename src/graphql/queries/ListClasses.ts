@@ -5,9 +5,15 @@ export const LIST_CLASSES = gql`
     listClass {
       results {
         id
-        name
-        level
         languageId
+        level
+        name
+        enrollments {
+          student {
+            name
+            id
+          }
+        }
       }
     }
   }
