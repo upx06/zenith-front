@@ -1,5 +1,5 @@
-import { X } from 'lucide-react';
-import { useState } from 'react';
+import { X } from "lucide-react";
+import { useState } from "react";
 
 interface Scheduling {
   subject: string;
@@ -22,12 +22,12 @@ export const CreateSchedulingModal = ({
   onSubmit,
   roomName,
   timeSlot,
-  date
+  date,
 }: CreateSchedulingModalProps) => {
   const [formData, setFormData] = useState({
-    subject: '',
-    teacher: '',
-    class: ''
+    subject: "",
+    teacher: "",
+    class: "",
   });
 
   if (!isOpen) return null;
@@ -36,7 +36,7 @@ export const CreateSchedulingModal = ({
     e.preventDefault();
     if (formData.subject && formData.teacher && formData.class) {
       onSubmit(formData);
-      setFormData({ subject: '', teacher: '', class: '' });
+      setFormData({ subject: "", teacher: "", class: "" });
     }
   };
 
@@ -45,7 +45,9 @@ export const CreateSchedulingModal = ({
       <div className="bg-white rounded-xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold text-slate-900">Novo Agendamento</h3>
+            <h3 className="text-lg font-semibold text-slate-900">
+              Novo Agendamento
+            </h3>
             <button
               onClick={onClose}
               className="p-1 hover:bg-slate-100 rounded-lg transition-colors"
@@ -75,7 +77,12 @@ export const CreateSchedulingModal = ({
                 <input
                   type="text"
                   value={formData.subject}
-                  onChange={(e) => setFormData(prev => ({ ...prev, subject: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      subject: e.target.value,
+                    }))
+                  }
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Ex: Matemática"
                   required
@@ -89,7 +96,12 @@ export const CreateSchedulingModal = ({
                 <input
                   type="text"
                   value={formData.teacher}
-                  onChange={(e) => setFormData(prev => ({ ...prev, teacher: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      teacher: e.target.value,
+                    }))
+                  }
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Ex: Prof. Silva"
                   required
@@ -103,7 +115,9 @@ export const CreateSchedulingModal = ({
                 <input
                   type="text"
                   value={formData.class}
-                  onChange={(e) => setFormData(prev => ({ ...prev, class: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, class: e.target.value }))
+                  }
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Ex: 9º A"
                   required
