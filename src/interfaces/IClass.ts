@@ -1,4 +1,5 @@
 import type { IEnrollment } from "./IEnrollment";
+import type { ILanguage } from "./ILanguage";
 
 export interface IClass {
   id: string;
@@ -6,4 +7,5 @@ export interface IClass {
   level: string;
   languageId: string;
   enrollments: IEnrollment[];
+  language: ILanguage;
 }
