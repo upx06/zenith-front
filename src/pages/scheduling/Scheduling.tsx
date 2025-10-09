@@ -1,3 +1,4 @@
+// VERSÃO FINAL: SchedulingPage com backend integrado
 import { useState } from "react";
 import {
   ChevronLeft,
@@ -8,7 +9,7 @@ import {
   BookOpen,
   Plus,
 } from "lucide-react";
-import { useMutation, useQuery } from "@apollo/client/react";
+import { useQuery, useMutation } from "@apollo/client/react";
 import { Menu } from "../../components/Menu";
 import { CreateSchedulingModal } from "../../components/modals/CreateSchedulingModal";
 import { DetailsSchedulingModal } from "../../components/modals/DetailsSchedulingModal";
@@ -19,16 +20,14 @@ import { DESTROY_LESSON } from "../../graphql/mutations/DestroyLesson";
 import type { IClassroom } from "../../interfaces/IClassroom";
 import type { ILesson } from "../../interfaces/ILesson";
 
-interface Scheduling {
-  subject: string;
-  teacher: string;
-  class: string;
+interface SchedulingFormData {
+  teacherId: string;
+  classId: string;
 }
 
 interface SchedulingsState {
   [key: string]: {
     lesson: ILesson;
-    displayData: Scheduling;
   };
 }
 
@@ -53,10 +52,9 @@ export const Scheduling = () => {
     classroomId: string;
     timeSlot: string;
   } | null>(null);
-  const [selectedScheduling, setSelectedScheduling] = useState<{
-    lesson: ILesson;
-    displayData: Scheduling;
-  } | null>(null);
+  const [selectedScheduling, setSelectedScheduling] = useState<ILesson | null>(
+    null
+  );
 
   const timeSlots = [];
   for (let hour = 7; hour <= 16; hour++) {
@@ -95,14 +93,7 @@ export const Scheduling = () => {
     const timeSlot = `${lessonDate.getHours().toString().padStart(2, "0")}:00`;
     const key = `${lesson.classroom.id}-${timeSlot}`;
 
-    schedulings[key] = {
-      lesson,
-      displayData: {
-        subject: lesson.class.name,
-        teacher: lesson.teacher.name,
-        class: lesson.class.name,
-      },
-    };
+    schedulings[key] = { lesson };
   });
 
   const formatDateInput = (date: Date): string => {
@@ -148,7 +139,7 @@ export const Scheduling = () => {
     const scheduling = schedulings[key];
 
     if (scheduling) {
-      setSelectedScheduling(scheduling);
+      setSelectedScheduling(scheduling.lesson);
       setSelectedSlot({ classroomId, timeSlot });
       setShowDetailsModal(true);
     } else {
@@ -158,7 +149,7 @@ export const Scheduling = () => {
   };
 
   const handleCreateScheduling = async (
-    schedulingData: Scheduling
+    schedulingData: SchedulingFormData
   ): Promise<void> => {
     if (!selectedSlot) return;
 
@@ -172,8 +163,8 @@ export const Scheduling = () => {
         variables: {
           datetime,
           classroomId: selectedSlot.classroomId,
-          teacherId: "TEACHER_ID_HERE",
-          classId: "CLASS_ID_HERE",
+          teacherId: schedulingData.teacherId,
+          classId: schedulingData.classId,
         },
       });
 
@@ -191,7 +182,7 @@ export const Scheduling = () => {
     try {
       await destroyLesson({
         variables: {
-          id: selectedScheduling.lesson.id,
+          id: selectedScheduling.id,
         },
       });
 
@@ -417,14 +408,14 @@ export const Scheduling = () => {
                                 <div className="flex items-center space-x-1 mb-1">
                                   <BookOpen className="h-3 w-3 text-blue-600 flex-shrink-0" />
                                   <span className="text-xs font-semibold text-blue-900 truncate">
-                                    {scheduling.displayData.subject}
+                                    {scheduling.lesson.class.name}
                                   </span>
                                 </div>
                                 <div className="text-xs text-slate-600 truncate">
-                                  {scheduling.displayData.teacher}
+                                  {scheduling.lesson.teacher.name}
                                 </div>
                                 <div className="text-xs font-medium text-blue-600 truncate">
-                                  {scheduling.displayData.class}
+                                  {scheduling.lesson.class.name}
                                 </div>
                               </div>
                             ) : (
@@ -486,7 +477,11 @@ export const Scheduling = () => {
               onClose={handleCloseDetailsModal}
               onEdit={handleEditScheduling}
               onDelete={handleDeleteScheduling}
-              scheduling={selectedScheduling.displayData}
+              scheduling={{
+                subject: selectedScheduling.class.name,
+                teacher: selectedScheduling.teacher.name,
+                class: selectedScheduling.class.name,
+              }}
               roomName={getClassroomName(selectedSlot.classroomId)}
               timeSlot={selectedSlot.timeSlot}
               date={formatDateDisplay(selectedDate)}

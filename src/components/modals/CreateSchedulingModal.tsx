@@ -1,10 +1,12 @@
 import { X } from "lucide-react";
 import { useState } from "react";
+import { useQuery } from "@apollo/client/react";
+import { LIST_TEACHERS } from "../../graphql/queries/ListTeachers";
+import { LIST_CLASSES } from "../../graphql/queries/ListClasses";
 
 interface Scheduling {
-  subject: string;
-  teacher: string;
-  class: string;
+  teacherId: string;
+  classId: string;
 }
 
 interface CreateSchedulingModalProps {
@@ -16,6 +18,28 @@ interface CreateSchedulingModalProps {
   date: string;
 }
 
+interface Teacher {
+  id: string;
+  name: string;
+}
+
+interface Class {
+  id: string;
+  name: string;
+}
+
+interface ListTeachersData {
+  listTeachers: {
+    results: Teacher[];
+  };
+}
+
+interface ListClassesData {
+  listClasses: {
+    results: Class[];
+  };
+}
+
 export const CreateSchedulingModal = ({
   isOpen,
   onClose,
@@ -25,18 +49,25 @@ export const CreateSchedulingModal = ({
   date,
 }: CreateSchedulingModalProps) => {
   const [formData, setFormData] = useState({
-    subject: "",
-    teacher: "",
-    class: "",
+    teacherId: "",
+    classId: "",
   });
+
+  const { data: teachersData, loading: teachersLoading } =
+    useQuery<ListTeachersData>(LIST_TEACHERS);
+  const { data: classesData, loading: classesLoading } =
+    useQuery<ListClassesData>(LIST_CLASSES);
+
+  const teachers = teachersData?.listTeachers?.results || [];
+  const classes = classesData?.listClasses?.results || [];
 
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.subject && formData.teacher && formData.class) {
+    if (formData.teacherId && formData.classId) {
       onSubmit(formData);
-      setFormData({ subject: "", teacher: "", class: "" });
+      setFormData({ teacherId: "", classId: "" });
     }
   };
 
@@ -72,62 +103,80 @@ export const CreateSchedulingModal = ({
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Matéria/Disciplina
-                </label>
-                <input
-                  type="text"
-                  value={formData.subject}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      subject: e.target.value,
-                    }))
-                  }
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Ex: Matemática"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
                   Professor
                 </label>
-                <input
-                  type="text"
-                  value={formData.teacher}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      teacher: e.target.value,
-                    }))
-                  }
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Ex: Prof. Silva"
-                  required
-                />
+                {teachersLoading ? (
+                  <div className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-50">
+                    <span className="text-sm text-slate-500">
+                      Carregando professores...
+                    </span>
+                  </div>
+                ) : (
+                  <select
+                    value={formData.teacherId}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        teacherId: e.target.value,
+                      }))
+                    }
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                  >
+                    <option value="">Selecione um professor</option>
+                    {teachers.map((teacher) => (
+                      <option key={teacher.id} value={teacher.id}>
+                        {teacher.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
                   Turma
                 </label>
-                <input
-                  type="text"
-                  value={formData.class}
-                  onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, class: e.target.value }))
-                  }
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Ex: 9º A"
-                  required
-                />
+                {classesLoading ? (
+                  <div className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-50">
+                    <span className="text-sm text-slate-500">
+                      Carregando turmas...
+                    </span>
+                  </div>
+                ) : (
+                  <select
+                    value={formData.classId}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        classId: e.target.value,
+                      }))
+                    }
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                  >
+                    <option value="">Selecione uma turma</option>
+                    {classes.map((classItem) => (
+                      <option key={classItem.id} value={classItem.id}>
+                        {classItem.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
 
               <div className="flex space-x-3 pt-4">
                 <button
+                  type="button"
+                  onClick={onClose}
+                  className="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors font-medium"
+                >
+                  Cancelar
+                </button>
+                <button
                   type="submit"
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors font-medium"
+                  disabled={teachersLoading || classesLoading}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Criar Agendamento
                 </button>
