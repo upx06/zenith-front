@@ -44,7 +44,7 @@ interface ListLessonsData {
   };
 }
 
-export const SchedulingPage = () => {
+export const Scheduling = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showCreateSchedulingModal, setShowCreateSchedulingModal] =
     useState(false);

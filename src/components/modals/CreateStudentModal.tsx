@@ -76,6 +76,7 @@ export const CreateStudentModal = ({
             name: formData.name,
             email: formData.email,
             phone: formData.phone,
+            enrollments: {},
           },
         },
       });

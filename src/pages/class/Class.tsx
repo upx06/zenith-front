@@ -2,10 +2,9 @@ import {
   GraduationCap,
   Plus,
   Trash2,
-  BookOpen,
   Star,
-  User,
   Users,
+  Languages,
 } from "lucide-react";
 import type { IClass } from "../../interfaces/IClass";
 import { useState } from "react";
@@ -16,12 +15,13 @@ import { useMutation, useQuery } from "@apollo/client/react";
 import { LIST_CLASSES } from "../../graphql/queries/ListClasses";
 import { DESTROY_CLASS } from "../../graphql/mutations/DestroyClass";
 import { ConfirmationModal } from "../../components/modals/ConfirmationModal";
-import { NavLink } from "react-router";
+import { ManageClassModal } from "../../components/modals/ManageClassModal";
 import type { IListClass } from "../../interfaces/IListClass";
 
 export const Class = () => {
   const [createClassModal, setCreateClassModal] = useState(false);
   const [updateClassModal, setUpdateClassModal] = useState(false);
+  const [manageClassModal, setManageClassModal] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [selectedClass, setSelectedClass] = useState<IClass | null>(null);
 
@@ -64,6 +64,8 @@ export const Class = () => {
   }
 
   const turmas = data?.listClass?.results || [];
+
+  console.log(turmas);
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
@@ -114,28 +116,20 @@ export const Class = () => {
                       <span className="text-sm">{classItem.level}</span>
                     </div>
                     <div className="flex items-center gap-2 text-slate-600">
-                      <User className="w-4 h-4 text-slate-400" />
+                      <Languages className="w-4 h-4 text-slate-400" />
                       <span className="text-sm">
-                        {classItem.teacher
-                          ? classItem.teacher.name
-                          : "Nenhum professor"}
+                        {classItem?.language?.name}
                       </span>
                     </div>
                     <div className="flex items-center gap-2 text-slate-600">
                       <Users className="w-4 h-4 text-slate-400" />
                       <span className="text-sm">
-                        {classItem.student?.length || 0}{" "}
-                        {classItem.student?.length === 1 ? "aluno" : "alunos"}
+                        {classItem.enrollments?.length || 0}{" "}
+                        {classItem.enrollments?.length === 1
+                          ? "aluno"
+                          : "alunos"}
                       </span>
                     </div>
-                    {classItem.description && (
-                      <div className="flex items-start gap-2 text-slate-600">
-                        <BookOpen className="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0" />
-                        <p className="text-sm line-clamp-2">
-                          {classItem.description}
-                        </p>
-                      </div>
-                    )}
                   </div>
 
                   <div className="flex gap-2 pt-2 border-t border-slate-100">
@@ -148,12 +142,16 @@ export const Class = () => {
                     >
                       Editar
                     </button>
-                    <NavLink
-                      to={`/classes/management/${classItem.id}`}
+
+                    <button
+                      onClick={() => {
+                        setSelectedClass(classItem);
+                        setManageClassModal(true);
+                      }}
                       className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg transition-colors text-sm font-medium"
                     >
-                      <button>Gerenciar</button>
-                    </NavLink>
+                      Gerenciar
+                    </button>
                     <button
                       onClick={() => {
                         setSelectedClass(classItem);
@@ -197,6 +195,13 @@ export const Class = () => {
                 clas={selectedClass}
                 closeUpdateClassModal={() => setUpdateClassModal(false)}
                 refetchClasses={refetch}
+              />
+            )}
+
+            {manageClassModal && selectedClass && (
+              <ManageClassModal
+                clas={selectedClass}
+                closeManageClassModal={() => setManageClassModal(false)}
               />
             )}
 
