@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Calendar, Clock, Users, BookOpen, Plus } from 'lucide-react';
 import { Menu } from "../../components/Menu";
+import { CreateSchedulingModal } from "../../components/modals/CreateSchedulingModal";
+import { DetailsSchedulingModal } from '../../components/modals/DetailsSchedulingModal';
 
+// Interfaces e tipos
 interface Room {
   id: number;
   name: string;
@@ -9,36 +12,46 @@ interface Room {
   type: string;
 }
 
-interface Booking {
+interface Scheduling {
   subject: string;
   teacher: string;
   class: string;
 }
 
-interface BookingsState {
-  [key: string]: Booking;
+interface SchedulingsState {
+  [key: string]: Scheduling;
 }
 
 export const Scheduling = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [showSchedulingModal, setShowSchedulingModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState<{ roomId: number; timeSlot: string } | null>(null);
-  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [selectedScheduling, setSelectedScheduling] = useState<Scheduling | null>(null);
   
+  // Gerar horários das 7h às 16h
   const timeSlots = [];
   for (let hour = 7; hour <= 16; hour++) {
     timeSlots.push(`${hour.toString().padStart(2, '0')}:00`);
   }
   
   const rooms: Room[] = [];
-  const [bookings, setBookings] = useState<BookingsState>({});
+  const [schedulings, setSchedulings] = useState<SchedulingsState>({});
 
   const formatDateInput = (date: Date): string => {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
+  };
+
+  const formatDateDisplay = (date: Date): string => {
+    return date.toLocaleDateString('pt-BR', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   };
 
   const navigateDate = (direction: number): void => {
@@ -52,60 +65,80 @@ export const Scheduling = () => {
     return date.toDateString() === today.toDateString();
   };
 
-  const getBookingKey = (roomId: number, timeSlot: string): string => {
+  const getSchedulingKey = (roomId: number, timeSlot: string): string => {
     return `${roomId}-${timeSlot}`;
   };
 
   const handleSlotClick = (roomId: number, timeSlot: string): void => {
-    const key = getBookingKey(roomId, timeSlot);
-    const booking = bookings[key];
+    const key = getSchedulingKey(roomId, timeSlot);
+    const scheduling = schedulings[key];
     
-    if (booking) {
-      setSelectedBooking(booking);
+    if (scheduling) {
+      setSelectedScheduling(scheduling);
       setSelectedSlot({ roomId, timeSlot });
       setShowDetailsModal(true);
     } else {
       setSelectedSlot({ roomId, timeSlot });
-      setShowBookingModal(true);
+      setShowSchedulingModal(true);
     }
   };
 
-  const handleCreateBooking = (bookingData: Booking): void => {
+  const handleCreateScheduling = (schedulingData: Scheduling): void => {
     if (selectedSlot) {
-      // await createBooking({
+      // await createScheduling({
       //   variables: {
+      //     roomId: selectedSlot.roomId,
+      //     timeSlot: selectedSlot.timeSlot,
+      //     date: formatDateInput(selectedDate),
+      //     ...schedulingData
       //   }
       // });
       
-      const key = getBookingKey(selectedSlot.roomId, selectedSlot.timeSlot);
-      setBookings(prev => ({ ...prev, [key]: bookingData }));
-      setShowBookingModal(false);
+      const key = getSchedulingKey(selectedSlot.roomId, selectedSlot.timeSlot);
+      setSchedulings(prev => ({ ...prev, [key]: schedulingData }));
+      setShowSchedulingModal(false);
       setSelectedSlot(null);
     }
   };
 
-  const handleDeleteBooking = (): void => {
+  const handleDeleteScheduling = (): void => {
     if (selectedSlot) {
-      // await deleteBooking({
+      // await deleteScheduling({
       //   variables: {
-      //     id: bookingId
+      //     id: schedulingId
       //   }
       // });
       
-      const key = getBookingKey(selectedSlot.roomId, selectedSlot.timeSlot);
-      setBookings(prev => {
-        const newBookings = { ...prev };
-        delete newBookings[key];
-        return newBookings;
+      const key = getSchedulingKey(selectedSlot.roomId, selectedSlot.timeSlot);
+      setSchedulings(prev => {
+        const newSchedulings = { ...prev };
+        delete newSchedulings[key];
+        return newSchedulings;
       });
       setShowDetailsModal(false);
       setSelectedSlot(null);
-      setSelectedBooking(null);
+      setSelectedScheduling(null);
     }
+  };
+
+  const handleEditScheduling = (): void => {
+    setShowDetailsModal(false);
+    setShowSchedulingModal(true);
   };
 
   const getRoomName = (roomId: number): string => {
     return rooms.find(room => room.id === roomId)?.name || 'Sala não encontrada';
+  };
+
+  const handleCloseSchedulingModal = (): void => {
+    setShowSchedulingModal(false);
+    setSelectedSlot(null);
+  };
+
+  const handleCloseDetailsModal = (): void => {
+    setShowDetailsModal(false);
+    setSelectedSlot(null);
+    setSelectedScheduling(null);
   };
 
   return (
@@ -114,6 +147,8 @@ export const Scheduling = () => {
       <div className="flex-1 flex flex-col min-w-0">
         <div className="flex-1 p-4 md:p-6 lg:p-8 mt-16 lg:mt-0">
           <div className="space-y-4 md:space-y-6">
+            
+            {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase">
@@ -125,6 +160,7 @@ export const Scheduling = () => {
               </div>
             </div>
 
+            {/* Navegação de Data */}
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-4 md:px-6 py-3 border-b border-slate-200">
                 <div className="flex items-center justify-between">
@@ -198,6 +234,7 @@ export const Scheduling = () => {
               </div>
             </div>
 
+            {/* Grade de Horários */}
             {rooms.length === 0 ? (
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
                 <div className="flex flex-col items-center justify-center space-y-4">
@@ -249,32 +286,32 @@ export const Scheduling = () => {
                       </div>
                       
                       {rooms.map((room) => {
-                        const bookingKey = getBookingKey(room.id, timeSlot);
-                        const booking = bookings[bookingKey];
+                        const schedulingKey = getSchedulingKey(room.id, timeSlot);
+                        const scheduling = schedulings[schedulingKey];
                         
                         return (
                           <div
                             key={room.id}
                             className={`p-2 md:p-3 bg-white cursor-pointer transition-all duration-200 min-h-16 md:min-h-20 flex items-center hover:shadow-sm ${
-                              booking 
+                              scheduling 
                                 ? 'bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 border-l-4 border-blue-500' 
                                 : 'hover:bg-slate-50 border border-transparent hover:border-slate-300 rounded-sm'
                             }`}
                             onClick={() => handleSlotClick(room.id, timeSlot)}
                           >
-                            {booking ? (
+                            {scheduling ? (
                               <div className="w-full">
                                 <div className="flex items-center space-x-1 mb-1">
                                   <BookOpen className="h-3 w-3 text-blue-600 flex-shrink-0" />
                                   <span className="text-xs font-semibold text-blue-900 truncate">
-                                    {booking.subject}
+                                    {scheduling.subject}
                                   </span>
                                 </div>
                                 <div className="text-xs text-slate-600 truncate">
-                                  {booking.teacher}
+                                  {scheduling.teacher}
                                 </div>
                                 <div className="text-xs font-medium text-blue-600 truncate">
-                                  {booking.class}
+                                  {scheduling.class}
                                 </div>
                               </div>
                             ) : (
@@ -291,6 +328,7 @@ export const Scheduling = () => {
               </div>
             )}
 
+            {/* Legenda */}
             {rooms.length > 0 && (
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6">
                 <h3 className="font-semibold text-slate-900 mb-3 text-sm md:text-base">Legenda</h3>
@@ -313,6 +351,33 @@ export const Scheduling = () => {
           </div>
         </div>
       </div>
+
+      {/* Modais */}
+      {selectedSlot && (
+        <>
+          <CreateSchedulingModal
+            isOpen={showSchedulingModal}
+            onClose={handleCloseSchedulingModal}
+            onSubmit={handleCreateScheduling}
+            roomName={getRoomName(selectedSlot.roomId)}
+            timeSlot={selectedSlot.timeSlot}
+            date={formatDateDisplay(selectedDate)}
+          />
+
+          {selectedScheduling && (
+            <DetailsSchedulingModal
+              isOpen={showDetailsModal}
+              onClose={handleCloseDetailsModal}
+              onEdit={handleEditScheduling}
+              onDelete={handleDeleteScheduling}
+              scheduling={selectedScheduling}
+              roomName={getRoomName(selectedSlot.roomId)}
+              timeSlot={selectedSlot.timeSlot}
+              date={formatDateDisplay(selectedDate)}
+            />
+          )}
+        </>
+      )}
     </div>
   );
 };
