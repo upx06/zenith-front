@@ -1,7 +1,7 @@
 import type { IEnrollment } from "./IEnrollment";
 
-export interface IListEnrollment {
-  listEnrollment: {
+export interface IListEnrollments {
+  listEnrollments: {
     results: IEnrollment[];
   };
 }

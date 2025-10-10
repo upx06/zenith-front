@@ -10,14 +10,14 @@ import {
 import type { IClass } from "../../interfaces/IClass";
 import { useQuery } from "@apollo/client/react";
 import { useState } from "react";
-import { LIST_ENROLLMENT } from "../../graphql/queries/ListEnrollment";
+import { LIST_ENROLLMENTS } from "../../graphql/queries/ListEnrollments";
 import { PhoneDisplay } from "../PhoneDisplay";
-import type { IListEnrollment } from "../../interfaces/IListEnrollment";
+import type { IListEnrollments } from "../../interfaces/IListEnrollments";
 import type { IEnrollment } from "../../interfaces/IEnrollment";
-import { LIST_NO_CLASS_ENROLLMENT } from "../../graphql/queries/ListNoClassEnrollment";
-import type { IListNoClassEnrollment } from "../../interfaces/IListNoClassEnrollment";
-import { LIST_CLASS_ENROLLMENT } from "../../graphql/queries/ListClassEnrollment";
-import type { IListClassEnrollment } from "../../interfaces/IListClassEnrollment";
+import { LIST_NO_CLASS_ENROLLMENTS } from "../../graphql/queries/ListNoClassEnrollments";
+import type { IListNoClassEnrollments } from "../../interfaces/IListNoClassEnrollments";
+import { LIST_CLASS_ENROLLMENTS } from "../../graphql/queries/ListClassEnrollments";
+import type { IListClassEnrollments } from "../../interfaces/IListClassEnrollments";
 
 interface IManageClassModalProps {
   clas: IClass;
@@ -31,24 +31,24 @@ export const ManageClassModal = ({
   console.log(clas);
 
   const {
-    data: dataEnrollment,
-    loading: loadingEnrollment,
-    error: errorEnrollment,
-  } = useQuery<IListEnrollment>(LIST_ENROLLMENT);
+    data: dataEnrollments,
+    loading: loadingEnrollments,
+    error: errorEnrollments,
+  } = useQuery<IListEnrollments>(LIST_ENROLLMENTS);
 
   const {
-    data: dataClassEnrollment,
-    loading: loadingClassEnrollment,
-    error: errorClassEnrollment,
-  } = useQuery<IListClassEnrollment>(LIST_CLASS_ENROLLMENT);
+    data: dataClassEnrollments,
+    loading: loadingClassEnrollments,
+    error: errorClassEnrollments,
+  } = useQuery<IListClassEnrollments>(LIST_CLASS_ENROLLMENTS);
 
-  console.log(dataClassEnrollment);
+  console.log(dataClassEnrollments);
 
   const {
-    data: dataNoClassEnrollment,
-    loading: loadingNoClassEnrollment,
-    error: errorNoClassEnrollment,
-  } = useQuery<IListNoClassEnrollment>(LIST_NO_CLASS_ENROLLMENT);
+    data: dataNoClassEnrollments,
+    loading: loadingNoClassEnrollments,
+    error: errorNoClassEnrollments,
+  } = useQuery<IListNoClassEnrollments>(LIST_NO_CLASS_ENROLLMENTS);
 
   const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
   const [isAddingStudents, setIsAddingStudents] = useState(false);
@@ -76,9 +76,10 @@ export const ManageClassModal = ({
     setSelectedStudents([]);
   };
 
-  const enrollments = dataEnrollment?.listEnrollment?.results || [];
-  const classEnrollment = dataClassEnrollment?.listClassEnrollment || [];
-  const noClassEnrollments = dataNoClassEnrollment?.listNoClassEnrollment || [];
+  const enrollments = dataEnrollments?.listEnrollments?.results || [];
+  const classEnrollments = dataClassEnrollments?.listClassEnrollments || [];
+  const noClassEnrollments =
+    dataNoClassEnrollments?.listNoClassEnrollments || [];
 
   return (
     <div
@@ -197,11 +198,11 @@ export const ManageClassModal = ({
                   </div>
                 </div>
 
-                {loadingEnrollment ? (
+                {loadingEnrollments ? (
                   <div className="text-center py-4">
                     <p className="text-slate-500">Carregando alunos...</p>
                   </div>
-                ) : errorEnrollment ? (
+                ) : errorEnrollments ? (
                   <div className="text-center py-4">
                     <p className="text-red-500">Erro ao carregar alunos</p>
                   </div>

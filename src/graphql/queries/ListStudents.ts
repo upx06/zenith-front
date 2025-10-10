@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const LIST_STUDENTS = gql`
-  query ListStudent {
-    listStudent {
+  query ListStudents {
+    listStudents {
       results {
         email
         id

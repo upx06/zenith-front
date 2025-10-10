@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const LIST_CLASSROOMS = gql`
   query ListClassrooms {
-    listClassroom {
+    listClassrooms {
       results {
         id
         name

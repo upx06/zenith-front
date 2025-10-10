@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const LIST_LANGUAGES = gql`
-  query ListLanguage {
-    listLanguage {
+  query ListLanguages {
+    listLanguages {
       results {
         id
         name

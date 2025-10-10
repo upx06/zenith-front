@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const LIST_NO_CLASS_ENROLLMENT = gql`
-  query ListNoClassEnrollment {
-    listNoClassEnrollment {
+export const LIST_CLASS_ENROLLMENTS = gql`
+  query ListClassEnrollments {
+    listClassEnrollments {
       id
       student {
         email

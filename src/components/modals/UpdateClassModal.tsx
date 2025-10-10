@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@apollo/client/react";
 import { X } from "lucide-react";
 import { useState } from "react";
 import { UPDATE_CLASS } from "../../graphql/mutations/UpdateClass";
-import { LIST_LANGUAGES } from "../../graphql/queries/ListLanguage";
+import { LIST_LANGUAGES } from "../../graphql/queries/ListLanguages";
 import type { IClass } from "../../interfaces/IClass";
 import type { IListLanguages } from "../../interfaces/IListLanguages";
 
