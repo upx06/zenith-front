@@ -61,7 +61,7 @@ export const Student = () => {
     );
   }
 
-  const alunos = data?.listStudent?.results || [];
+  const alunos = data?.listStudents?.results || [];
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
