@@ -1,7 +1,7 @@
 import type { IClass } from "./IClass";
 
-export interface IListClass {
-  listClass: {
+export interface IListClasses {
+  listClasses: {
     results: IClass[];
   };
 }

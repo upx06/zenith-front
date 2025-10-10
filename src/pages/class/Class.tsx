@@ -16,7 +16,7 @@ import { LIST_CLASSES } from "../../graphql/queries/ListClasses";
 import { DESTROY_CLASS } from "../../graphql/mutations/DestroyClass";
 import { ConfirmationModal } from "../../components/modals/ConfirmationModal";
 import { ManageClassModal } from "../../components/modals/ManageClassModal";
-import type { IListClass } from "../../interfaces/IListClass";
+import type { IListClasses } from "../../interfaces/IListClasses";
 
 export const Class = () => {
   const [createClassModal, setCreateClassModal] = useState(false);
@@ -25,7 +25,8 @@ export const Class = () => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [selectedClass, setSelectedClass] = useState<IClass | null>(null);
 
-  const { data, loading, error, refetch } = useQuery<IListClass>(LIST_CLASSES);
+  const { data, loading, error, refetch } =
+    useQuery<IListClasses>(LIST_CLASSES);
   const [deleteClass] = useMutation(DESTROY_CLASS);
 
   const handleDeleteClass = async (id: string) => {
@@ -63,7 +64,7 @@ export const Class = () => {
     );
   }
 
-  const turmas = data?.listClass?.results || [];
+  const turmas = data?.listClasses?.results || [];
 
   console.log(turmas);
 
