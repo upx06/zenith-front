@@ -14,7 +14,7 @@ import { Menu } from "../../components/Menu";
 import { CreateSchedulingModal } from "../../components/modals/CreateSchedulingModal";
 import { DetailsSchedulingModal } from "../../components/modals/DetailsSchedulingModal";
 import { LIST_CLASSROOMS } from "../../graphql/queries/ListClassrooms";
-import { LIST_LESSON } from "../../graphql/queries/ListLessons";
+import { LIST_LESSONS } from "../../graphql/queries/ListLessons";
 import { CREATE_LESSON } from "../../graphql/mutations/CreateLesson";
 import { DESTROY_LESSON } from "../../graphql/mutations/DestroyLesson";
 import type { IClassroom } from "../../interfaces/IClassroom";
@@ -73,7 +73,7 @@ export const Scheduling = () => {
     data: lessonsData,
     loading: lessonsLoading,
     refetch: refetchLessons,
-  } = useQuery<ListLessonsData>(LIST_LESSON, {
+  } = useQuery<ListLessonsData>(LIST_LESSONS, {
     variables: {
       startDate: startOfDay.toISOString(),
       endDate: endOfDay.toISOString(),
