@@ -10,7 +10,7 @@ import { LIST_CLASSROOMS } from "../../graphql/queries/ListClassrooms";
 import { DESTROY_CLASSROOM } from "../../graphql/mutations/DestroyClassroom";
 
 import type { IClassroom } from "../../interfaces/IClassroom";
-import type { IListClassroom } from "../../interfaces/IListClassroom";
+import type { IListClassrooms } from "../../interfaces/IListClassrooms";
 
 import { Plus, Trash2, School, Users } from "lucide-react";
 
@@ -23,7 +23,7 @@ export const Classroom = () => {
   );
 
   const { data, loading, error, refetch } =
-    useQuery<IListClassroom>(LIST_CLASSROOMS);
+    useQuery<IListClassrooms>(LIST_CLASSROOMS);
   const [deleteClassroom] = useMutation(DESTROY_CLASSROOM);
 
   const handleDeleteClassroom = async (id: string) => {
@@ -61,7 +61,7 @@ export const Classroom = () => {
     );
   }
 
-  const salas = data?.listClassroom?.results || [];
+  const salas = data?.listClassrooms?.results || [];
 
   return (
     <div className="min-h-screen bg-slate-50 flex">

@@ -1,7 +1,7 @@
 import type { IClassroom } from "./IClassroom";
 
-export interface IListClassroom {
-  listClassroom: {
+export interface IListClassrooms {
+  listClassrooms: {
     results: IClassroom[];
   };
 }
