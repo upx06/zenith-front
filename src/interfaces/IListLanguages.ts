@@ -1,7 +1,7 @@
 import type { ILanguage } from "./ILanguage";
 
 export interface IListLanguages {
-  listLanguage: {
+  listLanguages: {
     results: ILanguage[];
   };
 }

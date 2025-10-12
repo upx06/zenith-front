@@ -1,10 +1,18 @@
 import { useState } from "react";
 import { useMutation, useQuery } from "@apollo/client/react";
+import {
+  Loader2,
+  Mail,
+  Phone,
+  Plus,
+  Trash2,
+  Users,
+  AlertCircle,
+} from "lucide-react";
 
 import { CreateTeacherModal } from "../../components/modals/CreateTeacherModal";
 import { UpdateTeacherModal } from "../../components/modals/UpdateTeacherModal";
 import { Menu } from "../../components/Menu";
-
 import { PhoneDisplay } from "../../components/PhoneDisplay";
 import { ConfirmationModal } from "../../components/modals/ConfirmationModal";
 
@@ -14,37 +22,63 @@ import { DESTROY_TEACHER } from "../../graphql/mutations/DestroyTeacher";
 import type { ITeacher } from "../../interfaces/ITeacher";
 import type { IListTeachers } from "../../interfaces/IListTeachers";
 
-import { Mail, Phone, Plus, Trash2, Users } from "lucide-react";
-
 export const Teacher = () => {
   const [createTeacherModal, setCreateTeacherModal] = useState(false);
   const [updateTeacherModal, setUpdateTeacherModal] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState<ITeacher | null>(null);
+  const [deletingTeacherId, setDeletingTeacherId] = useState<string | null>(
+    null
+  );
 
   const { data, loading, error, refetch } =
     useQuery<IListTeachers>(LIST_TEACHERS);
-  const [deleteTeacher] = useMutation(DESTROY_TEACHER);
+  const [
+    deleteTeacher,
+    { loading: loadingDeleteTeacher, error: errorDeleteTeacher },
+  ] = useMutation(DESTROY_TEACHER);
 
   const handleDeleteTeacher = async (id: string) => {
+    setDeletingTeacherId(id);
     try {
       await deleteTeacher({
-        variables: {
-          id: id,
-        },
+        variables: { id },
       });
       await refetch();
+      setConfirmationModal(false);
+      setSelectedTeacher(null);
     } catch (err) {
       console.error("Erro ao excluir professor:", err);
+    } finally {
+      setDeletingTeacherId(null);
     }
   };
+
+  const handleOpenConfirmationModal = (teacher: ITeacher) => {
+    setSelectedTeacher(teacher);
+    setConfirmationModal(true);
+  };
+
+  const handleOpenUpdateModal = (teacher: ITeacher) => {
+    setSelectedTeacher(teacher);
+    setUpdateTeacherModal(true);
+  };
+
+  // Estados auxiliares
+  const isProcessing = loadingDeleteTeacher;
+  const professores = data?.listTeachers?.results || [];
 
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex">
         <Menu />
-        <div className="flex-1 flex items-center justify-center">
-          <p>Carregando...</p>
+        <div className="flex-1 flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center gap-4">
+            <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+            <p className="text-slate-600 font-medium">
+              Carregando professores...
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -54,20 +88,61 @@ export const Teacher = () => {
     return (
       <div className="min-h-screen bg-slate-50 flex">
         <Menu />
-        <div className="flex-1 flex items-center justify-center">
-          <p>Erro ao carregar professores: {error.message}</p>
+        <div className="flex-1 flex flex-col items-center justify-center p-8">
+          <div className="text-center max-w-md">
+            <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
+            <h2 className="text-xl font-bold text-red-600 mb-2">
+              Erro ao carregar professores
+            </h2>
+            <p className="text-slate-600 mb-6">{error.message}</p>
+            <button
+              onClick={() => refetch()}
+              className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg transition-colors"
+            >
+              Tentar novamente
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
-  const professores = data?.listTeachers?.results || [];
-
   return (
     <div className="min-h-screen bg-slate-50 flex">
       <Menu />
       <div className="flex-1 flex flex-col min-w-0">
+        {/* Overlay de loading durante deleção */}
+        {isProcessing && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 flex flex-col items-center gap-3">
+              <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+              <p className="text-slate-600 font-medium">
+                Excluindo professor...
+              </p>
+            </div>
+          </div>
+        )}
+
         <div className="flex-1 p-4 md:p-6 lg:p-8 mt-16 lg:mt-0">
+          {/* Mensagem de erro da mutation de deleção */}
+          {errorDeleteTeacher && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <div className="flex items-center gap-2 text-red-800 mb-2">
+                <AlertCircle className="w-4 h-4" />
+                <span className="font-medium">Erro ao excluir professor:</span>
+              </div>
+              <p className="text-red-700 text-sm mb-3">
+                {errorDeleteTeacher.message}
+              </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-4 py-2 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition-colors"
+              >
+                Recarregar página
+              </button>
+            </div>
+          )}
+
           <div className="space-y-4 md:space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
@@ -80,7 +155,8 @@ export const Teacher = () => {
               </div>
               <button
                 onClick={() => setCreateTeacherModal(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm md:text-base"
+                disabled={isProcessing}
+                className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm md:text-base"
               >
                 <Plus className="w-4 h-4 md:w-5 md:h-5" />
                 Novo Professor
@@ -91,7 +167,9 @@ export const Teacher = () => {
               {professores.map((teacher: ITeacher) => (
                 <div
                   key={teacher.id}
-                  className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6 hover:shadow-md hover:border-slate-300 transition-all duration-200"
+                  className={`bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6 hover:shadow-md hover:border-slate-300 transition-all duration-200 ${
+                    deletingTeacherId === teacher.id ? "opacity-50" : ""
+                  }`}
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
@@ -119,23 +197,23 @@ export const Teacher = () => {
 
                   <div className="flex gap-2 pt-2 border-t border-slate-100">
                     <button
-                      onClick={() => {
-                        setSelectedTeacher(teacher);
-                        setUpdateTeacherModal(true);
-                      }}
-                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg transition-colors text-sm font-medium"
+                      onClick={() => handleOpenUpdateModal(teacher)}
+                      disabled={isProcessing}
+                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
                     >
                       Editar
                     </button>
                     <button
-                      onClick={() => {
-                        setSelectedTeacher(teacher);
-                        setConfirmationModal(true);
-                      }}
-                      className="flex items-center justify-center px-3 py-2 text-red-600 hover:bg-red-50 border border-red-200 rounded-lg transition-colors"
+                      onClick={() => handleOpenConfirmationModal(teacher)}
+                      disabled={isProcessing}
+                      className="flex items-center justify-center px-3 py-2 text-red-600 hover:bg-red-50 border border-red-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                       title="Excluir"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      {deletingTeacherId === teacher.id ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Trash2 className="w-4 h-4" />
+                      )}
                     </button>
                   </div>
                 </div>
@@ -150,7 +228,8 @@ export const Teacher = () => {
                 </h3>
                 <button
                   onClick={() => setCreateTeacherModal(true)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
+                  disabled={isProcessing}
+                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
                 >
                   <Plus className="w-4 h-4" />
                   Adicionar Professor
@@ -175,12 +254,21 @@ export const Teacher = () => {
 
             {confirmationModal && selectedTeacher && (
               <ConfirmationModal
-                onClose={() => setConfirmationModal(false)}
+                onClose={() => {
+                  if (!isProcessing) {
+                    setConfirmationModal(false);
+                    setSelectedTeacher(null);
+                  }
+                }}
                 onConfirm={() => handleDeleteTeacher(selectedTeacher.id)}
                 title="Deleção de Professor"
-                message={`Tem certeza que deseja excluir o(a) professor(a) ${selectedTeacher.name} ?`}
-                confirmText="Confirmar"
+                message={`Tem certeza que deseja excluir o(a) professor(a) ${selectedTeacher.name}?`}
+                confirmText={
+                  loadingDeleteTeacher ? "Excluindo..." : "Confirmar"
+                }
                 cancelText="Cancelar"
+                isLoading={loadingDeleteTeacher}
+                isDisabled={isProcessing}
               />
             )}
           </div>

@@ -66,7 +66,7 @@ export const Class = () => {
 
   const turmas = data?.listClasses?.results || [];
 
-  console.log(turmas);
+  // console.log(turmas);
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
