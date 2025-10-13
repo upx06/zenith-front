@@ -16,7 +16,7 @@ export const Home = () => {
                 Rejoy | Zenith
               </h1>
               <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto">
-                Sistema de gerenciamento completo para escolas de inglês
+                Sistema de gerenciamento completo para a escola de idiomas Rejoy
               </p>
             </div>
 
