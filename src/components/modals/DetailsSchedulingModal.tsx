@@ -33,13 +33,13 @@ export const DetailsSchedulingModal = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-2xl max-w-md w-full">
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 flex items-center justify-between">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={onClose}>
+      <div className="bg-white rounded-xl shadow-2xl max-w-md rounded-t-3xl w-full" onClick={(e) => e.stopPropagation()}>
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 rounded-t-xl flex items-center justify-between">
           <h2 className="text-xl font-bold text-white">Detalhes do Agendamento</h2>
           <button
             onClick={onClose}
-            className="text-white hover:bg-white hover:bg-opacity-20 rounded-lg p-2 transition-colors"
+            className="text-slate-300 hover:bg-indigo-700 hover:bg-opacity-20 cursor-pointer rounded-lg p-2 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
