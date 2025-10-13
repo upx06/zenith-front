@@ -1,4 +1,3 @@
-// VERSÃO FINAL: SchedulingPage com backend integrado
 import { useState } from "react";
 import {
   ChevronLeft,
@@ -20,7 +19,9 @@ import { DESTROY_LESSON } from "../../graphql/mutations/DestroyLesson";
 import type { IClassroom } from "../../interfaces/IClassroom";
 import type { ILesson } from "../../interfaces/ILesson";
 
-interface SchedulingFormData {
+interface CreateLessonInput {
+  datetime: string;
+  classroomId: string;
   teacherId: string;
   classId: string;
 }
@@ -38,7 +39,7 @@ interface ListClassroomsData {
 }
 
 interface ListLessonsData {
-  listLesson: {
+  listLessons: {
     results: ILesson[];
   };
 }
@@ -56,8 +57,8 @@ export const Scheduling = () => {
     null
   );
 
-  const timeSlots = [];
-  for (let hour = 7; hour <= 16; hour++) {
+  const timeSlots: string[] = [];
+  for (let hour = 7; hour <= 13; hour++) {
     timeSlots.push(`${hour.toString().padStart(2, "0")}:00`);
   }
 
@@ -85,7 +86,7 @@ export const Scheduling = () => {
   const [destroyLesson] = useMutation(DESTROY_LESSON);
 
   const classrooms = classroomsData?.listClassrooms?.results || [];
-  const lessons = lessonsData?.listLesson?.results || [];
+  const lessons = lessonsData?.listLessons?.results || [];
 
   const schedulings: SchedulingsState = {};
   lessons.forEach((lesson) => {
@@ -110,13 +111,6 @@ export const Scheduling = () => {
       month: "long",
       day: "numeric",
     });
-  };
-
-  const createDateTimeFromSlot = (date: Date, timeSlot: string): string => {
-    const [hours, minutes] = timeSlot.split(":");
-    const datetime = new Date(date);
-    datetime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-    return datetime.toISOString();
   };
 
   const navigateDate = (direction: number): void => {
@@ -149,22 +143,17 @@ export const Scheduling = () => {
   };
 
   const handleCreateScheduling = async (
-    schedulingData: SchedulingFormData
+    lessonData: CreateLessonInput
   ): Promise<void> => {
-    if (!selectedSlot) return;
-
     try {
-      const datetime = createDateTimeFromSlot(
-        selectedDate,
-        selectedSlot.timeSlot
-      );
-
       await createLesson({
         variables: {
-          datetime,
-          classroomId: selectedSlot.classroomId,
-          teacherId: schedulingData.teacherId,
-          classId: schedulingData.classId,
+          input: {
+            datetime: lessonData.datetime,
+            classroomId: lessonData.classroomId,
+            teacherId: lessonData.teacherId,
+            classId: lessonData.classId,
+          },
         },
       });
 
@@ -173,6 +162,7 @@ export const Scheduling = () => {
       setSelectedSlot(null);
     } catch (err) {
       console.error("Erro ao criar aula:", err);
+      throw err;
     }
   };
 
@@ -347,25 +337,22 @@ export const Scheduling = () => {
             ) : (
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
-                  <div className="grid grid-cols-7 gap-px">
+                  <div className="grid gap-px" style={{ gridTemplateColumns: `200px repeat(${timeSlots.length}, minmax(120px, 1fr))` }}>
                     <div className="p-3 md:p-4 bg-white">
                       <div className="flex items-center space-x-2">
-                        <Clock className="h-4 w-4 text-slate-500" />
+                        <BookOpen className="h-4 w-4 text-slate-500" />
                         <span className="font-semibold text-slate-900 text-sm md:text-base">
-                          Horário
+                          Salas
                         </span>
                       </div>
                     </div>
-                    {classrooms.map((classroom) => (
-                      <div key={classroom.id} className="p-3 md:p-4 bg-white">
-                        <div className="text-sm font-semibold text-slate-900">
-                          {classroom.name}
-                        </div>
-                        <div className="text-xs text-slate-500 mt-1 space-y-1">
-                          <div className="flex items-center space-x-1">
-                            <Users className="h-3 w-3" />
-                            <span>{classroom.capacity} lugares</span>
-                          </div>
+                    {timeSlots.map((timeSlot) => (
+                      <div key={timeSlot} className="p-3 md:p-4 bg-white text-center">
+                        <div className="flex items-center justify-center space-x-1">
+                          <Clock className="h-3 w-3 text-slate-500" />
+                          <span className="text-sm font-semibold text-slate-900">
+                            {timeSlot}
+                          </span>
                         </div>
                       </div>
                     ))}
@@ -373,18 +360,23 @@ export const Scheduling = () => {
                 </div>
 
                 <div className="divide-y divide-slate-200">
-                  {timeSlots.map((timeSlot) => (
+                  {classrooms.map((classroom) => (
                     <div
-                      key={timeSlot}
-                      className="grid grid-cols-7 gap-px bg-slate-200"
+                      key={classroom.id}
+                      className="grid gap-px bg-slate-200"
+                      style={{ gridTemplateColumns: `200px repeat(${timeSlots.length}, minmax(120px, 1fr))` }}
                     >
-                      <div className="p-3 md:p-4 bg-white flex items-center border-r border-slate-100">
-                        <span className="font-semibold text-slate-900 text-sm md:text-base">
-                          {timeSlot}
-                        </span>
+                      <div className="p-3 md:p-4 bg-white flex flex-col justify-center border-r border-slate-100">
+                        <div className="text-sm font-semibold text-slate-900">
+                          {classroom.name}
+                        </div>
+                        <div className="text-xs text-slate-500 mt-1 flex items-center space-x-1">
+                          <Users className="h-3 w-3" />
+                          <span>{classroom.capacity} lugares</span>
+                        </div>
                       </div>
 
-                      {classrooms.map((classroom) => {
+                      {timeSlots.map((timeSlot) => {
                         const schedulingKey = getSchedulingKey(
                           classroom.id,
                           timeSlot
@@ -393,7 +385,7 @@ export const Scheduling = () => {
 
                         return (
                           <div
-                            key={classroom.id}
+                            key={timeSlot}
                             className={`p-2 md:p-3 bg-white cursor-pointer transition-all duration-200 min-h-16 md:min-h-20 flex items-center hover:shadow-sm ${
                               scheduling
                                 ? "bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 border-l-4 border-blue-500"
@@ -413,9 +405,6 @@ export const Scheduling = () => {
                                 </div>
                                 <div className="text-xs text-slate-600 truncate">
                                   {scheduling.lesson.teacher.name}
-                                </div>
-                                <div className="text-xs font-medium text-blue-600 truncate">
-                                  {scheduling.lesson.class.name}
                                 </div>
                               </div>
                             ) : (
@@ -467,8 +456,9 @@ export const Scheduling = () => {
             onClose={handleCloseCreateSchedulingModal}
             onSubmit={handleCreateScheduling}
             roomName={getClassroomName(selectedSlot.classroomId)}
+            classroomId={selectedSlot.classroomId}
             timeSlot={selectedSlot.timeSlot}
-            date={formatDateDisplay(selectedDate)}
+            date={selectedDate}
           />
 
           {selectedScheduling && (

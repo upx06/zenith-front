@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const LIST_LESSONS = gql`
-  query ListLessons($startDate: UtcDatetime!, $endDate: UtcDatetime!) {
+  query ListLessons($startDate: DateTime!, $endDate: DateTime!) {
     listLessons(
       filter: {
         and: [
