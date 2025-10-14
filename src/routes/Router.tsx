@@ -7,12 +7,17 @@ import { Class } from "../pages/class/Class";
 import { Home } from "../pages/home/Home";
 import { Scheduling } from "../pages/scheduling/Scheduling";
 import { Classroom } from "../pages/classroom/Classroom";
+import SignUp from "../pages/signup/SignUp";
 
 export const Router = () => {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <SignIn />,
+    },
+    {
+      path: "/sign-up",
+      element: <SignUp />,
     },
     {
       path: "home",

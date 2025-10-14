@@ -15,10 +15,10 @@ export const Menu = () => {
   const sidebarItems = [
     { id: "home", path: "/home", label: "Início", icon: Home },
     { id: "agenda", path: "/scheduling", label: "Agenda", icon: Calendar1Icon },
-    { id: "sala", path: "/classroom", label: "Sala de Aula", icon: Home },
-    { id: "professores", path: "/teachers", label: "Professores", icon: Users },
-    { id: "alunos", path: "/students", label: "Alunos", icon: GraduationCap },
     { id: "turmas", path: "/classes", label: "Turmas", icon: BookOpen },
+    { id: "alunos", path: "/students", label: "Alunos", icon: GraduationCap },
+    { id: "professores", path: "/teachers", label: "Professores", icon: Users },
+    { id: "sala", path: "/classroom", label: "Sala de Aula", icon: Home },
   ];
 
   const handleMobileMenuClose = () => {

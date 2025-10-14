@@ -1,26 +1,29 @@
-import { Mail, Lock, Loader2 } from "lucide-react";
+import { Mail, Lock, User, Loader2 } from "lucide-react";
 import React, { useState } from "react";
-import { SIGN_IN } from "../../graphql/queries/SignIn";
-import { useLazyQuery } from "@apollo/client/react";
+import { useMutation } from "@apollo/client/react";
 import { useNavigate } from "react-router";
+import { CREATE_USER } from "../../graphql/mutations/CreateUser";
 
-// Interface para os dados retornados pelo GraphQL
-interface SignInData {
-  signIn: {
-    token: string;
+interface SignUpData {
+  createUser: {
+    result: {
+      id: string;
+    };
   };
 }
 
-export default function SignIn() {
+export default function SignUp() {
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
+    passwordConfirmation: "",
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const [signIn, { loading: loadingSignIn }] =
-    useLazyQuery<SignInData>(SIGN_IN);
+  const [signUp, { loading: loadingSignUp }] =
+    useMutation<SignUpData>(CREATE_USER);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -34,28 +37,41 @@ export default function SignIn() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.email || !formData.password) {
+    if (!formData.name || !formData.email || !formData.password || !formData.passwordConfirmation) {
       setError("Por favor, preencha todos os campos");
       return;
     }
 
+    if (formData.password.length < 8) {
+      setError("A senha deve ter no mínimo 8 caracteres");
+      return;
+    }
+
+    if (formData.password !== formData.passwordConfirmation) {
+      setError("As senhas não coincidem");
+      return;
+    }
+
     try {
-      const result = await signIn({
+      const result = await signUp({
         variables: {
-          email: formData.email.trim(),
-          password: formData.password,
+          input: {
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            password: formData.password,
+            passwordConfirmation: formData.passwordConfirmation,
+          }
         },
       });
 
-      if (result.data?.signIn?.token) {
-        localStorage.setItem("token", result.data.signIn.token);
-        navigate("/home");
+      if (result.data?.createUser?.result?.id) {
+        navigate("/");
       } else if (result.error) {
-        setError(result.error.message || "Erro ao fazer login");
+        setError(result.error?.message || "Erro ao criar conta");
       }
     } catch (error: any) {
-      console.error("Erro ao fazer login:", error);
-      setError(error.message || "Erro ao fazer login");
+      console.error("Erro ao criar conta:", error);
+      setError(error.message || "Erro ao criar conta");
     }
   };
 
@@ -72,17 +88,38 @@ export default function SignIn() {
               />
             </div>
             <h1 className="text-2xl font-bold text-slate-900">
-              Entrar na sua conta
+              Criar sua conta
             </h1>
-            <p className="text-slate-600 mt-2">Bem-vindo de volta!</p>
+            <p className="text-slate-600 mt-2">Comece sua jornada conosco!</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
                 {error}
               </div>
             )}
+
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-slate-700 mb-2"
+              >
+                Nome
+              </label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <input
+                  id="name"
+                  type="text"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Seu nome completo"
+                  className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  disabled={loadingSignUp}
+                />
+              </div>
+            </div>
 
             <div>
               <label
@@ -100,7 +137,7 @@ export default function SignIn() {
                   onChange={handleChange}
                   placeholder="seu@email.com"
                   className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  disabled={loadingSignIn}
+                  disabled={loadingSignUp}
                 />
               </div>
             </div>
@@ -119,37 +156,58 @@ export default function SignIn() {
                   type="password"
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="Digite sua senha"
+                  placeholder="Mínimo 8 caracteres"
                   className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  disabled={loadingSignIn}
+                  disabled={loadingSignUp}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="passwordConfirmation"
+                className="block text-sm font-medium text-slate-700 mb-2"
+              >
+                Confirmar Senha
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <input
+                  id="passwordConfirmation"
+                  type="password"
+                  value={formData.passwordConfirmation}
+                  onChange={handleChange}
+                  placeholder="Digite a senha novamente"
+                  className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  disabled={loadingSignUp}
                 />
               </div>
             </div>
 
             <button
               type="submit"
-              disabled={loadingSignIn}
+              disabled={loadingSignUp}
               className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white py-3 px-4 rounded-lg cursor-pointer flex items-center justify-center gap-2 transition-colors font-medium"
             >
-              {loadingSignIn ? (
+              {loadingSignUp ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  Entrando...
+                  Criando conta...
                 </>
               ) : (
-                "Entrar"
+                "Criar conta"
               )}
             </button>
 
             <div className="text-center mt-4">
               <p className="text-sm text-slate-600">
-                Não tem uma conta?{" "}
+                Já tem uma conta?{" "}
                 <button
                   type="button"
-                  onClick={() => navigate("/sign-up")}
+                  onClick={() => navigate("/")}
                   className="text-blue-600 hover:text-blue-700 font-medium cursor-pointer"
                 >
-                  Criar conta
+                  Entrar
                 </button>
               </p>
             </div>
