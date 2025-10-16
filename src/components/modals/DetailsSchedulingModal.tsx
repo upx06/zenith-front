@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { X, Calendar, Clock, BookOpen, User, Users } from "lucide-react";
+import { X, Calendar, Clock, BookOpen, User, Users, Info } from "lucide-react";
 import { ConfirmationModal } from "./ConfirmationModal";
+import { ClassDetailsModal } from "./ClassDetailsModal";
+import { UpdateClassModal } from "./UpdateClassModal";
+import { ManageClassModal } from "./ManageClassModal";
+import type { IClass } from "../../interfaces/IClass";
 
 interface DetailsSchedulingModalProps {
   isOpen: boolean;
@@ -13,6 +17,7 @@ interface DetailsSchedulingModalProps {
     class: string;
     datetime: string;
   };
+  classData?: IClass;
   roomName: string;
   timeSlot: string;
   date: string;
@@ -25,12 +30,16 @@ export const DetailsSchedulingModal = ({
   onEdit,
   onDelete,
   scheduling,
+  classData,
   roomName,
   timeSlot,
   date,
   isLoading = false,
 }: DetailsSchedulingModalProps) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showClassDetailsModal, setShowClassDetailsModal] = useState(false);
+  const [showUpdateClassModal, setShowUpdateClassModal] = useState(false);
+  const [showManageClassModal, setShowManageClassModal] = useState(false);
 
   if (!isOpen) return null;
 
@@ -117,9 +126,20 @@ export const DetailsSchedulingModal = ({
               </div>
 
               <div className="bg-slate-50 rounded-lg p-4">
-                <div className="flex items-center space-x-2 text-sm text-slate-600 mb-1">
-                  <Users className="h-4 w-4" />
-                  <span>Turma</span>
+                <div className="flex items-center justify-between space-x-2 text-sm text-slate-600 mb-1">
+                  <div className="flex items-center space-x-2">
+                    <Users className="h-4 w-4" />
+                    <span>Turma</span>
+                  </div>
+                  {classData && (
+                    <button
+                      onClick={() => setShowClassDetailsModal(true)}
+                      className="p-1 hover:bg-slate-200 rounded transition-colors"
+                      title="Ver detalhes da turma"
+                    >
+                      <Info className="h-4 w-4 text-blue-600" />
+                    </button>
+                  )}
                 </div>
                 <p className="text-base font-semibold text-slate-900 ml-6">
                   {scheduling.class}
@@ -161,6 +181,37 @@ export const DetailsSchedulingModal = ({
           cancelText="Cancelar"
           isLoading={isLoading}
           isDisabled={isLoading}
+        />
+      )}
+
+      {classData && showClassDetailsModal && (
+        <ClassDetailsModal
+          isOpen={showClassDetailsModal}
+          onClose={() => setShowClassDetailsModal(false)}
+          classItem={classData}
+          onEdit={() => {
+            setShowClassDetailsModal(false);
+            setShowUpdateClassModal(true);
+          }}
+          onManage={() => {
+            setShowClassDetailsModal(false);
+            setShowManageClassModal(true);
+          }}
+        />
+      )}
+
+      {classData && showUpdateClassModal && (
+        <UpdateClassModal
+          clas={classData}
+          closeUpdateClassModal={() => setShowUpdateClassModal(false)}
+          refetchClasses={() => {}}
+        />
+      )}
+
+      {classData && showManageClassModal && (
+        <ManageClassModal
+          clas={classData}
+          closeManageClassModal={() => setShowManageClassModal(false)}
         />
       )}
     </>

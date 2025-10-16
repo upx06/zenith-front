@@ -30,7 +30,7 @@ export const ClassDetailsModal = ({
       >
         <button
           onClick={onClose}
-          className="absolute -top-8 right-0 text-white hover:text-slate-200 transition-colors z-10"
+          className="absolute top-4 right-4 text-slate-400 hover:bg-slate-100 hover:bg-opacity-20 cursor-pointer rounded-lg p-1 transition-colors z-10"
           title="Fechar"
         >
           <X className="w-6 h-6" />

@@ -1,3 +1,5 @@
+import type { IClass } from "./IClass";
+
 export interface ILesson {
   id: string;
   datetime: string;
@@ -5,10 +7,7 @@ export interface ILesson {
     id: string;
     name: string;
   };
-  class: {
-    id: string;
-    name: string;
-  };
+  class: IClass;
   classroom: {
     id: string;
     name: string;

@@ -483,6 +483,7 @@ export const Scheduling = () => {
                 class: selectedScheduling.class.name,
                 datetime: selectedScheduling.datetime,
               }}
+              classData={selectedScheduling.class}
               roomName={getClassroomName(selectedSlot.classroomId)}
               timeSlot={selectedSlot.timeSlot}
               date={formatDateDisplay(selectedDate)}
