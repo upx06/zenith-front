@@ -337,7 +337,12 @@ export const Scheduling = () => {
             ) : (
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
-                  <div className="grid gap-px" style={{ gridTemplateColumns: `200px repeat(${timeSlots.length}, minmax(120px, 1fr))` }}>
+                  <div
+                    className="grid gap-px"
+                    style={{
+                      gridTemplateColumns: `200px repeat(${timeSlots.length}, minmax(120px, 1fr))`,
+                    }}
+                  >
                     <div className="p-3 md:p-4 bg-white">
                       <div className="flex items-center space-x-2">
                         <BookOpen className="h-4 w-4 text-slate-500" />
@@ -347,7 +352,10 @@ export const Scheduling = () => {
                       </div>
                     </div>
                     {timeSlots.map((timeSlot) => (
-                      <div key={timeSlot} className="p-3 md:p-4 bg-white text-center">
+                      <div
+                        key={timeSlot}
+                        className="p-3 md:p-4 bg-white text-center"
+                      >
                         <div className="flex items-center justify-center space-x-1">
                           <Clock className="h-3 w-3 text-slate-500" />
                           <span className="text-sm font-semibold text-slate-900">
@@ -364,7 +372,9 @@ export const Scheduling = () => {
                     <div
                       key={classroom.id}
                       className="grid gap-px bg-slate-200"
-                      style={{ gridTemplateColumns: `200px repeat(${timeSlots.length}, minmax(120px, 1fr))` }}
+                      style={{
+                        gridTemplateColumns: `200px repeat(${timeSlots.length}, minmax(120px, 1fr))`,
+                      }}
                     >
                       <div className="p-3 md:p-4 bg-white flex flex-col justify-center border-r border-slate-100">
                         <div className="text-sm font-semibold text-slate-900">
@@ -471,6 +481,7 @@ export const Scheduling = () => {
                 subject: selectedScheduling.class.name,
                 teacher: selectedScheduling.teacher.name,
                 class: selectedScheduling.class.name,
+                datetime: selectedScheduling.datetime,
               }}
               roomName={getClassroomName(selectedSlot.classroomId)}
               timeSlot={selectedSlot.timeSlot}
