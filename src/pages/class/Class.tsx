@@ -1,11 +1,4 @@
-import {
-  GraduationCap,
-  Plus,
-  Trash2,
-  Star,
-  Users,
-  Languages,
-} from "lucide-react";
+import { GraduationCap, Plus } from "lucide-react";
 import type { IClass } from "../../interfaces/IClass";
 import { useState } from "react";
 import { CreateClassModal } from "../../components/modals/CreateClassModal";
@@ -17,6 +10,7 @@ import { DESTROY_CLASS } from "../../graphql/mutations/DestroyClass";
 import { ConfirmationModal } from "../../components/modals/ConfirmationModal";
 import { ManageClassModal } from "../../components/modals/ManageClassModal";
 import type { IListClasses } from "../../interfaces/IListClasses";
+import { ClassCard } from "../../components/modals/ClassCard";
 
 export const Class = () => {
   const [createClassModal, setCreateClassModal] = useState(false);
@@ -94,77 +88,23 @@ export const Class = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
               {turmas.map((classItem: IClass) => (
-                <div
+                <ClassCard
                   key={classItem.id}
-                  className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6 hover:shadow-md hover:border-slate-300 transition-all duration-200"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
-                        <GraduationCap className="w-5 h-5 md:w-6 md:h-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-slate-800 text-sm md:text-base">
-                          {classItem.name}
-                        </h3>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center gap-2 text-slate-600">
-                      <Star className="w-4 h-4 text-slate-400" />
-                      <span className="text-sm">{classItem.level}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-slate-600">
-                      <Languages className="w-4 h-4 text-slate-400" />
-                      <span className="text-sm">
-                        {classItem?.language?.name}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2 text-slate-600">
-                      <Users className="w-4 h-4 text-slate-400" />
-                      <span className="text-sm">
-                        {classItem.enrollments?.length || 0}{" "}
-                        {classItem.enrollments?.length === 1
-                          ? "aluno"
-                          : "alunos"}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2 pt-2 border-t border-slate-100">
-                    <button
-                      onClick={() => {
-                        setSelectedClass(classItem);
-                        setUpdateClassModal(true);
-                      }}
-                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg transition-colors text-sm font-medium"
-                    >
-                      Editar
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        setSelectedClass(classItem);
-                        setManageClassModal(true);
-                      }}
-                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg transition-colors text-sm font-medium"
-                    >
-                      Gerenciar
-                    </button>
-                    <button
-                      onClick={() => {
-                        setSelectedClass(classItem);
-                        setConfirmationModal(true);
-                      }}
-                      className="flex items-center justify-center px-3 py-2 text-red-600 hover:bg-red-50 border border-red-200 rounded-lg transition-colors"
-                      title="Excluir"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
+                  classItem={classItem}
+                  onEdit={(c) => {
+                    setSelectedClass(c);
+                    setUpdateClassModal(true);
+                  }}
+                  onManage={(c) => {
+                    setSelectedClass(c);
+                    setManageClassModal(true);
+                  }}
+                  onDelete={(c) => {
+                    setSelectedClass(c);
+                    setConfirmationModal(true);
+                  }}
+                  showDeleteButton={true}
+                />
               ))}
             </div>
 
