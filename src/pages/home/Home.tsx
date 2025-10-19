@@ -5,6 +5,10 @@ export const Home = () => {
   return (
     <div className="min-h-screen bg-slate-50 flex">
       <Menu />
+      <div
+        className="hidden lg:block lg:w-64 xl:w-72 flex-shrink-0"
+        aria-hidden="true"
+      />
       <div className="flex-1 flex flex-col min-w-0">
         <div className="flex-1 flex items-center justify-center p-4 md:p-6 lg:p-8 mt-16 lg:mt-0">
           <div className="max-w-4xl w-full text-center">

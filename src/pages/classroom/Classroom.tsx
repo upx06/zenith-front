@@ -7,10 +7,12 @@ import {
   School,
   Users,
   AlertCircle,
+  Pencil,
 } from "lucide-react";
 
-import { CreateClassroomModal } from "../../components/modals/CreateClassroomModal";
-import { UpdateClassroomModal } from "../../components/modals/UpdateClassroomModal";
+import { CreateClassroomModal } from "../../components/modals/create/CreateClassroomModal";
+import { UpdateClassroomModal } from "../../components/modals/update/UpdateClassroomModal";
+import { ClassroomDetailsModal } from "../../components/modals/ClassroomDetailsModal";
 import { Menu } from "../../components/Menu";
 import { ConfirmationModal } from "../../components/modals/ConfirmationModal";
 
@@ -23,7 +25,9 @@ import type { IListClassrooms } from "../../interfaces/IListClassrooms";
 export const Classroom = () => {
   const [createClassroomModal, setCreateClassroomModal] = useState(false);
   const [updateClassroomModal, setUpdateClassroomModal] = useState(false);
+  const [detailClassroomModal, setDetailClassroomModal] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
+
   const [selectedClassroom, setSelectedClassroom] = useState<IClassroom | null>(
     null
   );
@@ -62,6 +66,11 @@ export const Classroom = () => {
   const handleOpenUpdateModal = (classroom: IClassroom) => {
     setSelectedClassroom(classroom);
     setUpdateClassroomModal(true);
+  };
+
+  const handleOpenDetailsModal = (classroom: IClassroom) => {
+    setSelectedClassroom(classroom);
+    setDetailClassroomModal(true);
   };
 
   // Estados auxiliares
@@ -108,6 +117,10 @@ export const Classroom = () => {
   return (
     <div className="min-h-screen bg-slate-50 flex">
       <Menu />
+      <div
+        className="hidden lg:block lg:w-64 xl:w-72 flex-shrink-0"
+        aria-hidden="true"
+      />
       <div className="flex-1 flex flex-col min-w-0">
         {/* Overlay de loading durante deleção */}
         {isProcessing && (
@@ -195,11 +208,19 @@ export const Classroom = () => {
 
                   <div className="flex gap-2 pt-2 border-t border-slate-100">
                     <button
+                      onClick={() => handleOpenDetailsModal(classroom)}
+                      disabled={isProcessing}
+                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 border border-slate-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                    >
+                      Ver detalhes
+                    </button>
+                    <button
                       onClick={() => handleOpenUpdateModal(classroom)}
                       disabled={isProcessing}
-                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                      className="flex items-center justify-center px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      title="Editar"
                     >
-                      Editar
+                      <Pencil className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => handleOpenConfirmationModal(classroom)}
@@ -247,6 +268,15 @@ export const Classroom = () => {
                 classroom={selectedClassroom}
                 closeUpdateClassroomModal={() => setUpdateClassroomModal(false)}
                 refetchClassrooms={refetch}
+              />
+            )}
+
+            {detailClassroomModal && selectedClassroom && (
+              <ClassroomDetailsModal
+                classroom={selectedClassroom}
+                closeClassroomDetailsModal={() =>
+                  setDetailClassroomModal(false)
+                }
               />
             )}
 

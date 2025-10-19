@@ -1,64 +1,51 @@
 import { useMutation } from "@apollo/client/react";
 import { X, Loader2, AlertCircle } from "lucide-react";
 import { useState } from "react";
-import { IMaskInput } from "react-imask";
-import { UPDATE_TEACHER } from "../../graphql/mutations/UpdateTeacher";
-import type { ITeacher } from "../../interfaces/ITeacher";
+import { CREATE_CLASSROOM } from "../../../graphql/mutations/CreateClassroom";
 
-interface IUpdateTeacherModal {
-  teacher: ITeacher;
-  closeUpdateTeacherModal: () => void;
-  refetchTeachers: () => void;
+interface ICreateClassroomModal {
+  closeCreateClassroomModal: () => void;
+  refetchClassrooms: () => void;
 }
 
-export const UpdateTeacherModal = ({
-  teacher,
-  closeUpdateTeacherModal,
-  refetchTeachers,
-}: IUpdateTeacherModal) => {
+export const CreateClassroomModal = ({
+  closeCreateClassroomModal,
+  refetchClassrooms,
+}: ICreateClassroomModal) => {
   const [formData, setFormData] = useState({
-    name: teacher.name,
-    email: teacher.email,
-    phone: teacher.phone,
+    name: "",
+    capacity: "",
   });
 
   const [errors, setErrors] = useState({
     name: "",
-    email: "",
-    phone: "",
+    capacity: "",
   });
 
-  const [updateTeacher, { loading, error }] = useMutation(UPDATE_TEACHER);
+  const [createClassroom, { loading, error }] = useMutation(CREATE_CLASSROOM);
 
   const validateForm = () => {
     const newErrors = {
       name: "",
-      email: "",
-      phone: "",
+      capacity: "",
     };
 
     let isValid = true;
 
+    // Validar nome
     if (!formData.name.trim()) {
-      newErrors.name = "Nome é obrigatório";
+      newErrors.name = "Nome da sala é obrigatório";
       isValid = false;
     }
 
-    if (!formData.email.trim()) {
-      newErrors.email = "Email é obrigatório";
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email inválido";
-      isValid = false;
-    }
-
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Telefone é obrigatório";
+    // Validar capacidade
+    if (!formData.capacity.trim()) {
+      newErrors.capacity = "Capacidade é obrigatória";
       isValid = false;
     } else {
-      const cleanPhone = formData.phone.replace(/\D/g, "");
-      if (cleanPhone.length < 10) {
-        newErrors.phone = "Telefone inválido";
+      const capacityNumber = parseInt(formData.capacity);
+      if (isNaN(capacityNumber) || capacityNumber <= 0) {
+        newErrors.capacity = "Capacidade deve ser um número maior que zero";
         isValid = false;
       }
     }
@@ -73,21 +60,19 @@ export const UpdateTeacherModal = ({
     if (!validateForm()) return;
 
     try {
-      await updateTeacher({
+      await createClassroom({
         variables: {
-          id: teacher.id,
           input: {
             name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
+            capacity: parseInt(formData.capacity),
           },
         },
       });
 
-      await refetchTeachers();
-      closeUpdateTeacherModal();
+      await refetchClassrooms();
+      closeCreateClassroomModal();
     } catch (err) {
-      console.error("Erro ao atualizar professor:", err);
+      console.error("Erro ao criar sala:", err);
     }
   };
 
@@ -107,24 +92,9 @@ export const UpdateTeacherModal = ({
     }
   };
 
-  const handlePhoneChange = (value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      phone: value,
-    }));
-
-    // Limpar erro do telefone quando o usuário digitar
-    if (errors.phone) {
-      setErrors((prev) => ({
-        ...prev,
-        phone: "",
-      }));
-    }
-  };
-
   const handleCloseModal = () => {
     if (!loading) {
-      closeUpdateTeacherModal();
+      closeCreateClassroomModal();
     }
   };
 
@@ -142,17 +112,13 @@ export const UpdateTeacherModal = ({
           <div className="absolute inset-0 bg-white/70 flex items-center justify-center rounded-lg z-10">
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-              <p className="text-slate-600 font-medium">
-                Atualizando professor...
-              </p>
+              <p className="text-slate-600 font-medium">Criando sala...</p>
             </div>
           </div>
         )}
 
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-slate-800">
-            Editar Professor
-          </h2>
+          <h2 className="text-lg font-semibold text-slate-800">Nova Sala</h2>
           <button
             onClick={handleCloseModal}
             disabled={loading}
@@ -165,7 +131,7 @@ export const UpdateTeacherModal = ({
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              Nome
+              Nome da Sala
             </label>
             <input
               type="text"
@@ -176,7 +142,7 @@ export const UpdateTeacherModal = ({
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
                 errors.name ? "border-red-500" : "border-slate-300"
               }`}
-              placeholder="Nome completo do professor"
+              placeholder="Ex: Sala 101"
             />
             {errors.name && (
               <p className="text-red-500 text-xs mt-1">{errors.name}</p>
@@ -185,48 +151,22 @@ export const UpdateTeacherModal = ({
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              Email
+              Capacidade
             </label>
             <input
-              type="email"
-              name="email"
-              value={formData.email}
+              type="number"
+              name="capacity"
+              value={formData.capacity}
               onChange={handleChange}
               disabled={loading}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
-                errors.email ? "border-red-500" : "border-slate-300"
+                errors.capacity ? "border-red-500" : "border-slate-300"
               }`}
-              placeholder="email@exemplo.com"
+              placeholder="Ex: 30"
+              min="1"
             />
-            {errors.email && (
-              <p className="text-red-500 text-xs mt-1">{errors.email}</p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
-              Telefone
-            </label>
-            <IMaskInput
-              mask={[
-                {
-                  mask: "(00) 0000-0000",
-                },
-                {
-                  mask: "(00) 00000-0000",
-                },
-              ]}
-              value={formData.phone}
-              onAccept={handlePhoneChange}
-              disabled={loading}
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
-                errors.phone ? "border-red-500" : "border-slate-300"
-              }`}
-              placeholder="(11) 99999-9999"
-              unmask={true}
-            />
-            {errors.phone && (
-              <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
+            {errors.capacity && (
+              <p className="text-red-500 text-xs mt-1">{errors.capacity}</p>
             )}
           </div>
 
@@ -235,9 +175,7 @@ export const UpdateTeacherModal = ({
             <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
               <div className="flex items-center gap-2 text-red-800 mb-1">
                 <AlertCircle className="w-4 h-4" />
-                <span className="font-medium text-sm">
-                  Erro ao atualizar professor
-                </span>
+                <span className="font-medium text-sm">Erro ao criar sala</span>
               </div>
               <p className="text-red-700 text-sm">{error.message}</p>
             </div>
@@ -260,10 +198,10 @@ export const UpdateTeacherModal = ({
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Salvando...
+                  Criando...
                 </>
               ) : (
-                "Salvar"
+                "Cadastrar"
               )}
             </button>
           </div>

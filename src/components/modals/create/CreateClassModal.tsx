@@ -1,24 +1,19 @@
 import { useMutation, useQuery } from "@apollo/client/react";
 import { X, Loader2, AlertCircle } from "lucide-react";
 import { useState } from "react";
-import { UPDATE_CLASS } from "../../graphql/mutations/UpdateClass";
-import { LIST_LANGUAGES } from "../../graphql/queries/ListLanguages";
-import type { IClass } from "../../interfaces/IClass";
-import type { IListLanguages } from "../../interfaces/IListLanguages";
+import { CREATE_CLASS } from "../../../graphql/mutations/CreateClass";
+import { LIST_LANGUAGES } from "../../../graphql/queries/ListLanguages";
+import type { IListLanguages } from "../../../interfaces/IListLanguages";
 
-interface IUpdateClassModal {
-  clas: IClass;
-  closeUpdateClassModal: () => void;
+interface ICreateClassModal {
+  closeCreateClassModal: () => void;
   refetchClasses: () => void;
 }
 
-export const UpdateClassModal = ({
-  clas,
-  closeUpdateClassModal,
+export const CreateClassModal = ({
+  closeCreateClassModal,
   refetchClasses,
-}: IUpdateClassModal) => {
-  if (!clas) return null;
-
+}: ICreateClassModal) => {
   const {
     data: dataLanguage,
     loading: loadingLanguage,
@@ -26,9 +21,9 @@ export const UpdateClassModal = ({
   } = useQuery<IListLanguages>(LIST_LANGUAGES);
 
   const [formData, setFormData] = useState({
-    name: clas.name || "",
-    level: clas.level || "",
-    languageId: clas.languageId || "",
+    name: "",
+    level: "",
+    languageId: "",
   });
 
   const [errors, setErrors] = useState({
@@ -37,7 +32,7 @@ export const UpdateClassModal = ({
     languageId: "",
   });
 
-  const [updateClass, { loading, error }] = useMutation(UPDATE_CLASS);
+  const [createClass, { loading, error }] = useMutation(CREATE_CLASS);
 
   const validateForm = () => {
     const newErrors = {
@@ -73,9 +68,8 @@ export const UpdateClassModal = ({
     if (!validateForm()) return;
 
     try {
-      await updateClass({
+      await createClass({
         variables: {
-          id: clas.id,
           input: {
             name: formData.name,
             level: formData.level,
@@ -85,9 +79,9 @@ export const UpdateClassModal = ({
       });
 
       await refetchClasses();
-      closeUpdateClassModal();
+      closeCreateClassModal();
     } catch (err) {
-      console.error("Erro ao atualizar turma:", err);
+      console.error("Erro ao criar turma:", err);
     }
   };
 
@@ -113,7 +107,7 @@ export const UpdateClassModal = ({
 
   const handleCloseModal = () => {
     if (!loading) {
-      closeUpdateClassModal();
+      closeCreateClassModal();
     }
   };
 
@@ -134,14 +128,14 @@ export const UpdateClassModal = ({
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
               <p className="text-slate-600 font-medium">
-                {loading ? "Atualizando turma..." : "Carregando linguagens..."}
+                {loading ? "Criando turma..." : "Carregando linguagens..."}
               </p>
             </div>
           </div>
         )}
 
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-slate-800">Editar Turma</h2>
+          <h2 className="text-lg font-semibold text-slate-800">Nova Turma</h2>
           <button
             onClick={handleCloseModal}
             disabled={isLoading}
@@ -242,9 +236,7 @@ export const UpdateClassModal = ({
             <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
               <div className="flex items-center gap-2 text-red-800 mb-1">
                 <AlertCircle className="w-4 h-4" />
-                <span className="font-medium text-sm">
-                  Erro ao atualizar turma
-                </span>
+                <span className="font-medium text-sm">Erro ao criar turma</span>
               </div>
               <p className="text-red-700 text-sm">{error.message}</p>
             </div>
@@ -267,10 +259,10 @@ export const UpdateClassModal = ({
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Atualizando...
+                  Criando...
                 </>
               ) : (
-                "Salvar"
+                "Cadastrar"
               )}
             </button>
           </div>

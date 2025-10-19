@@ -71,10 +71,10 @@ export default function SignIn() {
                 className="h-16 w-auto object-contain"
               />
             </div>
-            <h1 className="text-2xl font-bold text-slate-900">
+            {/* <h1 className="text-2xl font-bold text-slate-900">
               Entrar na sua conta
             </h1>
-            <p className="text-slate-600 mt-2">Bem-vindo de volta!</p>
+            <p className="text-slate-600 mt-2">Bem-vindo de volta!</p> */}
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">

@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import { RouterProvider } from "react-router";
 import SignIn from "../pages/signin/SignIn";
 import { Student } from "../pages/student/Student";
@@ -8,6 +8,13 @@ import { Home } from "../pages/home/Home";
 import { Scheduling } from "../pages/scheduling/Scheduling";
 import { Classroom } from "../pages/classroom/Classroom";
 import SignUp from "../pages/signup/SignUp";
+import type { ReactNode } from "react";
+
+const PrivateRoute = ({ children }: { children: ReactNode }) => {
+  const token = localStorage.getItem("token") || null;
+
+  return token ? children : <Navigate to="/" replace />;
+};
 
 export const Router = () => {
   const router = createBrowserRouter([
@@ -21,27 +28,51 @@ export const Router = () => {
     },
     {
       path: "home",
-      element: <Home />,
+      element: (
+        <PrivateRoute>
+          <Home />
+        </PrivateRoute>
+      ),
     },
     {
       path: "scheduling",
-      element: <Scheduling />,
+      element: (
+        <PrivateRoute>
+          <Scheduling />
+        </PrivateRoute>
+      ),
     },
     {
       path: "classroom",
-      element: <Classroom />,
+      element: (
+        <PrivateRoute>
+          <Classroom />
+        </PrivateRoute>
+      ),
     },
     {
-      path: "/teachers",
-      element: <Teacher />,
+      path: "teachers",
+      element: (
+        <PrivateRoute>
+          <Teacher />
+        </PrivateRoute>
+      ),
     },
     {
-      path: "/students",
-      element: <Student />,
+      path: "students",
+      element: (
+        <PrivateRoute>
+          <Student />
+        </PrivateRoute>
+      ),
     },
     {
-      path: "/classes",
-      element: <Class />,
+      path: "classes",
+      element: (
+        <PrivateRoute>
+          <Class />
+        </PrivateRoute>
+      ),
     },
   ]);
 

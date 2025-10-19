@@ -6,6 +6,7 @@ export interface ILesson {
   teacher: {
     id: string;
     name: string;
+    phone: string;
   };
   class: IClass;
   classroom: {

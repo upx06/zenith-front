@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { X, Calendar, Clock, BookOpen, User, Users } from "lucide-react";
 import { useQuery } from "@apollo/client/react";
-import { LIST_TEACHERS } from "../../graphql/queries/ListTeachers";
-import { LIST_CLASSES } from "../../graphql/queries/ListClasses";
-import type { ITeacher } from "../../interfaces/ITeacher";
-import type { IClass } from "../../interfaces/IClass";
+import { LIST_TEACHERS } from "../../../graphql/queries/ListTeachers";
+import { LIST_CLASSES } from "../../../graphql/queries/ListClasses";
+import type { ITeacher } from "../../../interfaces/ITeacher";
+import type { IClass } from "../../../interfaces/IClass";
 
 interface ListTeachersData {
   listTeachers: {
@@ -78,14 +78,14 @@ export const CreateSchedulingModal = ({
     setIsSubmitting(true);
     try {
       const datetime = createDateTimeFromSlot(date, timeSlot);
-      
+
       await onSubmit({
         datetime,
         classroomId,
         teacherId,
         classId,
       });
-      
+
       setTeacherId("");
       setClassId("");
       onClose();
@@ -107,8 +107,14 @@ export const CreateSchedulingModal = ({
   const formattedDate = formatDateDisplay(date);
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={handleClose}>
-      <div className="bg-white rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+      onClick={handleClose}
+    >
+      <div
+        className="bg-white rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 flex items-center justify-between">
           <h2 className="text-xl font-bold text-white">Novo Agendamento</h2>
           <button
@@ -134,7 +140,9 @@ export const CreateSchedulingModal = ({
             <div className="flex items-center space-x-2 text-sm">
               <Calendar className="h-4 w-4 text-slate-600" />
               <span className="text-slate-600">Data:</span>
-              <span className="font-semibold text-slate-900">{formattedDate}</span>
+              <span className="font-semibold text-slate-900">
+                {formattedDate}
+              </span>
             </div>
           </div>
 

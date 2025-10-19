@@ -1,8 +1,8 @@
 import { GraduationCap, Plus } from "lucide-react";
 import type { IClass } from "../../interfaces/IClass";
 import { useState } from "react";
-import { CreateClassModal } from "../../components/modals/CreateClassModal";
-import { UpdateClassModal } from "../../components/modals/UpdateClassModal";
+import { CreateClassModal } from "../../components/modals/create/CreateClassModal";
+import { UpdateClassModal } from "../../components/modals/update/UpdateClassModal";
 import { Menu } from "../../components/Menu";
 import { useMutation, useQuery } from "@apollo/client/react";
 import { LIST_CLASSES } from "../../graphql/queries/ListClasses";
@@ -65,6 +65,10 @@ export const Class = () => {
   return (
     <div className="min-h-screen bg-slate-50 flex">
       <Menu />
+      <div
+        className="hidden lg:block lg:w-64 xl:w-72 flex-shrink-0"
+        aria-hidden="true"
+      />
       <div className="flex-1 flex flex-col min-w-0">
         <div className="flex-1 p-4 md:p-6 lg:p-8 mt-16 lg:mt-0">
           <div className="space-y-4 md:space-y-6">

@@ -8,11 +8,12 @@ import {
   Trash2,
   Users,
   AlertCircle,
+  Pencil,
 } from "lucide-react";
 
 import { Menu } from "../../components/Menu";
-import { CreateStudentModal } from "../../components/modals/CreateStudentModal";
-import { UpdateStudentModal } from "../../components/modals/UpdateStudentModal";
+import { CreateStudentModal } from "../../components/modals/create/CreateStudentModal";
+import { UpdateStudentModal } from "../../components/modals/update/UpdateStudentModal";
 import { PhoneDisplay } from "../../components/PhoneDisplay";
 import { ConfirmationModal } from "../../components/modals/ConfirmationModal";
 
@@ -21,10 +22,13 @@ import type { IListStudents } from "../../interfaces/IListStudents";
 
 import { LIST_STUDENTS } from "../../graphql/queries/ListStudents";
 import { DESTROY_STUDENT } from "../../graphql/mutations/DestroyStudent";
+import { StudentDetailsModal } from "../../components/modals/StudentDetailsModal";
 
 export const Student = () => {
   const [createStudentModal, setCreateStudentModal] = useState(false);
   const [updateStudentModal, setUpdateStudentModal] = useState(false);
+  const [detailStudentModal, setDetailStudentModal] = useState(false);
+
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState<IStudent | null>(null);
   const [deletingStudentId, setDeletingStudentId] = useState<string | null>(
@@ -63,6 +67,11 @@ export const Student = () => {
   const handleOpenUpdateModal = (student: IStudent) => {
     setSelectedStudent(student);
     setUpdateStudentModal(true);
+  };
+
+  const handleOpenDetailsModal = (student: IStudent) => {
+    setSelectedStudent(student);
+    setDetailStudentModal(true);
   };
 
   // Estados auxiliares
@@ -109,6 +118,10 @@ export const Student = () => {
   return (
     <div className="min-h-screen bg-slate-50 flex">
       <Menu />
+      <div
+        className="hidden lg:block lg:w-64 xl:w-72 flex-shrink-0"
+        aria-hidden="true"
+      />
       <div className="flex-1 flex flex-col min-w-0">
         {/* Overlay de loading durante deleção */}
         {isProcessing && (
@@ -194,11 +207,19 @@ export const Student = () => {
 
                   <div className="flex gap-2 pt-2 border-t border-slate-100">
                     <button
+                      onClick={() => handleOpenDetailsModal(student)}
+                      disabled={isProcessing}
+                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 border border-slate-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                    >
+                      Ver detalhes
+                    </button>
+                    <button
                       onClick={() => handleOpenUpdateModal(student)}
                       disabled={isProcessing}
-                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                      className="flex items-center justify-center px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      title="Editar"
                     >
-                      Editar
+                      <Pencil className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => handleOpenConfirmationModal(student)}
@@ -246,6 +267,13 @@ export const Student = () => {
                 student={selectedStudent}
                 closeUpdateStudentModal={() => setUpdateStudentModal(false)}
                 refetchStudents={refetch}
+              />
+            )}
+
+            {detailStudentModal && selectedStudent && (
+              <StudentDetailsModal
+                student={selectedStudent}
+                closeStudentDetailsModal={() => setDetailStudentModal(false)}
               />
             )}
 

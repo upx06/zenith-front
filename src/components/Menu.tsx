@@ -21,8 +21,9 @@ export const Menu = () => {
     { id: "sala", path: "/classroom", label: "Sala de Aula", icon: Home },
   ];
 
-  const handleMobileMenuClose = () => {
-    setIsMobileMenuOpen(false);
+  const handleLogout = () => {
+    if (isMobileMenuOpen) setIsMobileMenuOpen(false);
+    localStorage.removeItem("token");
   };
 
   return (
@@ -30,12 +31,12 @@ export const Menu = () => {
       {isMobileMenuOpen && (
         <div
           className="fixed inset-0 z-40 bg-white/50 backdrop-opacity-50 lg:hidden"
-          onClick={handleMobileMenuClose}
+          onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
 
       {/* Desktop Sidebar */}
-      <div className="hidden lg:flex w-64 xl:w-72 bg-white shadow-lg border-r border-slate-200 flex-col">
+      <div className="hidden lg:flex lg:fixed lg:inset-y-0 lg:left-0 w-64 xl:w-72 bg-white shadow-lg border-r border-slate-200 flex-col">
         <div className="flex-1">
           <div className="flex items-center justify-center h-24 border-b border-slate-200">
             <img
@@ -71,6 +72,7 @@ export const Menu = () => {
         <div className="p-3 xl:p-4 border-t border-slate-200">
           <NavLink
             to="/"
+            onClick={handleLogout}
             className={({ isActive }) =>
               `w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors text-sm xl:text-base ${
                 isActive
@@ -79,7 +81,6 @@ export const Menu = () => {
               }`
             }
           >
-            
             <LogOut className="w-4 h-4 xl:w-5 xl:h-5" />
             Desconectar
           </NavLink>
@@ -107,7 +108,7 @@ export const Menu = () => {
                 <li key={item.id}>
                   <NavLink
                     to={item.path}
-                    onClick={handleMobileMenuClose}
+                    onClick={() => setIsMobileMenuOpen(false)}
                     className={({ isActive }) =>
                       `w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
                         isActive
@@ -128,7 +129,7 @@ export const Menu = () => {
         <div className="p-4 border-t border-slate-200">
           <NavLink
             to="/"
-            onClick={handleMobileMenuClose}
+            onClick={handleLogout}
             className={({ isActive }) =>
               `w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
                 isActive
@@ -137,7 +138,6 @@ export const Menu = () => {
               }`
             }
           >
-            
             <LogOut className="w-4 h-4 xl:w-5 xl:h-5" />
             Desconectar
           </NavLink>

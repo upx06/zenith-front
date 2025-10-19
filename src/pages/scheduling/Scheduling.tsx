@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { Menu } from "../../components/Menu";
-import { CreateSchedulingModal } from "../../components/modals/CreateSchedulingModal";
+import { CreateSchedulingModal } from "../../components/modals/create/CreateSchedulingModal";
 import { DetailsSchedulingModal } from "../../components/modals/DetailsSchedulingModal";
 import { LIST_CLASSROOMS } from "../../graphql/queries/ListClassrooms";
 import { LIST_LESSONS } from "../../graphql/queries/ListLessons";
@@ -225,6 +225,10 @@ export const Scheduling = () => {
   return (
     <div className="min-h-screen bg-slate-50 flex">
       <Menu />
+      <div
+        className="hidden lg:block lg:w-64 xl:w-72 flex-shrink-0"
+        aria-hidden="true"
+      />
       <div className="flex-1 flex flex-col min-w-0">
         <div className="flex-1 p-4 md:p-6 lg:p-8 mt-16 lg:mt-0">
           <div className="space-y-4 md:space-y-6">

@@ -1,3 +1,5 @@
+import type { IClass } from "./IClass";
+
 export interface IEnrollment {
   id: string;
   studentId: string;
@@ -7,4 +9,5 @@ export interface IEnrollment {
     phone: string;
     email: string;
   };
+  class: IClass;
 }

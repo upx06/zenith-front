@@ -8,10 +8,11 @@ import {
   Trash2,
   Users,
   AlertCircle,
+  Pencil,
 } from "lucide-react";
 
-import { CreateTeacherModal } from "../../components/modals/CreateTeacherModal";
-import { UpdateTeacherModal } from "../../components/modals/UpdateTeacherModal";
+import { CreateTeacherModal } from "../../components/modals/create/CreateTeacherModal";
+import { UpdateTeacherModal } from "../../components/modals/update/UpdateTeacherModal";
 import { Menu } from "../../components/Menu";
 import { PhoneDisplay } from "../../components/PhoneDisplay";
 import { ConfirmationModal } from "../../components/modals/ConfirmationModal";
@@ -21,10 +22,13 @@ import { DESTROY_TEACHER } from "../../graphql/mutations/DestroyTeacher";
 
 import type { ITeacher } from "../../interfaces/ITeacher";
 import type { IListTeachers } from "../../interfaces/IListTeachers";
+import { TeacherDetailsModal } from "../../components/modals/TeacherDetailsModal";
 
 export const Teacher = () => {
   const [createTeacherModal, setCreateTeacherModal] = useState(false);
   const [updateTeacherModal, setUpdateTeacherModal] = useState(false);
+  const [detailTeacherModal, setDetailTeacherModal] = useState(false);
+
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState<ITeacher | null>(null);
   const [deletingTeacherId, setDeletingTeacherId] = useState<string | null>(
@@ -62,6 +66,11 @@ export const Teacher = () => {
   const handleOpenUpdateModal = (teacher: ITeacher) => {
     setSelectedTeacher(teacher);
     setUpdateTeacherModal(true);
+  };
+
+  const handleOpenDetailsModal = (teacher: ITeacher) => {
+    setSelectedTeacher(teacher);
+    setDetailTeacherModal(true);
   };
 
   // Estados auxiliares
@@ -110,6 +119,10 @@ export const Teacher = () => {
   return (
     <div className="min-h-screen bg-slate-50 flex">
       <Menu />
+      <div
+        className="hidden lg:block lg:w-64 xl:w-72 flex-shrink-0"
+        aria-hidden="true"
+      />
       <div className="flex-1 flex flex-col min-w-0">
         {/* Overlay de loading durante deleção */}
         {isProcessing && (
@@ -197,11 +210,19 @@ export const Teacher = () => {
 
                   <div className="flex gap-2 pt-2 border-t border-slate-100">
                     <button
+                      onClick={() => handleOpenDetailsModal(teacher)}
+                      disabled={isProcessing}
+                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 border border-slate-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                    >
+                      Ver detalhes
+                    </button>
+                    <button
                       onClick={() => handleOpenUpdateModal(teacher)}
                       disabled={isProcessing}
-                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                      className="flex items-center justify-center px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      title="Editar"
                     >
-                      Editar
+                      <Pencil className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => handleOpenConfirmationModal(teacher)}
@@ -249,6 +270,13 @@ export const Teacher = () => {
                 teacher={selectedTeacher}
                 closeUpdateTeacherModal={() => setUpdateTeacherModal(false)}
                 refetchTeachers={refetch}
+              />
+            )}
+
+            {detailTeacherModal && selectedTeacher && (
+              <TeacherDetailsModal
+                teacher={selectedTeacher}
+                closeTeacherDetailsModal={() => setDetailTeacherModal(false)}
               />
             )}
 

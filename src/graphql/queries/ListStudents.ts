@@ -8,6 +8,15 @@ export const LIST_STUDENTS = gql`
         id
         name
         phone
+        enrollment {
+          class {
+            level
+            name
+            language {
+              name
+            }
+          }
+        }
       }
     }
   }

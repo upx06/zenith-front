@@ -4,9 +4,22 @@ export const LIST_CLASSROOMS = gql`
   query ListClassrooms {
     listClassrooms {
       results {
+        capacity
         id
         name
-        capacity
+        lesson {
+          datetime
+          id
+          class {
+            languageId
+            level
+            name
+          }
+          teacher {
+            name
+            phone
+          }
+        }
       }
     }
   }

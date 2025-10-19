@@ -1,52 +1,68 @@
+// components/modals/UpdateStudentModal.tsx
 import { useMutation } from "@apollo/client/react";
 import { X, Loader2, AlertCircle } from "lucide-react";
 import { useState } from "react";
-import { UPDATE_CLASSROOM } from "../../graphql/mutations/UpdateClassroom";
-import type { IClassroom } from "../../interfaces/IClassroom";
+import { IMaskInput } from "react-imask";
+import { UPDATE_STUDENT } from "../../../graphql/mutations/UpdateStudent";
+import type { IStudent } from "../../../interfaces/IStudent";
 
-interface IUpdateClassroomModal {
-  classroom: IClassroom;
-  closeUpdateClassroomModal: () => void;
-  refetchClassrooms: () => void;
+interface IUpdateStudentModal {
+  student: IStudent;
+  closeUpdateStudentModal: () => void;
+  refetchStudents: () => void;
 }
 
-export const UpdateClassroomModal = ({
-  classroom,
-  closeUpdateClassroomModal,
-  refetchClassrooms,
-}: IUpdateClassroomModal) => {
+export const UpdateStudentModal = ({
+  student,
+  closeUpdateStudentModal,
+  refetchStudents,
+}: IUpdateStudentModal) => {
   const [formData, setFormData] = useState({
-    name: classroom.name,
-    capacity: classroom.capacity.toString(),
+    name: student.name,
+    email: student.email,
+    phone: student.phone,
   });
 
   const [errors, setErrors] = useState({
     name: "",
-    capacity: "",
+    email: "",
+    phone: "",
   });
 
-  const [updateClassroom, { loading, error }] = useMutation(UPDATE_CLASSROOM);
+  const [updateStudent, { loading, error }] = useMutation(UPDATE_STUDENT);
 
   const validateForm = () => {
     const newErrors = {
       name: "",
-      capacity: "",
+      email: "",
+      phone: "",
     };
 
     let isValid = true;
 
+    // Validar nome
     if (!formData.name.trim()) {
-      newErrors.name = "Nome da sala é obrigatório";
+      newErrors.name = "Nome é obrigatório";
       isValid = false;
     }
 
-    if (!formData.capacity.trim()) {
-      newErrors.capacity = "Capacidade é obrigatória";
+    // Validar email
+    if (!formData.email.trim()) {
+      newErrors.email = "Email é obrigatório";
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email inválido";
+      isValid = false;
+    }
+
+    // Validar telefone
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Telefone é obrigatório";
       isValid = false;
     } else {
-      const capacityNumber = parseInt(formData.capacity);
-      if (isNaN(capacityNumber) || capacityNumber <= 0) {
-        newErrors.capacity = "Capacidade deve ser um número maior que zero";
+      const cleanPhone = formData.phone.replace(/\D/g, "");
+      if (cleanPhone.length < 10) {
+        newErrors.phone = "Telefone inválido";
         isValid = false;
       }
     }
@@ -61,20 +77,21 @@ export const UpdateClassroomModal = ({
     if (!validateForm()) return;
 
     try {
-      await updateClassroom({
+      await updateStudent({
         variables: {
-          id: classroom.id,
+          id: student.id,
           input: {
             name: formData.name,
-            capacity: parseInt(formData.capacity),
+            email: formData.email,
+            phone: formData.phone,
           },
         },
       });
 
-      await refetchClassrooms();
-      closeUpdateClassroomModal();
+      await refetchStudents();
+      closeUpdateStudentModal();
     } catch (err) {
-      console.error("Erro ao atualizar sala:", err);
+      console.error("Erro ao atualizar aluno:", err);
     }
   };
 
@@ -94,9 +111,24 @@ export const UpdateClassroomModal = ({
     }
   };
 
+  const handlePhoneChange = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      phone: value,
+    }));
+
+    // Limpar erro do telefone quando o usuário digitar
+    if (errors.phone) {
+      setErrors((prev) => ({
+        ...prev,
+        phone: "",
+      }));
+    }
+  };
+
   const handleCloseModal = () => {
     if (!loading) {
-      closeUpdateClassroomModal();
+      closeUpdateStudentModal();
     }
   };
 
@@ -114,13 +146,13 @@ export const UpdateClassroomModal = ({
           <div className="absolute inset-0 bg-white/70 flex items-center justify-center rounded-lg z-10">
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-              <p className="text-slate-600 font-medium">Atualizando sala...</p>
+              <p className="text-slate-600 font-medium">Atualizando aluno...</p>
             </div>
           </div>
         )}
 
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-slate-800">Editar Sala</h2>
+          <h2 className="text-lg font-semibold text-slate-800">Editar Aluno</h2>
           <button
             onClick={handleCloseModal}
             disabled={loading}
@@ -133,7 +165,7 @@ export const UpdateClassroomModal = ({
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              Nome da Sala
+              Nome
             </label>
             <input
               type="text"
@@ -144,7 +176,7 @@ export const UpdateClassroomModal = ({
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
                 errors.name ? "border-red-500" : "border-slate-300"
               }`}
-              placeholder="Ex: Sala 101"
+              placeholder="Nome completo do aluno"
             />
             {errors.name && (
               <p className="text-red-500 text-xs mt-1">{errors.name}</p>
@@ -153,22 +185,48 @@ export const UpdateClassroomModal = ({
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              Capacidade
+              Email
             </label>
             <input
-              type="number"
-              name="capacity"
-              value={formData.capacity}
+              type="email"
+              name="email"
+              value={formData.email}
               onChange={handleChange}
               disabled={loading}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
-                errors.capacity ? "border-red-500" : "border-slate-300"
+                errors.email ? "border-red-500" : "border-slate-300"
               }`}
-              placeholder="Ex: 30"
-              min="1"
+              placeholder="email@exemplo.com"
             />
-            {errors.capacity && (
-              <p className="text-red-500 text-xs mt-1">{errors.capacity}</p>
+            {errors.email && (
+              <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">
+              Telefone
+            </label>
+            <IMaskInput
+              mask={[
+                {
+                  mask: "(00) 0000-0000",
+                },
+                {
+                  mask: "(00) 00000-0000",
+                },
+              ]}
+              value={formData.phone}
+              onAccept={handlePhoneChange}
+              disabled={loading}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
+                errors.phone ? "border-red-500" : "border-slate-300"
+              }`}
+              placeholder="(11) 99999-9999"
+              unmask={true}
+            />
+            {errors.phone && (
+              <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
             )}
           </div>
 
@@ -178,7 +236,7 @@ export const UpdateClassroomModal = ({
               <div className="flex items-center gap-2 text-red-800 mb-1">
                 <AlertCircle className="w-4 h-4" />
                 <span className="font-medium text-sm">
-                  Erro ao atualizar sala
+                  Erro ao atualizar aluno
                 </span>
               </div>
               <p className="text-red-700 text-sm">{error.message}</p>

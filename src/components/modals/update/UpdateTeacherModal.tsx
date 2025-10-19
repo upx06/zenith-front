@@ -1,26 +1,25 @@
-// components/modals/UpdateStudentModal.tsx
 import { useMutation } from "@apollo/client/react";
 import { X, Loader2, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { IMaskInput } from "react-imask";
-import { UPDATE_STUDENT } from "../../graphql/mutations/UpdateStudent";
-import type { IStudent } from "../../interfaces/IStudent";
+import { UPDATE_TEACHER } from "../../../graphql/mutations/UpdateTeacher";
+import type { ITeacher } from "../../../interfaces/ITeacher";
 
-interface IUpdateStudentModal {
-  student: IStudent;
-  closeUpdateStudentModal: () => void;
-  refetchStudents: () => void;
+interface IUpdateTeacherModal {
+  teacher: ITeacher;
+  closeUpdateTeacherModal: () => void;
+  refetchTeachers: () => void;
 }
 
-export const UpdateStudentModal = ({
-  student,
-  closeUpdateStudentModal,
-  refetchStudents,
-}: IUpdateStudentModal) => {
+export const UpdateTeacherModal = ({
+  teacher,
+  closeUpdateTeacherModal,
+  refetchTeachers,
+}: IUpdateTeacherModal) => {
   const [formData, setFormData] = useState({
-    name: student.name,
-    email: student.email,
-    phone: student.phone,
+    name: teacher.name,
+    email: teacher.email,
+    phone: teacher.phone,
   });
 
   const [errors, setErrors] = useState({
@@ -29,7 +28,7 @@ export const UpdateStudentModal = ({
     phone: "",
   });
 
-  const [updateStudent, { loading, error }] = useMutation(UPDATE_STUDENT);
+  const [updateTeacher, { loading, error }] = useMutation(UPDATE_TEACHER);
 
   const validateForm = () => {
     const newErrors = {
@@ -40,13 +39,11 @@ export const UpdateStudentModal = ({
 
     let isValid = true;
 
-    // Validar nome
     if (!formData.name.trim()) {
       newErrors.name = "Nome é obrigatório";
       isValid = false;
     }
 
-    // Validar email
     if (!formData.email.trim()) {
       newErrors.email = "Email é obrigatório";
       isValid = false;
@@ -55,7 +52,6 @@ export const UpdateStudentModal = ({
       isValid = false;
     }
 
-    // Validar telefone
     if (!formData.phone.trim()) {
       newErrors.phone = "Telefone é obrigatório";
       isValid = false;
@@ -77,9 +73,9 @@ export const UpdateStudentModal = ({
     if (!validateForm()) return;
 
     try {
-      await updateStudent({
+      await updateTeacher({
         variables: {
-          id: student.id,
+          id: teacher.id,
           input: {
             name: formData.name,
             email: formData.email,
@@ -88,10 +84,10 @@ export const UpdateStudentModal = ({
         },
       });
 
-      await refetchStudents();
-      closeUpdateStudentModal();
+      await refetchTeachers();
+      closeUpdateTeacherModal();
     } catch (err) {
-      console.error("Erro ao atualizar aluno:", err);
+      console.error("Erro ao atualizar professor:", err);
     }
   };
 
@@ -128,7 +124,7 @@ export const UpdateStudentModal = ({
 
   const handleCloseModal = () => {
     if (!loading) {
-      closeUpdateStudentModal();
+      closeUpdateTeacherModal();
     }
   };
 
@@ -146,13 +142,17 @@ export const UpdateStudentModal = ({
           <div className="absolute inset-0 bg-white/70 flex items-center justify-center rounded-lg z-10">
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-              <p className="text-slate-600 font-medium">Atualizando aluno...</p>
+              <p className="text-slate-600 font-medium">
+                Atualizando professor...
+              </p>
             </div>
           </div>
         )}
 
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-slate-800">Editar Aluno</h2>
+          <h2 className="text-lg font-semibold text-slate-800">
+            Editar Professor
+          </h2>
           <button
             onClick={handleCloseModal}
             disabled={loading}
@@ -176,7 +176,7 @@ export const UpdateStudentModal = ({
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
                 errors.name ? "border-red-500" : "border-slate-300"
               }`}
-              placeholder="Nome completo do aluno"
+              placeholder="Nome completo do professor"
             />
             {errors.name && (
               <p className="text-red-500 text-xs mt-1">{errors.name}</p>
@@ -236,7 +236,7 @@ export const UpdateStudentModal = ({
               <div className="flex items-center gap-2 text-red-800 mb-1">
                 <AlertCircle className="w-4 h-4" />
                 <span className="font-medium text-sm">
-                  Erro ao atualizar aluno
+                  Erro ao atualizar professor
                 </span>
               </div>
               <p className="text-red-700 text-sm">{error.message}</p>

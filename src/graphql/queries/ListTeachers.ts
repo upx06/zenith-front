@@ -8,6 +8,20 @@ export const LIST_TEACHERS = gql`
         id
         name
         phone
+        lessons {
+          datetime
+          id
+          class {
+            languageId
+            level
+            name
+          }
+          classroom {
+            capacity
+            id
+            name
+          }
+        }
       }
     }
   }

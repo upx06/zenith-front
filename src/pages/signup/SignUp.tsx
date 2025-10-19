@@ -1,4 +1,4 @@
-import { Mail, Lock, User, Loader2 } from "lucide-react";
+import { Mail, Lock, User, Loader2, EyeOff, Eye } from "lucide-react";
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client/react";
 import { useNavigate } from "react-router";
@@ -22,6 +22,10 @@ export default function SignUp() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] =
+    useState(false);
+
   const [signUp, { loading: loadingSignUp }] =
     useMutation<SignUpData>(CREATE_USER);
 
@@ -37,7 +41,12 @@ export default function SignUp() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.email || !formData.password || !formData.passwordConfirmation) {
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.passwordConfirmation
+    ) {
       setError("Por favor, preencha todos os campos");
       return;
     }
@@ -60,7 +69,7 @@ export default function SignUp() {
             email: formData.email.trim(),
             password: formData.password,
             passwordConfirmation: formData.passwordConfirmation,
-          }
+          },
         },
       });
 
@@ -87,10 +96,10 @@ export default function SignUp() {
                 className="h-16 w-auto object-contain"
               />
             </div>
-            <h1 className="text-2xl font-bold text-slate-900">
+            {/* <h1 className="text-2xl font-bold text-slate-900">
               Criar sua conta
             </h1>
-            <p className="text-slate-600 mt-2">Comece sua jornada conosco!</p>
+            <p className="text-slate-600 mt-2">Comece sua jornada conosco!</p> */}
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -138,6 +147,7 @@ export default function SignUp() {
                   placeholder="seu@email.com"
                   className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                   disabled={loadingSignUp}
+                  autoComplete="off"
                 />
               </div>
             </div>
@@ -153,13 +163,26 @@ export default function SignUp() {
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
                 <input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Mínimo 8 caracteres"
-                  className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  className="w-full pl-10 pr-12 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                   disabled={loadingSignUp}
+                  autoComplete="off"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  tabIndex={-1}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
               </div>
             </div>
 
@@ -174,13 +197,28 @@ export default function SignUp() {
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
                 <input
                   id="passwordConfirmation"
-                  type="password"
+                  type={showPasswordConfirmation ? "text" : "password"}
                   value={formData.passwordConfirmation}
                   onChange={handleChange}
                   placeholder="Digite a senha novamente"
-                  className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  className="w-full pl-10 pr-12 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                   disabled={loadingSignUp}
+                  autoComplete="off"
                 />
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowPasswordConfirmation(!showPasswordConfirmation)
+                  }
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  tabIndex={-1}
+                >
+                  {showPasswordConfirmation ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
               </div>
             </div>
 

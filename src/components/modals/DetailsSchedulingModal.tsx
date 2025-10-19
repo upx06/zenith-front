@@ -2,7 +2,7 @@ import { useState } from "react";
 import { X, Calendar, Clock, BookOpen, User, Users, Info } from "lucide-react";
 import { ConfirmationModal } from "./ConfirmationModal";
 import { ClassDetailsModal } from "./ClassDetailsModal";
-import { UpdateClassModal } from "./UpdateClassModal";
+import { UpdateClassModal } from "./update/UpdateClassModal";
 import { ManageClassModal } from "./ManageClassModal";
 import type { IClass } from "../../interfaces/IClass";
 

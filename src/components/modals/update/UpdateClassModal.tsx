@@ -1,66 +1,66 @@
-import { useMutation } from "@apollo/client/react";
+import { useMutation, useQuery } from "@apollo/client/react";
 import { X, Loader2, AlertCircle } from "lucide-react";
 import { useState } from "react";
-import { IMaskInput } from "react-imask";
-import { CREATE_TEACHER } from "../../graphql/mutations/CreateTeacher";
+import { UPDATE_CLASS } from "../../../graphql/mutations/UpdateClass";
+import { LIST_LANGUAGES } from "../../../graphql/queries/ListLanguages";
+import type { IClass } from "../../../interfaces/IClass";
+import type { IListLanguages } from "../../../interfaces/IListLanguages";
 
-interface ICreateTeacherModal {
-  closeCreateTeacherModal: () => void;
-  refetchTeachers: () => void;
+interface IUpdateClassModal {
+  clas: IClass;
+  closeUpdateClassModal: () => void;
+  refetchClasses: () => void;
 }
 
-export const CreateTeacherModal = ({
-  closeCreateTeacherModal,
-  refetchTeachers,
-}: ICreateTeacherModal) => {
+export const UpdateClassModal = ({
+  clas,
+  closeUpdateClassModal,
+  refetchClasses,
+}: IUpdateClassModal) => {
+  if (!clas) return null;
+
+  const {
+    data: dataLanguage,
+    loading: loadingLanguage,
+    error: errorLanguage,
+  } = useQuery<IListLanguages>(LIST_LANGUAGES);
+
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
+    name: clas.name || "",
+    level: clas.level || "",
+    languageId: clas.languageId || "",
   });
 
   const [errors, setErrors] = useState({
     name: "",
-    email: "",
-    phone: "",
+    level: "",
+    languageId: "",
   });
 
-  const [createTeacher, { loading, error }] = useMutation(CREATE_TEACHER);
+  const [updateClass, { loading, error }] = useMutation(UPDATE_CLASS);
 
   const validateForm = () => {
     const newErrors = {
       name: "",
-      email: "",
-      phone: "",
+      level: "",
+      languageId: "",
     };
 
     let isValid = true;
 
-    // Validar nome
     if (!formData.name.trim()) {
       newErrors.name = "Nome é obrigatório";
       isValid = false;
     }
 
-    // Validar email
-    if (!formData.email.trim()) {
-      newErrors.email = "Email é obrigatório";
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email inválido";
+    if (!formData.level.trim()) {
+      newErrors.level = "Nível é obrigatório";
       isValid = false;
     }
 
-    // Validar telefone
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Telefone é obrigatório";
+    if (!formData.languageId.trim()) {
+      newErrors.languageId = "Linguagem é obrigatória";
       isValid = false;
-    } else {
-      const cleanPhone = formData.phone.replace(/\D/g, "");
-      if (cleanPhone.length < 10) {
-        newErrors.phone = "Telefone inválido";
-        isValid = false;
-      }
     }
 
     setErrors(newErrors);
@@ -73,24 +73,29 @@ export const CreateTeacherModal = ({
     if (!validateForm()) return;
 
     try {
-      await createTeacher({
+      await updateClass({
         variables: {
+          id: clas.id,
           input: {
             name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
+            level: formData.level,
+            languageId: formData.languageId,
           },
         },
       });
 
-      await refetchTeachers();
-      closeCreateTeacherModal();
+      await refetchClasses();
+      closeUpdateClassModal();
     } catch (err) {
-      console.error("Erro ao criar professor:", err);
+      console.error("Erro ao atualizar turma:", err);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -106,26 +111,13 @@ export const CreateTeacherModal = ({
     }
   };
 
-  const handlePhoneChange = (value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      phone: value,
-    }));
-
-    // Limpar erro do telefone quando o usuário digitar
-    if (errors.phone) {
-      setErrors((prev) => ({
-        ...prev,
-        phone: "",
-      }));
-    }
-  };
-
   const handleCloseModal = () => {
     if (!loading) {
-      closeCreateTeacherModal();
+      closeUpdateClassModal();
     }
   };
+
+  const isLoading = loading || loadingLanguage;
 
   return (
     <div
@@ -137,22 +129,22 @@ export const CreateTeacherModal = ({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Overlay de loading */}
-        {loading && (
+        {isLoading && (
           <div className="absolute inset-0 bg-white/70 flex items-center justify-center rounded-lg z-10">
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-              <p className="text-slate-600 font-medium">Criando professor...</p>
+              <p className="text-slate-600 font-medium">
+                {loading ? "Atualizando turma..." : "Carregando linguagens..."}
+              </p>
             </div>
           </div>
         )}
 
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-slate-800">
-            Novo Professor
-          </h2>
+          <h2 className="text-lg font-semibold text-slate-800">Editar Turma</h2>
           <button
             onClick={handleCloseModal}
-            disabled={loading}
+            disabled={isLoading}
             className="p-1 text-slate-400 hover:text-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <X className="w-5 h-5" />
@@ -169,11 +161,11 @@ export const CreateTeacherModal = ({
               name="name"
               value={formData.name}
               onChange={handleChange}
-              disabled={loading}
+              disabled={isLoading}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
                 errors.name ? "border-red-500" : "border-slate-300"
               }`}
-              placeholder="Nome completo do professor"
+              placeholder="Nome da turma"
             />
             {errors.name && (
               <p className="text-red-500 text-xs mt-1">{errors.name}</p>
@@ -182,48 +174,66 @@ export const CreateTeacherModal = ({
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              Email
+              Linguagem
             </label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
+            <select
+              name="languageId"
+              value={formData.languageId}
               onChange={handleChange}
-              disabled={loading}
+              disabled={isLoading}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
-                errors.email ? "border-red-500" : "border-slate-300"
+                errors.languageId ? "border-red-500" : "border-slate-300"
               }`}
-              placeholder="email@exemplo.com"
-            />
-            {errors.email && (
-              <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+            >
+              <option value="">Selecione a linguagem</option>
+              {dataLanguage?.listLanguages?.results?.map((language) => (
+                <option key={language.id} value={language.id}>
+                  {language.name}
+                </option>
+              ))}
+            </select>
+
+            {/* Estados de loading e error das linguagens */}
+            {loadingLanguage && !isLoading && (
+              <p className="text-blue-500 text-xs mt-1">
+                Carregando linguagens...
+              </p>
+            )}
+            {errorLanguage && (
+              <div className="p-2 bg-red-50 border border-red-200 rounded mt-1">
+                <p className="text-red-600 text-xs">
+                  Erro ao carregar linguagens: {errorLanguage.message}
+                </p>
+              </div>
+            )}
+            {errors.languageId && (
+              <p className="text-red-500 text-xs mt-1">{errors.languageId}</p>
             )}
           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              Telefone
+              Nível
             </label>
-            <IMaskInput
-              mask={[
-                {
-                  mask: "(00) 0000-0000",
-                },
-                {
-                  mask: "(00) 00000-0000",
-                },
-              ]}
-              value={formData.phone}
-              onAccept={handlePhoneChange}
-              disabled={loading}
+            <select
+              name="level"
+              value={formData.level}
+              onChange={handleChange}
+              disabled={isLoading}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
-                errors.phone ? "border-red-500" : "border-slate-300"
+                errors.level ? "border-red-500" : "border-slate-300"
               }`}
-              placeholder="(11) 99999-9999"
-              unmask={true}
-            />
-            {errors.phone && (
-              <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
+            >
+              <option value="">Selecione o nível</option>
+              <option value="A1">A1</option>
+              <option value="A2">A2</option>
+              <option value="B1">B1</option>
+              <option value="B2">B2</option>
+              <option value="C1">C1</option>
+              <option value="C2">C2</option>
+            </select>
+            {errors.level && (
+              <p className="text-red-500 text-xs mt-1">{errors.level}</p>
             )}
           </div>
 
@@ -233,7 +243,7 @@ export const CreateTeacherModal = ({
               <div className="flex items-center gap-2 text-red-800 mb-1">
                 <AlertCircle className="w-4 h-4" />
                 <span className="font-medium text-sm">
-                  Erro ao criar professor
+                  Erro ao atualizar turma
                 </span>
               </div>
               <p className="text-red-700 text-sm">{error.message}</p>
@@ -244,23 +254,23 @@ export const CreateTeacherModal = ({
             <button
               type="button"
               onClick={handleCloseModal}
-              disabled={loading}
+              disabled={isLoading}
               className="flex-1 px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              disabled={loading}
+              disabled={isLoading}
               className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors text-sm md:text-base flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Criando...
+                  Atualizando...
                 </>
               ) : (
-                "Cadastrar"
+                "Salvar"
               )}
             </button>
           </div>
