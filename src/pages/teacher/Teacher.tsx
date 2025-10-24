@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client/react";
 import {
   Loader2,
@@ -23,6 +23,7 @@ import { DESTROY_TEACHER } from "../../graphql/mutations/DestroyTeacher";
 import type { ITeacher } from "../../interfaces/ITeacher";
 import type { IListTeachers } from "../../interfaces/IListTeachers";
 import { TeacherDetailsModal } from "../../components/modals/TeacherDetailsModal";
+import { getPresignedUrlFromAwsS3 } from "../../utils/aws";
 
 export const Teacher = () => {
   const [createTeacherModal, setCreateTeacherModal] = useState(false);
@@ -31,9 +32,14 @@ export const Teacher = () => {
 
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState<ITeacher | null>(null);
+  const [selectedTeacherPhoto, setSelectedTeacherPhoto] = useState<
+    string | null
+  >(null);
   const [deletingTeacherId, setDeletingTeacherId] = useState<string | null>(
     null
   );
+  const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({});
+  const [photosLoading, setPhotosLoading] = useState(true);
 
   const { data, loading, error, refetch } =
     useQuery<IListTeachers>(LIST_TEACHERS);
@@ -68,8 +74,9 @@ export const Teacher = () => {
     setUpdateTeacherModal(true);
   };
 
-  const handleOpenDetailsModal = (teacher: ITeacher) => {
+  const handleOpenDetailsModal = (teacher: ITeacher, photoUrl: string) => {
     setSelectedTeacher(teacher);
+    setSelectedTeacherPhoto(photoUrl);
     setDetailTeacherModal(true);
   };
 
@@ -77,7 +84,41 @@ export const Teacher = () => {
   const isProcessing = loadingDeleteTeacher;
   const professores = data?.listTeachers?.results || [];
 
-  if (loading) {
+  useEffect(() => {
+    const loadPhotos = async () => {
+      setPhotosLoading(true); // ← Inicia loading
+      const urls: Record<string, string> = {};
+
+      for (const teacher of professores) {
+        if (teacher.photoKey) {
+          try {
+            const url = await getPresignedUrlFromAwsS3(
+              teacher.photoKey,
+              "profile-photo"
+            );
+            urls[teacher.id] = url;
+          } catch (error) {
+            console.error(
+              `Erro ao carregar foto do professor ${teacher.id}:`,
+              error
+            );
+          }
+        }
+      }
+
+      setPhotoUrls(urls);
+      setPhotosLoading(false); // ← Finaliza loading
+    };
+
+    if (professores.length > 0) {
+      loadPhotos();
+    } else {
+      setPhotosLoading(false); // ← Se não há professores, também finaliza
+    }
+  }, [professores]);
+
+  // Loading principal (dados + fotos)
+  if (loading || photosLoading) {
     return (
       <div className="min-h-screen bg-slate-50 flex">
         <Menu />
@@ -85,7 +126,7 @@ export const Teacher = () => {
           <div className="flex flex-col items-center gap-4">
             <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
             <p className="text-slate-600 font-medium">
-              Carregando professores...
+              {loading ? "Carregando professores..." : "Carregando fotos..."}
             </p>
           </div>
         </div>
@@ -177,68 +218,91 @@ export const Teacher = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
-              {professores.map((teacher: ITeacher) => (
-                <div
-                  key={teacher.id}
-                  className={`bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6 hover:shadow-md hover:border-slate-300 transition-all duration-200 ${
-                    deletingTeacherId === teacher.id ? "opacity-50" : ""
-                  }`}
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
-                        <Users className="w-5 h-5 md:w-6 md:h-6 text-white" />
+              {professores.map((teacher: ITeacher) => {
+                const photoUrl = photoUrls[teacher.id];
+                return (
+                  <div
+                    key={teacher.id}
+                    className={`bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6 hover:shadow-md hover:border-slate-300 transition-all duration-200 ${
+                      deletingTeacherId === teacher.id ? "opacity-50" : ""
+                    }`}
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        {photoUrl ? (
+                          <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border border-slate-200 flex-shrink-0">
+                            <img
+                              src={photoUrl}
+                              alt={`Foto de ${teacher.name}`}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                e.currentTarget.style.display = "none";
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                            <Users className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                          </div>
+                        )}
+                        <div>
+                          <h3 className="font-semibold text-slate-800 text-sm md:text-base">
+                            {teacher.name}
+                          </h3>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="font-semibold text-slate-800 text-sm md:text-base">
-                          {teacher.name}
-                        </h3>
+                    </div>
+
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center gap-2 text-slate-600">
+                        <Mail className="w-4 h-4 text-slate-400" />
+                        <span className="text-sm truncate">
+                          {teacher.email}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-slate-600">
+                        <Phone className="w-4 h-4 text-slate-400" />
+                        <PhoneDisplay
+                          phone={teacher.phone}
+                          className="text-sm"
+                        />
                       </div>
                     </div>
-                  </div>
 
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center gap-2 text-slate-600">
-                      <Mail className="w-4 h-4 text-slate-400" />
-                      <span className="text-sm truncate">{teacher.email}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-slate-600">
-                      <Phone className="w-4 h-4 text-slate-400" />
-                      <PhoneDisplay phone={teacher.phone} className="text-sm" />
+                    <div className="flex gap-2 pt-2 border-t border-slate-100">
+                      <button
+                        onClick={() =>
+                          handleOpenDetailsModal(teacher, photoUrl)
+                        }
+                        disabled={isProcessing}
+                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 border border-slate-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                      >
+                        Ver detalhes
+                      </button>
+                      <button
+                        onClick={() => handleOpenUpdateModal(teacher)}
+                        disabled={isProcessing}
+                        className="flex items-center justify-center px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        title="Editar"
+                      >
+                        <Pencil className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleOpenConfirmationModal(teacher)}
+                        disabled={isProcessing}
+                        className="flex items-center justify-center px-3 py-2 text-red-600 hover:bg-red-50 border border-red-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        title="Excluir"
+                      >
+                        {deletingTeacherId === teacher.id ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Trash2 className="w-4 h-4" />
+                        )}
+                      </button>
                     </div>
                   </div>
-
-                  <div className="flex gap-2 pt-2 border-t border-slate-100">
-                    <button
-                      onClick={() => handleOpenDetailsModal(teacher)}
-                      disabled={isProcessing}
-                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 border border-slate-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
-                    >
-                      Ver detalhes
-                    </button>
-                    <button
-                      onClick={() => handleOpenUpdateModal(teacher)}
-                      disabled={isProcessing}
-                      className="flex items-center justify-center px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                      title="Editar"
-                    >
-                      <Pencil className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => handleOpenConfirmationModal(teacher)}
-                      disabled={isProcessing}
-                      className="flex items-center justify-center px-3 py-2 text-red-600 hover:bg-red-50 border border-red-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                      title="Excluir"
-                    >
-                      {deletingTeacherId === teacher.id ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                      ) : (
-                        <Trash2 className="w-4 h-4" />
-                      )}
-                    </button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {professores.length === 0 && (
@@ -276,6 +340,7 @@ export const Teacher = () => {
             {detailTeacherModal && selectedTeacher && (
               <TeacherDetailsModal
                 teacher={selectedTeacher}
+                photo={selectedTeacherPhoto}
                 closeTeacherDetailsModal={() => setDetailTeacherModal(false)}
               />
             )}

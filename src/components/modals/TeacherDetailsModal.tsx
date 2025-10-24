@@ -15,11 +15,13 @@ import type { ITeacher } from "../../interfaces/ITeacher";
 
 interface ITeacherDetailsModal {
   teacher: ITeacher;
+  photo: string | null;
   closeTeacherDetailsModal: () => void;
 }
 
 export const TeacherDetailsModal = ({
   teacher,
+  photo,
   closeTeacherDetailsModal,
 }: ITeacherDetailsModal) => {
   // Filtra apenas as aulas futuras
@@ -47,9 +49,19 @@ export const TeacherDetailsModal = ({
         <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-white">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
-                <GraduationCap className="w-7 h-7" />
-              </div>
+              {photo ? (
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white/20 flex-shrink-0">
+                  <img
+                    src={photo}
+                    alt={`Foto de ${teacher.name}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
+                  <GraduationCap className="w-7 h-7" />
+                </div>
+              )}
               <div>
                 <h2 className="text-2xl font-bold">{teacher.name}</h2>
                 <p className="text-blue-100 mt-1">Detalhes do professor</p>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client/react";
 import {
   Loader2,
@@ -23,6 +23,7 @@ import type { IListStudents } from "../../interfaces/IListStudents";
 import { LIST_STUDENTS } from "../../graphql/queries/ListStudents";
 import { DESTROY_STUDENT } from "../../graphql/mutations/DestroyStudent";
 import { StudentDetailsModal } from "../../components/modals/StudentDetailsModal";
+import { getPresignedUrlFromAwsS3 } from "../../utils/aws";
 
 export const Student = () => {
   const [createStudentModal, setCreateStudentModal] = useState(false);
@@ -31,9 +32,14 @@ export const Student = () => {
 
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState<IStudent | null>(null);
+  const [selectedStudentPhoto, setSelectedStudentPhoto] = useState<
+    string | null
+  >(null);
   const [deletingStudentId, setDeletingStudentId] = useState<string | null>(
     null
   );
+  const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({});
+  const [photosLoading, setPhotosLoading] = useState(true);
 
   const { data, loading, error, refetch } =
     useQuery<IListStudents>(LIST_STUDENTS);
@@ -69,8 +75,9 @@ export const Student = () => {
     setUpdateStudentModal(true);
   };
 
-  const handleOpenDetailsModal = (student: IStudent) => {
+  const handleOpenDetailsModal = (student: IStudent, photoUrl: string) => {
     setSelectedStudent(student);
+    setSelectedStudentPhoto(photoUrl);
     setDetailStudentModal(true);
   };
 
@@ -78,14 +85,49 @@ export const Student = () => {
   const isProcessing = loadingDeleteStudent;
   const alunos = data?.listStudents?.results || [];
 
-  if (loading) {
+  useEffect(() => {
+    const loadPhotos = async () => {
+      setPhotosLoading(true);
+      const urls: Record<string, string> = {};
+
+      for (const student of alunos) {
+        if (student.photoKey) {
+          try {
+            const url = await getPresignedUrlFromAwsS3(
+              student.photoKey,
+              "profile-photo"
+            );
+            urls[student.id] = url;
+          } catch (error) {
+            console.error(
+              `Erro ao carregar foto do aluno ${student.id}:`,
+              error
+            );
+          }
+        }
+      }
+
+      setPhotoUrls(urls);
+      setPhotosLoading(false);
+    };
+
+    if (alunos.length > 0) {
+      loadPhotos();
+    } else {
+      setPhotosLoading(false);
+    }
+  }, [alunos]);
+
+  if (loading || photosLoading) {
     return (
       <div className="min-h-screen bg-slate-50 flex">
         <Menu />
         <div className="flex-1 flex flex-col items-center justify-center">
           <div className="flex flex-col items-center gap-4">
             <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-            <p className="text-slate-600 font-medium">Carregando alunos...</p>
+            <p className="text-slate-600 font-medium">
+              {loading ? "Carregando alunos..." : "Carregando fotos..."}
+            </p>
           </div>
         </div>
       </div>
@@ -174,68 +216,92 @@ export const Student = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
-              {alunos.map((student: IStudent) => (
-                <div
-                  key={student.id}
-                  className={`bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6 hover:shadow-md hover:border-slate-300 transition-all duration-200 ${
-                    deletingStudentId === student.id ? "opacity-50" : ""
-                  }`}
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
-                        <Users className="w-5 h-5 md:w-6 md:h-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-slate-800 text-sm md:text-base">
-                          {student.name}
-                        </h3>
-                      </div>
-                    </div>
-                  </div>
+              {alunos.map((student: IStudent) => {
+                const photoUrl = photoUrls[student.id];
 
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center gap-2 text-slate-600">
-                      <Mail className="w-4 h-4 text-slate-400" />
-                      <span className="text-sm truncate">{student.email}</span>
+                return (
+                  <div
+                    key={student.id}
+                    className={`bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6 hover:shadow-md hover:border-slate-300 transition-all duration-200 ${
+                      deletingStudentId === student.id ? "opacity-50" : ""
+                    }`}
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        {photoUrl ? (
+                          <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border border-slate-200 flex-shrink-0">
+                            <img
+                              src={photoUrl}
+                              alt={`Foto de ${student.name}`}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                e.currentTarget.style.display = "none";
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                            <Users className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                          </div>
+                        )}
+                        <div>
+                          <h3 className="font-semibold text-slate-800 text-sm md:text-base">
+                            {student.name}
+                          </h3>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 text-slate-600">
-                      <Phone className="w-4 h-4 text-slate-400" />
-                      <PhoneDisplay phone={student.phone} className="text-sm" />
-                    </div>
-                  </div>
 
-                  <div className="flex gap-2 pt-2 border-t border-slate-100">
-                    <button
-                      onClick={() => handleOpenDetailsModal(student)}
-                      disabled={isProcessing}
-                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 border border-slate-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
-                    >
-                      Ver detalhes
-                    </button>
-                    <button
-                      onClick={() => handleOpenUpdateModal(student)}
-                      disabled={isProcessing}
-                      className="flex items-center justify-center px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                      title="Editar"
-                    >
-                      <Pencil className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => handleOpenConfirmationModal(student)}
-                      disabled={isProcessing}
-                      className="flex items-center justify-center px-3 py-2 text-red-600 hover:bg-red-50 border border-red-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                      title="Excluir"
-                    >
-                      {deletingStudentId === student.id ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                      ) : (
-                        <Trash2 className="w-4 h-4" />
-                      )}
-                    </button>
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center gap-2 text-slate-600">
+                        <Mail className="w-4 h-4 text-slate-400" />
+                        <span className="text-sm truncate">
+                          {student.email}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-slate-600">
+                        <Phone className="w-4 h-4 text-slate-400" />
+                        <PhoneDisplay
+                          phone={student.phone}
+                          className="text-sm"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2 pt-2 border-t border-slate-100">
+                      <button
+                        onClick={() =>
+                          handleOpenDetailsModal(student, photoUrl)
+                        }
+                        disabled={isProcessing}
+                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 border border-slate-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                      >
+                        Ver detalhes
+                      </button>
+                      <button
+                        onClick={() => handleOpenUpdateModal(student)}
+                        disabled={isProcessing}
+                        className="flex items-center justify-center px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        title="Editar"
+                      >
+                        <Pencil className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleOpenConfirmationModal(student)}
+                        disabled={isProcessing}
+                        className="flex items-center justify-center px-3 py-2 text-red-600 hover:bg-red-50 border border-red-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        title="Excluir"
+                      >
+                        {deletingStudentId === student.id ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Trash2 className="w-4 h-4" />
+                        )}
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {alunos.length === 0 && (
@@ -273,6 +339,7 @@ export const Student = () => {
             {detailStudentModal && selectedStudent && (
               <StudentDetailsModal
                 student={selectedStudent}
+                photo={selectedStudentPhoto}
                 closeStudentDetailsModal={() => setDetailStudentModal(false)}
               />
             )}

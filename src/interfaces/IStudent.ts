@@ -5,5 +5,6 @@ export interface IStudent {
   name: string;
   email: string;
   phone: string;
+  photoKey: string;
   enrollment: IEnrollment[];
 }

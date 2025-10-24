@@ -5,5 +5,6 @@ export interface ITeacher {
   name: string;
   email: string;
   phone: string;
+  photoKey: string;
   lessons: ILesson[];
 }

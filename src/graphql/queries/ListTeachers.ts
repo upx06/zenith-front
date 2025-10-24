@@ -8,6 +8,7 @@ export const LIST_TEACHERS = gql`
         id
         name
         phone
+        photoKey
         lessons {
           datetime
           id

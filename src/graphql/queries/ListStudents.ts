@@ -8,6 +8,7 @@ export const LIST_STUDENTS = gql`
         id
         name
         phone
+        photoKey
         enrollment {
           class {
             level

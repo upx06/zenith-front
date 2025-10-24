@@ -3,7 +3,7 @@ import { X, Loader2, AlertCircle, Upload, Camera } from "lucide-react";
 import { useState, useRef } from "react";
 import { IMaskInput } from "react-imask";
 import { CREATE_STUDENT } from "../../../graphql/mutations/CreateStudent";
-import { sendToAws } from "../../../utils/aws";
+import { sendToAwsS3 } from "../../../utils/aws";
 
 interface IAddStudentModal {
   closeCreateStudentModal: () => void;
@@ -117,7 +117,7 @@ export const CreateStudentModal = ({
       let photoKey = null;
 
       if (photoFile) {
-        const data = await sendToAws(photoFile, "profile-photo");
+        const data = await sendToAwsS3(photoFile, "profile-photo");
 
         if (data && data.key) photoKey = data.key;
       }
@@ -128,7 +128,7 @@ export const CreateStudentModal = ({
             name: formData.name,
             email: formData.email,
             phone: formData.phone,
-            photo_hash: photoKey,
+            photoKey: photoKey,
           },
         },
       });
