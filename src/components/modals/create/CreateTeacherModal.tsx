@@ -279,10 +279,6 @@ export const CreateTeacherModal = ({
                     {errors.photo}
                   </p>
                 )}
-
-                <p className="text-xs text-slate-500 text-center">
-                  JPG, PNG ou GIF (máx. 5MB)
-                </p>
               </div>
             </div>
 
