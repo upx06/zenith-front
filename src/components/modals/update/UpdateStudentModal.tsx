@@ -34,6 +34,7 @@ export const UpdateStudentModal = ({
 
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string>(photo || "");
+  const [havePhoto, setHavePhoto] = useState<boolean>(!!photo);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [updateStudent, { loading, error }] = useMutation(UPDATE_STUDENT);
@@ -90,6 +91,7 @@ export const UpdateStudentModal = ({
       }
 
       setPhotoFile(file);
+      setHavePhoto(true);
 
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -107,6 +109,7 @@ export const UpdateStudentModal = ({
 
   const handleRemovePhoto = () => {
     setPhotoFile(null);
+    setHavePhoto(false);
     setPhotoPreview("");
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -121,7 +124,6 @@ export const UpdateStudentModal = ({
     try {
       let photoKey = student.photoKey;
 
-      // Se há um novo arquivo de foto, faz upload
       if (photoFile) {
         const data = await sendToAwsS3(photoFile, "profile-photo");
         if (data && data.key) photoKey = data.key;
@@ -134,7 +136,7 @@ export const UpdateStudentModal = ({
             name: formData.name,
             email: formData.email,
             phone: formData.phone,
-            photoKey: photoKey,
+            photoKey: !havePhoto ? null : photoKey,
           },
         },
       });

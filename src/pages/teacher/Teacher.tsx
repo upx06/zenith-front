@@ -69,8 +69,9 @@ export const Teacher = () => {
     setConfirmationModal(true);
   };
 
-  const handleOpenUpdateModal = (teacher: ITeacher) => {
+  const handleOpenUpdateModal = (teacher: ITeacher, photoUrl: string) => {
     setSelectedTeacher(teacher);
+    setSelectedTeacherPhoto(photoUrl);
     setUpdateTeacherModal(true);
   };
 
@@ -280,7 +281,7 @@ export const Teacher = () => {
                         Ver detalhes
                       </button>
                       <button
-                        onClick={() => handleOpenUpdateModal(teacher)}
+                        onClick={() => handleOpenUpdateModal(teacher, photoUrl)}
                         disabled={isProcessing}
                         className="flex items-center justify-center px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         title="Editar"
@@ -332,6 +333,7 @@ export const Teacher = () => {
             {updateTeacherModal && selectedTeacher && (
               <UpdateTeacherModal
                 teacher={selectedTeacher}
+                photo={selectedTeacherPhoto}
                 closeUpdateTeacherModal={() => setUpdateTeacherModal(false)}
                 refetchTeachers={refetch}
               />
