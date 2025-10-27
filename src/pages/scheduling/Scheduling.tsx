@@ -420,8 +420,8 @@ export const Scheduling = () => {
                 datetime: selectedScheduling.datetime,
               }}
               classData={selectedScheduling.class}
-              teacherData={selectedScheduling.teacher}
-              classroomData={selectedScheduling.classroom}
+              // teacherData={selectedScheduling.teacher}
+              // classroomData={selectedScheduling.classroom}
               roomName={selectedSlot.classroomName}
               timeSlot={selectedSlot.timeSlot}
               date={formatDateDisplay(selectedDate)}

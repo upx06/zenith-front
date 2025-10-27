@@ -6,7 +6,11 @@ import App from "./App.tsx";
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
 
-const apiUrl = "http://localhost:4000/gql";
+const viewApiUrl = import.meta.env.VITE_API_URL;
+const apiUrl =
+  (viewApiUrl === "http://localhost:5173"
+    ? "http://localhost:4000"
+    : viewApiUrl) + "/gql";
 
 const client = new ApolloClient({
   link: new HttpLink({ uri: apiUrl }),

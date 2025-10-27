@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev:local": "vite dev --mode dev",
+    "dev:stage": "vite dev --mode stage",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
