@@ -123,7 +123,7 @@ export const Scheduling = () => {
     <div className="min-h-screen bg-slate-50 flex">
       <Menu />
       <div
-        className="hidden lg:block lg:w-64 xl:w-72 flex-shrink-0"
+        className="hidden lg:block lg:w-64 xl:w-72 shrink-0"
         aria-hidden="true"
       />
       <div className="flex-1 flex flex-col min-w-0">
@@ -141,7 +141,7 @@ export const Scheduling = () => {
             </div>
 
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-4 md:px-6 py-3 border-b border-slate-200">
+              <div className="bg-linear-to-r from-blue-50 to-indigo-50 px-4 md:px-6 py-3 border-b border-slate-200">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Calendar className="h-5 w-5 text-blue-600" />
@@ -251,7 +251,7 @@ export const Scheduling = () => {
               </div>
             ) : (
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <div className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
+                <div className="bg-linear-to-r from-slate-50 to-slate-100 border-b border-slate-200">
                   <div
                     className="grid gap-px"
                     style={{
@@ -324,7 +324,7 @@ export const Scheduling = () => {
                             key={timeSlot}
                             className={`p-2 md:p-3 bg-white cursor-pointer transition-all duration-200 min-h-16 md:min-h-20 flex items-center hover:shadow-sm ${
                               scheduling
-                                ? "bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 border-l-4 border-blue-500"
+                                ? "bg-linear-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 border-l-4 border-blue-500"
                                 : "hover:bg-slate-50 border border-transparent hover:border-slate-300 rounded-sm"
                             }`}
                             onClick={() =>
@@ -338,7 +338,7 @@ export const Scheduling = () => {
                             {scheduling ? (
                               <div className="w-full">
                                 <div className="flex items-center space-x-1 mb-1">
-                                  <BookOpen className="h-3 w-3 text-blue-600 flex-shrink-0" />
+                                  <BookOpen className="h-3 w-3 text-blue-600 shrink-0" />
                                   <span className="text-xs font-semibold text-blue-900 truncate">
                                     {scheduling.lesson.class.name}
                                   </span>
@@ -368,7 +368,7 @@ export const Scheduling = () => {
                 </h3>
                 <div className="flex flex-wrap gap-4 md:gap-6">
                   <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-gradient-to-r from-blue-50 to-blue-100 border-l-4 border-blue-500 rounded-sm"></div>
+                    <div className="w-4 h-4 bg-linear-to-r from-blue-50 to-blue-100 border-l-4 border-blue-500 rounded-sm"></div>
                     <span className="text-sm text-slate-600">Ocupado</span>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -420,6 +420,8 @@ export const Scheduling = () => {
                 datetime: selectedScheduling.datetime,
               }}
               classData={selectedScheduling.class}
+              teacherData={selectedScheduling.teacher}
+              classroomData={selectedScheduling.classroom}
               roomName={selectedSlot.classroomName}
               timeSlot={selectedSlot.timeSlot}
               date={formatDateDisplay(selectedDate)}

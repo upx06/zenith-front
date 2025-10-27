@@ -30,7 +30,7 @@ export const StudentDetailsModal = ({
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
               {photo ? (
-                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white/20 flex-shrink-0">
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white/20 shrink-0">
                   <img
                     src={photo}
                     alt={`Foto de ${student.name}`}
@@ -66,7 +66,7 @@ export const StudentDetailsModal = ({
             </h3>
             <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 space-y-3">
               <div className="flex items-center gap-3 text-slate-700">
-                <Mail className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                <Mail className="w-5 h-5 text-blue-600 shrink-0" />
                 <div>
                   <span className="text-sm text-slate-500 block">E-mail</span>
                   <span className="font-medium break-all">{student.email}</span>
@@ -74,7 +74,7 @@ export const StudentDetailsModal = ({
               </div>
 
               <div className="flex items-center gap-3 text-slate-700">
-                <Phone className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                <Phone className="w-5 h-5 text-blue-600 shrink-0" />
                 <div>
                   <span className="text-sm text-slate-500 block">Telefone</span>
                   <span className="font-medium">{student.phone}</span>

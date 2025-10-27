@@ -49,7 +49,7 @@ export const ClassDetailsModal = ({
         <div className="bg-blue-600 p-6 text-white">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+              <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center shrink-0">
                 <GraduationCap className="w-7 h-7" />
               </div>
               <div>
@@ -76,7 +76,7 @@ export const ClassDetailsModal = ({
             </h3>
             <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 space-y-3">
               <div className="flex items-center gap-3 text-slate-700">
-                <Star className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                <Star className="w-5 h-5 text-blue-600 shrink-0" />
                 <div>
                   <span className="text-sm text-slate-500 block">Nível</span>
                   <span className="font-medium">{clas.level}</span>
@@ -84,7 +84,7 @@ export const ClassDetailsModal = ({
               </div>
 
               <div className="flex items-center gap-3 text-slate-700">
-                <Languages className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                <Languages className="w-5 h-5 text-blue-600 shrink-0" />
                 <div>
                   <span className="text-sm text-slate-500 block">
                     Linguagem
@@ -94,7 +94,7 @@ export const ClassDetailsModal = ({
               </div>
 
               <div className="flex items-center gap-3 text-slate-700">
-                <Users className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                <Users className="w-5 h-5 text-blue-600 shrink-0" />
                 <div>
                   <span className="text-sm text-slate-500 block">
                     Alunos Matriculados
@@ -127,7 +127,7 @@ export const ClassDetailsModal = ({
                         : ""
                     }`}
                   >
-                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
                       <User className="w-4 h-4 text-blue-600" />
                     </div>
                     <span className="font-medium text-slate-800">
@@ -171,7 +171,7 @@ export const ClassDetailsModal = ({
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
                         {/* Data e Hora */}
                         <div className="flex items-start gap-3">
-                          <div className="w-16 h-16 bg-blue-50 rounded-lg flex flex-col items-center justify-center flex-shrink-0">
+                          <div className="w-16 h-16 bg-blue-50 rounded-lg flex flex-col items-center justify-center shrink-0">
                             <span className="text-xs text-blue-600 font-medium uppercase">
                               {format(parseISO(lesson.datetime), "MMM", {
                                 locale: ptBR,

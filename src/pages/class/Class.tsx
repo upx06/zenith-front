@@ -185,7 +185,7 @@ export const Class = () => {
     <div className="min-h-screen bg-slate-50 flex">
       <Menu />
       <div
-        className="hidden lg:block lg:w-64 xl:w-72 flex-shrink-0"
+        className="hidden lg:block lg:w-64 xl:w-72 shrink-0"
         aria-hidden="true"
       />
       <div className="flex-1 flex flex-col min-w-0 relative">
@@ -379,7 +379,7 @@ export const Class = () => {
                   >
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-600 rounded-full flex items-center justify-center shrink-0">
                           <GraduationCap className="w-5 h-5 md:w-6 md:h-6 text-white" />
                         </div>
                         <div className="min-w-0">
@@ -392,17 +392,17 @@ export const Class = () => {
 
                     <div className="space-y-2 mb-4">
                       <div className="flex items-center gap-2 text-slate-600">
-                        <Star className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                        <Star className="w-4 h-4 text-slate-400 shrink-0" />
                         <span className="text-sm">{classItem.level}</span>
                       </div>
                       <div className="flex items-center gap-2 text-slate-600">
-                        <Languages className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                        <Languages className="w-4 h-4 text-slate-400 shrink-0" />
                         <span className="text-sm truncate">
                           {classItem?.language?.name}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-slate-600">
-                        <Users className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                        <Users className="w-4 h-4 text-slate-400 shrink-0" />
                         <span className="text-sm">
                           {classItem.enrollments?.length || 0}{" "}
                           {classItem.enrollments?.length === 1

@@ -49,7 +49,7 @@ export const TeacherDetailsModal = ({
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
               {photo ? (
-                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white/20 flex-shrink-0">
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white/20 shrink-0">
                   <img
                     src={photo}
                     alt={`Foto de ${teacher.name}`}
@@ -85,7 +85,7 @@ export const TeacherDetailsModal = ({
             </h3>
             <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 space-y-3">
               <div className="flex items-center gap-3 text-slate-700">
-                <Mail className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                <Mail className="w-5 h-5 text-blue-600 shrink-0" />
                 <div>
                   <span className="text-sm text-slate-500 block">E-mail</span>
                   <span className="font-medium break-all">{teacher.email}</span>
@@ -93,7 +93,7 @@ export const TeacherDetailsModal = ({
               </div>
 
               <div className="flex items-center gap-3 text-slate-700">
-                <Phone className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                <Phone className="w-5 h-5 text-blue-600 shrink-0" />
                 <div>
                   <span className="text-sm text-slate-500 block">Telefone</span>
                   <span className="font-medium">{teacher.phone}</span>
@@ -134,7 +134,7 @@ export const TeacherDetailsModal = ({
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
                         {/* Data e Hora */}
                         <div className="flex items-start gap-3">
-                          <div className="w-16 h-16 bg-blue-50 rounded-lg flex flex-col items-center justify-center flex-shrink-0">
+                          <div className="w-16 h-16 bg-blue-50 rounded-lg flex flex-col items-center justify-center shrink-0">
                             <span className="text-xs text-blue-600 font-medium uppercase">
                               {format(parseISO(lesson.datetime), "MMM", {
                                 locale: ptBR,

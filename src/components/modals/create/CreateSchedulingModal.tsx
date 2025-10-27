@@ -217,19 +217,19 @@ export const CreateSchedulingModal = ({
             {/* Informações do agendamento */}
             <div className="bg-slate-50 rounded-lg p-4 space-y-3 mb-6">
               <div className="flex items-center gap-2 text-sm">
-                <BookOpen className="w-4 h-4 text-slate-600 flex-shrink-0" />
+                <BookOpen className="w-4 h-4 text-slate-600 shrink-0" />
                 <span className="text-slate-600">Sala:</span>
                 <span className="font-semibold text-slate-900">
                   {classroomName}
                 </span>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <Clock className="w-4 h-4 text-slate-600 flex-shrink-0" />
+                <Clock className="w-4 h-4 text-slate-600 shrink-0" />
                 <span className="text-slate-600">Horário:</span>
                 <span className="font-semibold text-slate-900">{timeSlot}</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <Calendar className="w-4 h-4 text-slate-600 flex-shrink-0" />
+                <Calendar className="w-4 h-4 text-slate-600 shrink-0" />
                 <span className="text-slate-600">Data:</span>
                 <span className="font-semibold text-slate-900 capitalize">
                   {formattedDate}

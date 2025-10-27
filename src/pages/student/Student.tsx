@@ -209,7 +209,7 @@ export const Student = () => {
     <div className="min-h-screen bg-slate-50 flex">
       <Menu />
       <div
-        className="hidden lg:block lg:w-64 xl:w-72 flex-shrink-0"
+        className="hidden lg:block lg:w-64 xl:w-72 shrink-0"
         aria-hidden="true"
       />
       <div className="flex-1 flex flex-col min-w-0 relative">
@@ -391,7 +391,7 @@ export const Student = () => {
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center gap-3">
                           {photoUrl ? (
-                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border border-slate-200 flex-shrink-0">
+                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border border-slate-200 shrink-0">
                               <img
                                 src={photoUrl}
                                 alt={`Foto de ${student.name}`}
@@ -402,7 +402,7 @@ export const Student = () => {
                               />
                             </div>
                           ) : (
-                            <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                            <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-600 rounded-full flex items-center justify-center shrink-0">
                               <Users className="w-5 h-5 md:w-6 md:h-6 text-white" />
                             </div>
                           )}

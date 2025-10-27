@@ -5,7 +5,7 @@ export const NewScheduling = () => {
     <div className="min-h-screen bg-slate-50 flex">
       <Menu />
       <div
-        className="hidden lg:block lg:w-64 xl:w-72 flex-shrink-0"
+        className="hidden lg:block lg:w-64 xl:w-72 shrink-0"
         aria-hidden="true"
       />
     </div>

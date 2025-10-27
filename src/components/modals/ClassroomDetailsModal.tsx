@@ -107,7 +107,7 @@ export const ClassroomDetailsModal = ({
                     >
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
                         <div className="flex items-start gap-3">
-                          <div className="w-16 h-16 bg-blue-50 rounded-lg flex flex-col items-center justify-center flex-shrink-0">
+                          <div className="w-16 h-16 bg-blue-50 rounded-lg flex flex-col items-center justify-center shrink-0">
                             <span className="text-xs text-blue-600 font-medium uppercase">
                               {format(parseISO(lesson.datetime), "MMM", {
                                 locale: ptBR,
