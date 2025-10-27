@@ -3,10 +3,13 @@ export const sendToAwsS3 = async (file: File, controller: string) => {
 
   uploadFormData.append("file", file);
 
-  const response = await fetch(`http://localhost:4000/${controller}`, {
-    method: "POST",
-    body: uploadFormData,
-  });
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL}/${controller}`,
+    {
+      method: "POST",
+      body: uploadFormData,
+    }
+  );
 
   if (!response.ok) {
     const error = await response.json();
@@ -23,7 +26,9 @@ export const getPresignedUrlFromAwsS3 = async (
   controller: string
 ) => {
   const response = await fetch(
-    `http://localhost:4000/${controller}?key=${encodeURIComponent(key)}`,
+    `${import.meta.env.VITE_API_URL}/${controller}?key=${encodeURIComponent(
+      key
+    )}`,
     {
       method: "GET",
     }
