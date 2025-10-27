@@ -1,8 +1,19 @@
+import { useMutation } from "@apollo/client/react";
+import {
+  X,
+  Loader2,
+  AlertCircle,
+  Calendar,
+  Clock,
+  BookOpen,
+  User,
+  Users,
+} from "lucide-react";
 import { useState } from "react";
-import { X, Calendar, Clock, BookOpen, User, Users } from "lucide-react";
-import { useQuery } from "@apollo/client/react";
+import { CREATE_LESSON } from "../../../graphql/mutations/CreateLesson";
 import { LIST_TEACHERS } from "../../../graphql/queries/ListTeachers";
 import { LIST_CLASSES } from "../../../graphql/queries/ListClasses";
+import { useQuery } from "@apollo/client/react";
 import type { ITeacher } from "../../../interfaces/ITeacher";
 import type { IClass } from "../../../interfaces/IClass";
 
@@ -31,6 +42,7 @@ interface CreateSchedulingModalProps {
   classroomId: string;
   timeSlot: string;
   date: Date;
+  isLoading?: boolean;
 }
 
 export const CreateSchedulingModal = ({
@@ -41,19 +53,60 @@ export const CreateSchedulingModal = ({
   classroomId,
   timeSlot,
   date,
+  isLoading = false,
 }: CreateSchedulingModalProps) => {
-  const [teacherId, setTeacherId] = useState("");
-  const [classId, setClassId] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    teacherId: "",
+    classId: "",
+  });
 
-  const { data: teachersData, loading: teachersLoading } =
-    useQuery<ListTeachersData>(LIST_TEACHERS);
+  const [errors, setErrors] = useState({
+    teacherId: "",
+    classId: "",
+  });
 
-  const { data: classesData, loading: classesLoading } =
-    useQuery<ListClassesData>(LIST_CLASSES);
+  const [createLesson, { loading: mutationLoading, error }] =
+    useMutation(CREATE_LESSON);
+
+  const {
+    data: teachersData,
+    loading: teachersLoading,
+    error: teachersError,
+  } = useQuery<ListTeachersData>(LIST_TEACHERS);
+
+  const {
+    data: classesData,
+    loading: classesLoading,
+    error: classesError,
+  } = useQuery<ListClassesData>(LIST_CLASSES, {
+    fetchPolicy: "cache-and-network",
+  });
 
   const teachers = teachersData?.listTeachers?.results || [];
   const classes = classesData?.listClasses?.results || [];
+  const loading = mutationLoading || isLoading;
+
+  const validateForm = () => {
+    const newErrors = {
+      teacherId: "",
+      classId: "",
+    };
+
+    let isValid = true;
+
+    if (!formData.teacherId.trim()) {
+      newErrors.teacherId = "Professor é obrigatório";
+      isValid = false;
+    }
+
+    if (!formData.classId.trim()) {
+      newErrors.classId = "Turma é obrigatória";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const createDateTimeFromSlot = (selectedDate: Date, slot: string): string => {
     const [hours, minutes] = slot.split(":");
@@ -73,153 +126,233 @@ export const CreateSchedulingModal = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!teacherId || !classId) return;
 
-    setIsSubmitting(true);
+    if (!validateForm()) return;
+
     try {
       const datetime = createDateTimeFromSlot(date, timeSlot);
 
       await onSubmit({
         datetime,
         classroomId,
-        teacherId,
-        classId,
+        teacherId: formData.teacherId,
+        classId: formData.classId,
       });
 
-      setTeacherId("");
-      setClassId("");
-      onClose();
-    } catch (error) {
-      console.error("Erro ao criar agendamento:", error);
-    } finally {
-      setIsSubmitting(false);
+      handleCloseModal();
+    } catch (err) {
+      console.error("Erro ao criar agendamento:", err);
     }
   };
 
-  const handleClose = () => {
-    setTeacherId("");
-    setClassId("");
-    onClose();
+  const handleChange = (field: keyof typeof formData, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+
+    if (errors[field as keyof typeof errors]) {
+      setErrors((prev) => ({
+        ...prev,
+        [field]: "",
+      }));
+    }
+  };
+
+  const handleCloseModal = () => {
+    if (!loading) {
+      setFormData({
+        teacherId: "",
+        classId: "",
+      });
+      setErrors({
+        teacherId: "",
+        classId: "",
+      });
+      onClose();
+    }
   };
 
   if (!isOpen) return null;
 
   const formattedDate = formatDateDisplay(date);
+  const hasQueryErrors = teachersError || classesError;
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
-      onClick={handleClose}
+      className="fixed inset-0 bg-black/50 backdrop-opacity-50 flex items-center justify-center z-50 p-4"
+      onClick={handleCloseModal}
     >
       <div
-        className="bg-white rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+        className="bg-white rounded-lg p-4 md:p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto relative"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-white">Novo Agendamento</h2>
+        {loading && (
+          <div className="absolute inset-0 bg-white/70 flex items-center justify-center rounded-lg z-10">
+            <div className="flex flex-col items-center gap-3">
+              <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+              <p className="text-slate-600 font-medium">
+                Criando agendamento...
+              </p>
+            </div>
+          </div>
+        )}
+
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-lg font-semibold text-slate-800">
+            Novo Agendamento
+          </h2>
           <button
-            onClick={handleClose}
-            className="text-slate-300 hover:bg-indigo-700 hover:bg-opacity-20 cursor-pointer rounded-lg p-2 transition-colors"
+            onClick={handleCloseModal}
+            disabled={loading}
+            className="p-1 text-slate-400 hover:text-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            <X className="h-5 w-5" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
-        <div className="p-6 space-y-4">
-          <div className="bg-slate-50 rounded-lg p-4 space-y-2">
-            <div className="flex items-center space-x-2 text-sm">
-              <BookOpen className="h-4 w-4 text-slate-600" />
-              <span className="text-slate-600">Sala:</span>
-              <span className="font-semibold text-slate-900">{roomName}</span>
-            </div>
-            <div className="flex items-center space-x-2 text-sm">
-              <Clock className="h-4 w-4 text-slate-600" />
-              <span className="text-slate-600">Horário:</span>
-              <span className="font-semibold text-slate-900">{timeSlot}</span>
-            </div>
-            <div className="flex items-center space-x-2 text-sm">
-              <Calendar className="h-4 w-4 text-slate-600" />
-              <span className="text-slate-600">Data:</span>
-              <span className="font-semibold text-slate-900">
-                {formattedDate}
-              </span>
-            </div>
+        {/* Informações do agendamento */}
+        <div className="bg-slate-50 rounded-lg p-4 space-y-3 mb-6">
+          <div className="flex items-center gap-2 text-sm">
+            <BookOpen className="w-4 h-4 text-slate-600 flex-shrink-0" />
+            <span className="text-slate-600">Sala:</span>
+            <span className="font-semibold text-slate-900">{roomName}</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm">
+            <Clock className="w-4 h-4 text-slate-600 flex-shrink-0" />
+            <span className="text-slate-600">Horário:</span>
+            <span className="font-semibold text-slate-900">{timeSlot}</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm">
+            <Calendar className="w-4 h-4 text-slate-600 flex-shrink-0" />
+            <span className="text-slate-600">Data:</span>
+            <span className="font-semibold text-slate-900 capitalize">
+              {formattedDate}
+            </span>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+          {/* Professor */}
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">
+              <div className="flex items-center gap-2">
+                <User className="w-4 h-4" />
+                <span>Professor</span>
+              </div>
+            </label>
+            <select
+              value={formData.teacherId}
+              onChange={(e) => handleChange("teacherId", e.target.value)}
+              disabled={teachersLoading || loading}
+              className={`w-full px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
+                errors.teacherId ? "border-red-500" : "border-slate-300"
+              }`}
+              required
+            >
+              <option value="">
+                {teachersLoading
+                  ? "Carregando professores..."
+                  : "Selecione um professor"}
+              </option>
+              {teachers.map((teacher) => (
+                <option key={teacher.id} value={teacher.id}>
+                  {teacher.name}
+                </option>
+              ))}
+            </select>
+            {errors.teacherId && (
+              <p className="text-red-500 text-xs mt-1">{errors.teacherId}</p>
+            )}
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                <div className="flex items-center space-x-2">
-                  <User className="h-4 w-4" />
-                  <span>Professor</span>
-                </div>
-              </label>
-              <select
-                value={teacherId}
-                onChange={(e) => setTeacherId(e.target.value)}
-                className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
-                disabled={teachersLoading || isSubmitting}
-              >
-                <option value="">
-                  {teachersLoading
-                    ? "Carregando professores..."
-                    : "Selecione um professor"}
+          {/* Turma */}
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">
+              <div className="flex items-center gap-2">
+                <Users className="w-4 h-4" />
+                <span>Turma</span>
+              </div>
+            </label>
+            <select
+              value={formData.classId}
+              onChange={(e) => handleChange("classId", e.target.value)}
+              disabled={classesLoading || loading}
+              className={`w-full px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
+                errors.classId ? "border-red-500" : "border-slate-300"
+              }`}
+              required
+            >
+              <option value="">
+                {classesLoading
+                  ? "Carregando turmas..."
+                  : "Selecione uma turma"}
+              </option>
+              {classes.map((classItem) => (
+                <option key={classItem.id} value={classItem.id}>
+                  {classItem.name}
                 </option>
-                {teachers.map((teacher) => (
-                  <option key={teacher.id} value={teacher.id}>
-                    {teacher.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+              ))}
+            </select>
+            {errors.classId && (
+              <p className="text-red-500 text-xs mt-1">{errors.classId}</p>
+            )}
+          </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                <div className="flex items-center space-x-2">
-                  <Users className="h-4 w-4" />
-                  <span>Turma</span>
-                </div>
-              </label>
-              <select
-                value={classId}
-                onChange={(e) => setClassId(e.target.value)}
-                className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
-                disabled={classesLoading || isSubmitting}
-              >
-                <option value="">
-                  {classesLoading
-                    ? "Carregando turmas..."
-                    : "Selecione uma turma"}
-                </option>
-                {classes.map((classItem) => (
-                  <option key={classItem.id} value={classItem.id}>
-                    {classItem.name}
-                  </option>
-                ))}
-              </select>
+          {/* Erros das queries */}
+          {hasQueryErrors && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+              <div className="flex items-center gap-2 text-red-800 mb-1">
+                <AlertCircle className="w-4 h-4" />
+                <span className="font-medium text-sm">
+                  Erro ao carregar dados
+                </span>
+              </div>
+              <p className="text-red-700 text-sm">
+                {teachersError?.message || classesError?.message}
+              </p>
             </div>
+          )}
 
-            <div className="flex space-x-3 pt-4">
-              <button
-                type="button"
-                onClick={handleClose}
-                className="flex-1 px-4 py-2.5 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer font-semibold"
-                disabled={isSubmitting}
-              >
-                Cancelar
-              </button>
-              <button
-                type="submit"
-                className="flex-1 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={isSubmitting || !teacherId || !classId}
-              >
-                {isSubmitting ? "Criando..." : "Criar Agendamento"}
-              </button>
+          {/* Erro da mutation */}
+          {error && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+              <div className="flex items-center gap-2 text-red-800 mb-1">
+                <AlertCircle className="w-4 h-4" />
+                <span className="font-medium text-sm">
+                  Erro ao criar agendamento
+                </span>
+              </div>
+              <p className="text-red-700 text-sm">{error.message}</p>
             </div>
-          </form>
-        </div>
+          )}
+
+          {/* Botões */}
+          <div className="flex gap-3 pt-4 border-t border-slate-200">
+            <button
+              type="button"
+              onClick={handleCloseModal}
+              disabled={loading}
+              className="flex-1 px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              disabled={loading || !formData.teacherId || !formData.classId}
+              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors text-sm md:text-base flex items-center justify-center gap-2"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Criando...
+                </>
+              ) : (
+                "Criar Agendamento"
+              )}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

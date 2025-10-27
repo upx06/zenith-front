@@ -1,8 +1,15 @@
 import { gql } from "@apollo/client";
 
 export const LIST_CLASSROOMS = gql`
-  query ListClassrooms {
-    listClassrooms {
+  query ListClassrooms(
+    $after: String
+    $before: String
+    $filter: ClassroomFilterInput
+  ) {
+    listClassrooms(after: $after, before: $before, filter: $filter) {
+      count
+      endKeyset
+      startKeyset
       results {
         capacity
         id

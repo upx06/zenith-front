@@ -1,8 +1,15 @@
 import { gql } from "@apollo/client";
 
 export const LIST_TEACHERS = gql`
-  query ListTeachers {
-    listTeachers {
+  query ListTeachers(
+    $after: String
+    $before: String
+    $filter: TeacherFilterInput
+  ) {
+    listTeachers(after: $after, before: $before, filter: $filter) {
+      count
+      endKeyset
+      startKeyset
       results {
         email
         id

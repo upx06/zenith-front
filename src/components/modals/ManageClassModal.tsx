@@ -23,11 +23,13 @@ import { DESTROY_ENROLLMENT } from "../../graphql/mutations/DestroyEnrollment";
 interface IManageClassModalProps {
   clas: IClass;
   closeManageClassModal: () => void;
+  refetchClasses: () => void;
 }
 
 export const ManageClassModal = ({
   clas,
   closeManageClassModal,
+  refetchClasses,
 }: IManageClassModalProps) => {
   const [classId] = useState(clas.id);
   const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
@@ -121,6 +123,8 @@ export const ManageClassModal = ({
     } catch (error) {
       console.error("Erro ao criar matrícula:", error);
       // Mantém o estado para o usuário tentar novamente
+    } finally {
+      refetchClasses();
     }
   };
 

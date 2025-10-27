@@ -1,13 +1,10 @@
 import type { IClass } from "./IClass";
+import type { IStudent } from "./IStudent";
 
 export interface IEnrollment {
   id: string;
   studentId: string;
   classId: string;
-  student: {
-    name: string;
-    phone: string;
-    email: string;
-  };
+  student: IStudent;
   class: IClass;
 }

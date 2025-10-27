@@ -7,10 +7,12 @@ export interface ILesson {
     id: string;
     name: string;
     phone: string;
+    email: string;
   };
   class: IClass;
   classroom: {
     id: string;
     name: string;
+    capacity: number;
   };
 }

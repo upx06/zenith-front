@@ -1,4 +1,3 @@
-// components/modals/TeacherDetailsModal.tsx
 import {
   X,
   GraduationCap,
@@ -46,7 +45,7 @@ export const TeacherDetailsModal = ({
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-white">
+        <div className="bg-blue-600 p-6 text-white">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
               {photo ? (
