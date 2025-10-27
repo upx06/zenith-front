@@ -35,6 +35,18 @@ export const LIST_LESSONS = gql`
             description
             name
           }
+          enrollments {
+            id
+            studentId
+            classId
+            student {
+              id
+              name
+              email
+              phone
+              photoKey
+            }
+          }
         }
         classroom {
           id
