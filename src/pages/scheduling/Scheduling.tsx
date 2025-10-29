@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -7,6 +7,8 @@ import {
   Users,
   BookOpen,
   Plus,
+  Filter,
+  X,
 } from "lucide-react";
 import { useQuery } from "@apollo/client/react";
 import { Menu } from "../../components/Menu";
@@ -52,6 +54,13 @@ export const Scheduling = () => {
     null
   );
 
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState({
+    className: "",
+    teacherName: "",
+    classroomName: "",
+  });
+
   const timeSlots: string[] = [];
   for (let hour = 7; hour <= 13; hour++) {
     timeSlots.push(`${hour.toString().padStart(2, "0")}:00`);
@@ -80,7 +89,42 @@ export const Scheduling = () => {
   });
 
   const classrooms = classroomsData?.listClassrooms?.results || [];
-  const lessons = lessonsData?.listLessons?.results || [];
+  const allLessons = lessonsData?.listLessons?.results || [];
+
+  const lessons = useMemo(() => {
+    return allLessons.filter((lesson) => {
+      if (filters.className) {
+        const className = lesson.class.name.toLowerCase();
+        const searchTerm = filters.className.toLowerCase();
+        if (!className.includes(searchTerm)) {
+          return false;
+        }
+      }
+
+      if (filters.teacherName) {
+        const teacherName = lesson.teacher.name.toLowerCase();
+        const searchTerm = filters.teacherName.toLowerCase();
+        if (!teacherName.includes(searchTerm)) {
+          return false;
+        }
+      }
+
+      if (filters.classroomName) {
+        const classroomName = lesson.classroom.name.toLowerCase();
+        const searchTerm = filters.classroomName.toLowerCase();
+        if (!classroomName.includes(searchTerm)) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }, [
+    allLessons,
+    filters.className,
+    filters.teacherName,
+    filters.classroomName,
+  ]);
 
   const schedulings: SchedulingsState = {};
   lessons.forEach((lesson) => {
@@ -119,6 +163,24 @@ export const Scheduling = () => {
     }
   };
 
+  const handleFilterChange = (field: keyof typeof filters, value: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleClearFilters = () => {
+    setFilters({
+      className: "",
+      teacherName: "",
+      classroomName: "",
+    });
+  };
+
+  const hasActiveFilters =
+    filters.className || filters.teacherName || filters.classroomName;
+
   return (
     <div className="min-h-screen bg-slate-50 flex">
       <Menu />
@@ -137,6 +199,102 @@ export const Scheduling = () => {
                 <p className="text-slate-600 text-sm md:text-base">
                   Gerencie a ocupação das salas por horário
                 </p>
+              </div>
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className={`${
+                  showFilters || hasActiveFilters
+                    ? "bg-blue-600 text-white"
+                    : "bg-white text-slate-700 border border-slate-300"
+                } hover:opacity-90 px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-all text-sm md:text-base relative`}
+                title="Filtros"
+              >
+                <Filter className="w-4 h-4 md:w-5 md:h-5" />
+                <span className="hidden sm:inline">Filtros</span>
+                {hasActiveFilters && (
+                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
+                )}
+              </button>
+            </div>
+
+            <div
+              className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                showFilters
+                  ? "max-h-96 opacity-100 mb-4"
+                  : "max-h-0 opacity-0 pointer-events-none mb-0"
+              }`}
+            >
+              <div className="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Filtrar por turma..."
+                      value={filters.className}
+                      onChange={(e) =>
+                        handleFilterChange("className", e.target.value)
+                      }
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                    />
+                    {filters.className && (
+                      <button
+                        onClick={() => handleFilterChange("className", "")}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Filtrar por professor..."
+                      value={filters.teacherName}
+                      onChange={(e) =>
+                        handleFilterChange("teacherName", e.target.value)
+                      }
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                    />
+                    {filters.teacherName && (
+                      <button
+                        onClick={() => handleFilterChange("teacherName", "")}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Filtrar por sala..."
+                      value={filters.classroomName}
+                      onChange={(e) =>
+                        handleFilterChange("classroomName", e.target.value)
+                      }
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                    />
+                    {filters.classroomName && (
+                      <button
+                        onClick={() => handleFilterChange("classroomName", "")}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+
+                  <button
+                    onClick={handleClearFilters}
+                    disabled={!hasActiveFilters}
+                    className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
+                  >
+                    <X className="w-4 h-4" />
+                    Limpar Filtros
+                  </button>
+                </div>
               </div>
             </div>
 
