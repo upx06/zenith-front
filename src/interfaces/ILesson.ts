@@ -3,6 +3,7 @@ import type { IClass } from "./IClass";
 export interface ILesson {
   id: string;
   datetime: string;
+  attendanceTaken: boolean;
   teacher: {
     id: string;
     name: string;
