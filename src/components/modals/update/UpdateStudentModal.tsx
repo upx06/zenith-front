@@ -5,6 +5,7 @@ import { IMaskInput } from "react-imask";
 import { UPDATE_STUDENT } from "../../../graphql/mutations/UpdateStudent";
 import type { IStudent } from "../../../interfaces/IStudent";
 import { sendToAwsS3 } from "../../../utils/aws";
+import toast from "react-hot-toast";
 
 interface IUpdateStudentModal {
   student: IStudent;
@@ -141,10 +142,20 @@ export const UpdateStudentModal = ({
         },
       });
 
+      toast.success("Aluno atualizado com sucesso!");
       refetchStudents();
       closeUpdateStudentModal();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Erro ao atualizar aluno:", err);
+      const errorMessage = err.message || "Erro ao atualizar aluno";
+
+      if (errorMessage.includes("already exists") || errorMessage.includes("já existe")) {
+        toast.error("Este email já está cadastrado");
+      } else if (errorMessage.includes("Duplicate")) {
+        toast.error("Já existe um aluno com este email");
+      } else {
+        toast.error(errorMessage);
+      }
     }
   };
 

@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { IMaskInput } from "react-imask";
 import { CREATE_STUDENT } from "../../../graphql/mutations/CreateStudent";
 import { sendToAwsS3 } from "../../../utils/aws";
+import toast from "react-hot-toast";
 
 interface IAddStudentModal {
   closeCreateStudentModal: () => void;
@@ -133,11 +134,20 @@ export const CreateStudentModal = ({
         },
       });
 
+      toast.success("Aluno criado com sucesso!");
       refetchStudents();
-    } catch (err) {
-      console.error("Erro ao criar aluno:", err);
-    } finally {
       handleCloseModal();
+    } catch (err: any) {
+      console.error("Erro ao criar aluno:", err);
+      const errorMessage = err.message || "Erro ao criar aluno";
+
+      if (errorMessage.includes("already exists") || errorMessage.includes("já existe")) {
+        toast.error("Este email já está cadastrado");
+      } else if (errorMessage.includes("Duplicate")) {
+        toast.error("Já existe um aluno com este email");
+      } else {
+        toast.error(errorMessage);
+      }
     }
   };
 

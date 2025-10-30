@@ -2,6 +2,7 @@ import { useMutation } from "@apollo/client/react";
 import { X, Loader2, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { CREATE_CLASSROOM } from "../../../graphql/mutations/CreateClassroom";
+import toast from "react-hot-toast";
 
 interface ICreateClassroomModal {
   closeCreateClassroomModal: () => void;
@@ -69,10 +70,20 @@ export const CreateClassroomModal = ({
         },
       });
 
+      toast.success("Sala criada com sucesso!");
       await refetchClassrooms();
       closeCreateClassroomModal();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Erro ao criar sala:", err);
+      const errorMessage = err.message || "Erro ao criar sala";
+
+      if (errorMessage.includes("already exists") || errorMessage.includes("já existe")) {
+        toast.error("Já existe uma sala com este nome");
+      } else if (errorMessage.includes("Duplicate")) {
+        toast.error("Já existe uma sala com este nome");
+      } else {
+        toast.error(errorMessage);
+      }
     }
   };
 

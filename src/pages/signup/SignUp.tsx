@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useMutation } from "@apollo/client/react";
 import { useNavigate } from "react-router";
 import { CREATE_USER } from "../../graphql/mutations/CreateUser";
+import toast from "react-hot-toast";
 
 interface SignUpData {
   createUser: {
@@ -19,7 +20,6 @@ export default function SignUp() {
     password: "",
     passwordConfirmation: "",
   });
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -35,7 +35,6 @@ export default function SignUp() {
       ...prev,
       [id]: value,
     }));
-    setError("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -47,17 +46,17 @@ export default function SignUp() {
       !formData.password ||
       !formData.passwordConfirmation
     ) {
-      setError("Por favor, preencha todos os campos");
+      toast.error("Por favor, preencha todos os campos");
       return;
     }
 
     if (formData.password.length < 8) {
-      setError("A senha deve ter no mínimo 8 caracteres");
+      toast.error("A senha deve ter no mínimo 8 caracteres");
       return;
     }
 
     if (formData.password !== formData.passwordConfirmation) {
-      setError("As senhas não coincidem");
+      toast.error("As senhas não coincidem");
       return;
     }
 
@@ -74,13 +73,28 @@ export default function SignUp() {
       });
 
       if (result.data?.createUser?.result?.id) {
-        navigate("/");
+        toast.success("Conta criada com sucesso! Entre em contato com o administrador para ativação.", {
+          duration: 6000,
+        });
+        setTimeout(() => navigate("/"), 1500);
       } else if (result.error) {
-        setError(result.error?.message || "Erro ao criar conta");
+        const errorMessage = result.error?.message || "Erro ao criar conta";
+
+        if (errorMessage.includes("already exists") || errorMessage.includes("já existe")) {
+          toast.error("Este email já está cadastrado");
+        } else {
+          toast.error(errorMessage);
+        }
       }
     } catch (error: any) {
       console.error("Erro ao criar conta:", error);
-      setError(error.message || "Erro ao criar conta");
+      const errorMessage = error.message || "Erro ao criar conta";
+
+      if (errorMessage.includes("already exists") || errorMessage.includes("já existe")) {
+        toast.error("Este email já está cadastrado");
+      } else {
+        toast.error(errorMessage);
+      }
     }
   };
 
@@ -103,12 +117,6 @@ export default function SignUp() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-                {error}
-              </div>
-            )}
-
             <div>
               <label
                 htmlFor="name"

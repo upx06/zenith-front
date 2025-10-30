@@ -4,6 +4,7 @@ import { useState } from "react";
 import { CREATE_CLASS } from "../../../graphql/mutations/CreateClass";
 import { LIST_LANGUAGES } from "../../../graphql/queries/ListLanguages";
 import type { IListLanguages } from "../../../interfaces/IListLanguages";
+import toast from "react-hot-toast";
 
 interface ICreateClassModal {
   closeCreateClassModal: () => void;
@@ -78,10 +79,20 @@ export const CreateClassModal = ({
         },
       });
 
+      toast.success("Turma criada com sucesso!");
       await refetchClasses();
       closeCreateClassModal();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Erro ao criar turma:", err);
+      const errorMessage = err.message || "Erro ao criar turma";
+
+      if (errorMessage.includes("already exists") || errorMessage.includes("já existe")) {
+        toast.error("Já existe uma turma com este nome");
+      } else if (errorMessage.includes("Duplicate")) {
+        toast.error("Já existe uma turma com este nome");
+      } else {
+        toast.error(errorMessage);
+      }
     }
   };
 

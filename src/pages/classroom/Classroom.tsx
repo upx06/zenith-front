@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client/react";
+import toast from "react-hot-toast";
 import {
   Loader2,
   Plus,
@@ -82,8 +83,10 @@ export const Classroom = () => {
       await refetch();
       setConfirmationModal(false);
       setSelectedClassroom(null);
+      toast.success("Sala excluída com sucesso!");
     } catch (err) {
       console.error("Erro ao excluir sala:", err);
+      toast.error(errorDeleteClassroom?.message || "Erro ao excluir sala");
     } finally {
       setDeletingClassroomId(null);
     }

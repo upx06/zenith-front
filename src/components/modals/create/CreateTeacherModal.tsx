@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { IMaskInput } from "react-imask";
 import { CREATE_TEACHER } from "../../../graphql/mutations/CreateTeacher";
 import { sendToAwsS3 } from "../../../utils/aws";
+import toast from "react-hot-toast";
 
 interface ICreateTeacherModal {
   closeCreateTeacherModal: () => void;
@@ -136,11 +137,20 @@ export const CreateTeacherModal = ({
         },
       });
 
+      toast.success("Professor criado com sucesso!");
       refetchTeachers();
-    } catch (err) {
-      console.error("Erro ao criar professor:", err);
-    } finally {
       handleCloseModal();
+    } catch (err: any) {
+      console.error("Erro ao criar professor:", err);
+      const errorMessage = err.message || "Erro ao criar professor";
+
+      if (errorMessage.includes("already exists") || errorMessage.includes("já existe")) {
+        toast.error("Este email já está cadastrado");
+      } else if (errorMessage.includes("Duplicate")) {
+        toast.error("Já existe um professor com este email");
+      } else {
+        toast.error(errorMessage);
+      }
     }
   };
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client/react";
+import toast from "react-hot-toast";
 import {
   Loader2,
   Mail,
@@ -88,8 +89,10 @@ export const Teacher = () => {
       await refetch();
       setConfirmationModal(false);
       setSelectedTeacher(null);
+      toast.success("Professor excluído com sucesso!");
     } catch (err) {
       console.error("Erro ao excluir professor:", err);
+      toast.error(errorDeleteTeacher?.message || "Erro ao excluir professor");
     } finally {
       setDeletingTeacherId(null);
     }

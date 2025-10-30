@@ -18,6 +18,7 @@ import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useMutation } from "@apollo/client/react";
 import { DESTROY_LESSON } from "../../graphql/mutations/DestroyLesson";
+import toast from "react-hot-toast";
 
 interface DetailsSchedulingModalProps {
   onClose: () => void;
@@ -79,12 +80,14 @@ export const DetailsSchedulingModal = ({
           id: scheduling.id,
         },
       });
-    } catch (error) {
-      console.error("Erro ao excluir agendamento:", error);
-    } finally {
+
+      toast.success("Aula excluída com sucesso!");
       refetchScheduling();
       setShowConfirmation(false);
       onClose();
+    } catch (error: any) {
+      console.error("Erro ao excluir agendamento:", error);
+      toast.error(error?.message || "Erro ao excluir aula");
     }
   };
 

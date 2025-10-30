@@ -3,6 +3,7 @@ import { X, Loader2, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { UPDATE_CLASSROOM } from "../../../graphql/mutations/UpdateClassroom";
 import type { IClassroom } from "../../../interfaces/IClassroom";
+import toast from "react-hot-toast";
 
 interface IUpdateClassroomModal {
   classroom: IClassroom;
@@ -71,10 +72,20 @@ export const UpdateClassroomModal = ({
         },
       });
 
+      toast.success("Sala atualizada com sucesso!");
       await refetchClassrooms();
       closeUpdateClassroomModal();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Erro ao atualizar sala:", err);
+      const errorMessage = err.message || "Erro ao atualizar sala";
+
+      if (errorMessage.includes("already exists") || errorMessage.includes("já existe")) {
+        toast.error("Esta sala já está cadastrada");
+      } else if (errorMessage.includes("Duplicate")) {
+        toast.error("Já existe uma sala com este nome");
+      } else {
+        toast.error(errorMessage);
+      }
     }
   };
 

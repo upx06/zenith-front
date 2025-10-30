@@ -13,6 +13,7 @@ import { CREATE_LESSON } from "../../graphql/mutations/CreateLesson";
 import { DESTROY_LESSON } from "../../graphql/mutations/DestroyLesson";
 import { LIST_LESSONS } from "../../graphql/queries/ListLessons";
 import type { ILesson } from "../../interfaces/ILesson";
+import toast from "react-hot-toast";
 
 interface ListLessonsData {
   listLessons: {
@@ -131,14 +132,17 @@ export const RescheduleGridModal = ({
     try {
       if (rescheduleType === "daily") {
         await rescheduleDailyGrid();
+        toast.success("Grade do dia reagendada com sucesso!");
       } else {
         await rescheduleWeeklyGrid();
+        toast.success("Grade da semana reagendada com sucesso!");
       }
 
       refetchScheduling();
       onClose();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Erro ao reagendar:", error);
+      toast.error(error?.message || "Erro ao reagendar grade");
     } finally {
       setIsProcessing(false);
     }

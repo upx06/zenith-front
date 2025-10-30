@@ -17,6 +17,7 @@ import { useQuery } from "@apollo/client/react";
 import type { ITeacher } from "../../../interfaces/ITeacher";
 import type { IClass } from "../../../interfaces/IClass";
 import { formatDateDisplay } from "../../../utils/date";
+import toast from "react-hot-toast";
 
 interface ListTeachersData {
   listTeachers: {
@@ -132,11 +133,20 @@ export const CreateSchedulingModal = ({
         },
       });
 
-      handleCloseModal();
-    } catch (err) {
-      console.error("Erro ao criar agendamento:", err);
-    } finally {
+      toast.success("Aula criada com sucesso!");
       refetchScheduling();
+      handleCloseModal();
+    } catch (err: any) {
+      console.error("Erro ao criar agendamento:", err);
+      const errorMessage = err.message || "Erro ao criar agendamento";
+
+      if (errorMessage.includes("already exists") || errorMessage.includes("já existe")) {
+        toast.error("Já existe uma aula agendada para este horário");
+      } else if (errorMessage.includes("Duplicate")) {
+        toast.error("Já existe uma aula agendada para este horário");
+      } else {
+        toast.error(errorMessage);
+      }
     }
   };
 

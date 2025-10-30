@@ -5,6 +5,7 @@ import { IMaskInput } from "react-imask";
 import { UPDATE_TEACHER } from "../../../graphql/mutations/UpdateTeacher";
 import type { ITeacher } from "../../../interfaces/ITeacher";
 import { sendToAwsS3 } from "../../../utils/aws";
+import toast from "react-hot-toast";
 
 interface IUpdateTeacherModal {
   teacher: ITeacher;
@@ -141,10 +142,20 @@ export const UpdateTeacherModal = ({
         },
       });
 
+      toast.success("Professor atualizado com sucesso!");
       refetchTeachers();
       closeUpdateTeacherModal();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Erro ao atualizar professor:", err);
+      const errorMessage = err.message || "Erro ao atualizar professor";
+
+      if (errorMessage.includes("already exists") || errorMessage.includes("já existe")) {
+        toast.error("Este email já está cadastrado");
+      } else if (errorMessage.includes("Duplicate")) {
+        toast.error("Já existe um professor com este email");
+      } else {
+        toast.error(errorMessage);
+      }
     }
   };
 

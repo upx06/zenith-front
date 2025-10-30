@@ -5,6 +5,7 @@ import { UPDATE_CLASS } from "../../../graphql/mutations/UpdateClass";
 import { LIST_LANGUAGES } from "../../../graphql/queries/ListLanguages";
 import type { IClass } from "../../../interfaces/IClass";
 import type { IListLanguages } from "../../../interfaces/IListLanguages";
+import toast from "react-hot-toast";
 
 interface IUpdateClassModal {
   clas: IClass;
@@ -84,10 +85,20 @@ export const UpdateClassModal = ({
         },
       });
 
+      toast.success("Turma atualizada com sucesso!");
       await refetchClasses();
       closeUpdateClassModal();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Erro ao atualizar turma:", err);
+      const errorMessage = err.message || "Erro ao atualizar turma";
+
+      if (errorMessage.includes("already exists") || errorMessage.includes("já existe")) {
+        toast.error("Esta turma já está cadastrada");
+      } else if (errorMessage.includes("Duplicate")) {
+        toast.error("Já existe uma turma com este nome");
+      } else {
+        toast.error(errorMessage);
+      }
     }
   };
 

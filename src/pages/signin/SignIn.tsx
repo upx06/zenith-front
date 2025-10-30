@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { SIGN_IN } from "../../graphql/queries/SignIn";
 import { useLazyQuery } from "@apollo/client/react";
 import { useNavigate } from "react-router";
+import toast from "react-hot-toast";
 
 // Interface para os dados retornados pelo GraphQL
 interface SignInData {
@@ -16,7 +17,6 @@ export default function SignIn() {
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const [signIn, { loading: loadingSignIn }] =
@@ -28,14 +28,13 @@ export default function SignIn() {
       ...prev,
       [id]: value,
     }));
-    setError("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formData.email || !formData.password) {
-      setError("Por favor, preencha todos os campos");
+      toast.error("Por favor, preencha todos os campos");
       return;
     }
 
@@ -49,13 +48,30 @@ export default function SignIn() {
 
       if (result.data?.signIn?.token) {
         localStorage.setItem("token", result.data.signIn.token);
+        toast.success("Login realizado com sucesso!");
         navigate("/home");
       } else if (result.error) {
-        setError(result.error.message || "Erro ao fazer login");
+        const errorMessage = result.error.message || "Erro ao fazer login";
+
+        if (errorMessage.includes("Invalid credentials") || errorMessage.includes("credenciais")) {
+          toast.error("Email ou senha inválidos");
+        } else if (errorMessage.includes("not active") || errorMessage.includes("ativo") || errorMessage.includes("pendente")) {
+          toast.error("Sua conta ainda não foi ativada. Entre em contato com o administrador.");
+        } else {
+          toast.error(errorMessage);
+        }
       }
     } catch (error: any) {
       console.error("Erro ao fazer login:", error);
-      setError(error.message || "Erro ao fazer login");
+      const errorMessage = error.message || "Erro ao fazer login";
+
+      if (errorMessage.includes("Invalid credentials") || errorMessage.includes("credenciais")) {
+        toast.error("Email ou senha inválidos");
+      } else if (errorMessage.includes("not active") || errorMessage.includes("ativo") || errorMessage.includes("pendente")) {
+        toast.error("Sua conta ainda não foi ativada. Entre em contato com o administrador.");
+      } else {
+        toast.error(errorMessage);
+      }
     }
   };
 
@@ -78,12 +94,6 @@ export default function SignIn() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-                {error}
-              </div>
-            )}
-
             <div>
               <label
                 htmlFor="email"

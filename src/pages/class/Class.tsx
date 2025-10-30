@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client/react";
+import toast from "react-hot-toast";
 import {
   Loader2,
   Plus,
@@ -93,8 +94,10 @@ export const Class = () => {
       await refetch();
       setConfirmationModal(false);
       setSelectedClass(null);
+      toast.success("Turma excluída com sucesso!");
     } catch (err) {
       console.error("Erro ao excluir turma:", err);
+      toast.error(errorDeleteClass?.message || "Erro ao excluir turma");
     } finally {
       setDeletingClassId(null);
     }
