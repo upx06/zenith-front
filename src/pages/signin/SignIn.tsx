@@ -1,14 +1,22 @@
 import { Mail, Lock, Loader2 } from "lucide-react";
 import React, { useState } from "react";
 import { SIGN_IN } from "../../graphql/queries/SignIn";
+import { GET_USER_BY_EMAIL } from "../../graphql/queries/GetUserByEmail";
 import { useLazyQuery } from "@apollo/client/react";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 
-// Interface para os dados retornados pelo GraphQL
 interface SignInData {
   signIn: {
     token: string;
+  };
+}
+
+interface GetUserByEmailData {
+  getUserByEmail: {
+    id: string;
+    email: string;
+    active: boolean;
   };
 }
 
@@ -21,6 +29,9 @@ export default function SignIn() {
 
   const [signIn, { loading: loadingSignIn }] =
     useLazyQuery<SignInData>(SIGN_IN);
+
+  const [getUserByEmail, { loading: loadingGetUser }] =
+    useLazyQuery<GetUserByEmailData>(GET_USER_BY_EMAIL);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -39,6 +50,21 @@ export default function SignIn() {
     }
 
     try {
+      const userResult = await getUserByEmail({
+        variables: {
+          email: formData.email.trim(),
+        },
+      });
+
+      const user = userResult.data?.getUserByEmail;
+
+      if (user && user.active === false) {
+        toast.error(
+          "Sua conta ainda não foi ativada. Entre em contato com o administrador."
+        );
+        return;
+      }
+
       const result = await signIn({
         variables: {
           email: formData.email.trim(),
@@ -51,27 +77,27 @@ export default function SignIn() {
         toast.success("Login realizado com sucesso!");
         navigate("/home");
       } else if (result.error) {
-        const errorMessage = result.error.message || "Erro ao fazer login";
-
-        if (errorMessage.includes("Invalid credentials") || errorMessage.includes("credenciais")) {
-          toast.error("Email ou senha inválidos");
-        } else if (errorMessage.includes("not active") || errorMessage.includes("ativo") || errorMessage.includes("pendente")) {
-          toast.error("Sua conta ainda não foi ativada. Entre em contato com o administrador.");
-        } else {
-          toast.error(errorMessage);
-        }
+        toast.error("Email ou senha inválidos");
       }
     } catch (error: any) {
       console.error("Erro ao fazer login:", error);
-      const errorMessage = error.message || "Erro ao fazer login";
+      const errorsList = error.errors || error.graphQLErrors;
 
-      if (errorMessage.includes("Invalid credentials") || errorMessage.includes("credenciais")) {
-        toast.error("Email ou senha inválidos");
-      } else if (errorMessage.includes("not active") || errorMessage.includes("ativo") || errorMessage.includes("pendente")) {
-        toast.error("Sua conta ainda não foi ativada. Entre em contato com o administrador.");
-      } else {
-        toast.error(errorMessage);
+      if (errorsList && errorsList.length > 0) {
+        const graphQLError = errorsList[0];
+        const errorCode = graphQLError.extensions?.code || graphQLError.code;
+
+        if (
+          errorCode === "authentication_failed" ||
+          errorCode === "AUTHENTICATION_FAILED"
+        ) {
+          toast.error("Email ou senha inválidos");
+          return;
+        }
       }
+
+      const errorMessage = error.message || "Erro ao fazer login";
+      toast.error(errorMessage);
     }
   };
 
@@ -110,7 +136,7 @@ export default function SignIn() {
                   onChange={handleChange}
                   placeholder="seu@email.com"
                   className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  disabled={loadingSignIn}
+                  disabled={loadingSignIn || loadingGetUser}
                 />
               </div>
             </div>
@@ -131,17 +157,17 @@ export default function SignIn() {
                   onChange={handleChange}
                   placeholder="Digite sua senha"
                   className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  disabled={loadingSignIn}
+                  disabled={loadingSignIn || loadingGetUser}
                 />
               </div>
             </div>
 
             <button
               type="submit"
-              disabled={loadingSignIn}
+              disabled={loadingSignIn || loadingGetUser}
               className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white py-3 px-4 rounded-lg cursor-pointer flex items-center justify-center gap-2 transition-colors font-medium"
             >
-              {loadingSignIn ? (
+              {loadingSignIn || loadingGetUser ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
                   Entrando...
