@@ -357,18 +357,18 @@ export const Class = () => {
               </div>
             </div>
 
-            <div className="relative min-h-[200px]">
-              {isLoadingData && (
-                <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10 rounded-lg">
-                  <div className="flex flex-col items-center gap-4">
-                    <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-                    <p className="text-slate-600 font-medium">
-                      Carregando dados...
-                    </p>
-                  </div>
+            {isLoadingData && (
+              <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10 rounded-lg">
+                <div className="flex flex-col items-center gap-4">
+                  <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+                  <p className="text-slate-600 font-medium">
+                    Carregando dados...
+                  </p>
                 </div>
-              )}
+              </div>
+            )}
 
+            <div className="relative">
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
                 {turmas.map((classItem: IClass) => (
                   <div
