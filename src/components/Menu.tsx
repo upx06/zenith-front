@@ -6,6 +6,7 @@ import {
   Home,
   Calendar1Icon,
   ClipboardCheck,
+  BarChart3,
 } from "lucide-react";
 import { useState } from "react";
 import { NavLink } from "react-router";
@@ -21,6 +22,7 @@ export const Menu = () => {
     { id: "professores", path: "/teachers", label: "Professores", icon: Users },
     { id: "sala", path: "/classroom", label: "Sala de Aula", icon: Home },
     { id: "frequencias", path: "/frequencies", label: "Frequências", icon: ClipboardCheck },
+    { id: "relatorios", path: "/reports/class", label: "Relatórios", icon: BarChart3 },
   ];
 
   const handleLogout = () => {
