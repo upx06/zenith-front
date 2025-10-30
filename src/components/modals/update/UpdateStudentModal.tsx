@@ -143,7 +143,7 @@ export const UpdateStudentModal = ({
       });
 
       toast.success("Aluno atualizado com sucesso!");
-      refetchStudents();
+      await refetchStudents();
       closeUpdateStudentModal();
     } catch (err: any) {
       console.error("Erro ao atualizar aluno:", err);

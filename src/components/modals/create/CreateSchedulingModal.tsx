@@ -69,16 +69,22 @@ export const CreateSchedulingModal = ({
     data: teachersData,
     loading: teachersLoading,
     error: teachersError,
-  } = useQuery<ListTeachersData>(LIST_TEACHERS);
+  } = useQuery<ListTeachersData>(LIST_TEACHERS, {
+    fetchPolicy: "network-only",
+  });
 
   const {
     data: classesData,
     loading: classesLoading,
     error: classesError,
-  } = useQuery<ListClassesData>(LIST_CLASSES);
+  } = useQuery<ListClassesData>(LIST_CLASSES, {
+    fetchPolicy: "network-only",
+  });
 
   const teachers = teachersData?.listTeachers?.results || [];
-  const classes = classesData?.listClasses?.results || [];
+  const classes = (classesData?.listClasses?.results || []).filter(
+    (classItem) => classItem.enrollments && classItem.enrollments.length > 0
+  );
 
   const loading = createLessonLoading || isLoading;
   const queriesLoading = teachersLoading || classesLoading;

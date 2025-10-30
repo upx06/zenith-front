@@ -138,7 +138,7 @@ export const CreateTeacherModal = ({
       });
 
       toast.success("Professor criado com sucesso!");
-      refetchTeachers();
+      await refetchTeachers();
       handleCloseModal();
     } catch (err: any) {
       console.error("Erro ao criar professor:", err);

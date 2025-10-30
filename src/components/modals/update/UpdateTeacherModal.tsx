@@ -143,7 +143,7 @@ export const UpdateTeacherModal = ({
       });
 
       toast.success("Professor atualizado com sucesso!");
-      refetchTeachers();
+      await refetchTeachers();
       closeUpdateTeacherModal();
     } catch (err: any) {
       console.error("Erro ao atualizar professor:", err);

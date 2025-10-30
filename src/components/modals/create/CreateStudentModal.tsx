@@ -135,7 +135,7 @@ export const CreateStudentModal = ({
       });
 
       toast.success("Aluno criado com sucesso!");
-      refetchStudents();
+      await refetchStudents();
       handleCloseModal();
     } catch (err: any) {
       console.error("Erro ao criar aluno:", err);
