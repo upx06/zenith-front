@@ -7,6 +7,7 @@ import { Class } from "../pages/class/Class";
 import { Home } from "../pages/home/Home";
 import { Scheduling } from "../pages/scheduling/Scheduling";
 import { Classroom } from "../pages/classroom/Classroom";
+import { Frequency } from "../pages/frequency/Frequency";
 import SignUp from "../pages/signup/SignUp";
 import type { ReactNode } from "react";
 
@@ -71,6 +72,14 @@ export const Router = () => {
       element: (
         <PrivateRoute>
           <Class />
+        </PrivateRoute>
+      ),
+    },
+    {
+      path: "frequencies",
+      element: (
+        <PrivateRoute>
+          <Frequency />
         </PrivateRoute>
       ),
     },

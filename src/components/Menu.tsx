@@ -5,6 +5,7 @@ import {
   BookOpen,
   Home,
   Calendar1Icon,
+  ClipboardCheck,
 } from "lucide-react";
 import { useState } from "react";
 import { NavLink } from "react-router";
@@ -19,6 +20,7 @@ export const Menu = () => {
     { id: "alunos", path: "/students", label: "Alunos", icon: GraduationCap },
     { id: "professores", path: "/teachers", label: "Professores", icon: Users },
     { id: "sala", path: "/classroom", label: "Sala de Aula", icon: Home },
+    { id: "frequencias", path: "/frequencies", label: "Frequências", icon: ClipboardCheck },
   ];
 
   const handleLogout = () => {
