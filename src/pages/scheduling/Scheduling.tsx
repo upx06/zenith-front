@@ -9,11 +9,13 @@ import {
   Plus,
   Filter,
   X,
+  Copy,
 } from "lucide-react";
 import { useQuery } from "@apollo/client/react";
 import { Menu } from "../../components/Menu";
 import { CreateSchedulingModal } from "../../components/modals/create/CreateSchedulingModal";
 import { DetailsSchedulingModal } from "../../components/modals/DetailsSchedulingModal";
+import { RescheduleGridModal } from "../../components/modals/RescheduleGridModal";
 import { LIST_CLASSROOMS } from "../../graphql/queries/ListClassrooms";
 import { LIST_LESSONS } from "../../graphql/queries/ListLessons";
 import type { IClassroom } from "../../interfaces/IClassroom";
@@ -55,6 +57,7 @@ export const Scheduling = () => {
   );
 
   const [showFilters, setShowFilters] = useState(false);
+  const [showRescheduleModal, setShowRescheduleModal] = useState(false);
   const [filters, setFilters] = useState({
     className: "",
     teacherName: "",
@@ -200,21 +203,31 @@ export const Scheduling = () => {
                   Gerencie a ocupação das salas por horário
                 </p>
               </div>
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className={`${
-                  showFilters || hasActiveFilters
-                    ? "bg-blue-600 text-white"
-                    : "bg-white text-slate-700 border border-slate-300"
-                } hover:opacity-90 px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-all text-sm md:text-base relative`}
-                title="Filtros"
-              >
-                <Filter className="w-4 h-4 md:w-5 md:h-5" />
-                <span className="hidden sm:inline">Filtros</span>
-                {hasActiveFilters && (
-                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
-                )}
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowFilters(!showFilters)}
+                  className={`${
+                    showFilters || hasActiveFilters
+                      ? "bg-blue-600 text-white"
+                      : "bg-white text-slate-700 border border-slate-300"
+                  } hover:opacity-90 px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-all text-sm md:text-base relative`}
+                  title="Filtros"
+                >
+                  <Filter className="w-4 h-4 md:w-5 md:h-5" />
+                  <span className="hidden sm:inline">Filtros</span>
+                  {hasActiveFilters && (
+                    <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
+                  )}
+                </button>
+                <button
+                  onClick={() => setShowRescheduleModal(true)}
+                  className="bg-slate-500 hover:bg-slate-600 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm md:text-base"
+                  title="Reagendar Grade"
+                >
+                  <Copy className="w-4 h-4 md:w-5 md:h-5" />
+                  <span className="hidden sm:inline">Reagendar Grade</span>
+                </button>
+              </div>
             </div>
 
             <div
@@ -587,6 +600,14 @@ export const Scheduling = () => {
             />
           )}
         </>
+      )}
+
+      {/* Modal de Reagendamento */}
+      {showRescheduleModal && (
+        <RescheduleGridModal
+          onClose={() => setShowRescheduleModal(false)}
+          refetchScheduling={refetchLessons}
+        />
       )}
     </div>
   );
