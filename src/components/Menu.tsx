@@ -6,30 +6,36 @@ import {
   Home,
   Calendar1Icon,
   ClipboardCheck,
+  ClipboardList,
   BarChart3,
-  FolderOpen,
-  ChevronDown,
-  ChevronUp,
 } from "lucide-react";
 import { useState } from "react";
-import { NavLink, useLocation } from "react-router";
+import { NavLink } from "react-router";
 
 export const Menu = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isCadastrosOpen, setIsCadastrosOpen] = useState(false);
-  const location = useLocation();
-
-  const cadastrosPaths = ["/classes", "/students", "/teachers", "/classroom"];
-  const isCadastrosActive = cadastrosPaths.includes(location.pathname);
 
   const sidebarItems = [
     { id: "home", path: "/home", label: "Início", icon: Home },
     { id: "agenda", path: "/scheduling", label: "Agenda", icon: Calendar1Icon },
-    { id: "frequencias", path: "/frequencies", label: "Frequências", icon: ClipboardCheck },
-    { id: "relatorios", path: "/reports/class", label: "Relatórios", icon: BarChart3 },
-  ];
-
-  const cadastrosItems = [
+    {
+      id: "frequencias",
+      path: "/frequencies",
+      label: "Frequências",
+      icon: ClipboardCheck,
+    },
+    {
+      id: "avaliacoes",
+      path: "/evaluations",
+      label: "Avaliações",
+      icon: ClipboardList,
+    },
+    {
+      id: "relatorios",
+      path: "/reports/class",
+      label: "Relatórios",
+      icon: BarChart3,
+    },
     { id: "turmas", path: "/classes", label: "Turmas", icon: BookOpen },
     { id: "alunos", path: "/students", label: "Alunos", icon: GraduationCap },
     { id: "professores", path: "/teachers", label: "Professores", icon: Users },
@@ -80,49 +86,6 @@ export const Menu = () => {
                   </NavLink>
                 </li>
               ))}
-
-              <li>
-                <button
-                  onClick={() => setIsCadastrosOpen(!isCadastrosOpen)}
-                  className={`w-full flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-left transition-colors text-sm xl:text-base ${
-                    isCadastrosActive
-                      ? "bg-blue-100 text-blue-700 font-medium"
-                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-800"
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <FolderOpen className="w-4 h-4 xl:w-5 xl:h-5" />
-                    Cadastros
-                  </div>
-                  {isCadastrosOpen ? (
-                    <ChevronUp className="w-4 h-4" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4" />
-                  )}
-                </button>
-
-                {isCadastrosOpen && (
-                  <ul className="mt-1 ml-4 space-y-1">
-                    {cadastrosItems.map((item) => (
-                      <li key={item.id}>
-                        <NavLink
-                          to={item.path}
-                          className={({ isActive }) =>
-                            `w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors text-sm xl:text-base ${
-                              isActive
-                                ? "bg-blue-50 text-blue-700 font-medium"
-                                : "text-slate-600 hover:bg-slate-50 hover:text-slate-800"
-                            }`
-                          }
-                        >
-                          <item.icon className="w-4 h-4 xl:w-5 xl:h-5" />
-                          {item.label}
-                        </NavLink>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
             </ul>
           </nav>
         </div>
@@ -180,50 +143,6 @@ export const Menu = () => {
                   </NavLink>
                 </li>
               ))}
-
-              <li>
-                <button
-                  onClick={() => setIsCadastrosOpen(!isCadastrosOpen)}
-                  className={`w-full flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                    isCadastrosActive
-                      ? "bg-blue-100 text-blue-700 font-medium"
-                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-800"
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <FolderOpen className="w-5 h-5" />
-                    Cadastros
-                  </div>
-                  {isCadastrosOpen ? (
-                    <ChevronUp className="w-4 h-4" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4" />
-                  )}
-                </button>
-
-                {isCadastrosOpen && (
-                  <ul className="mt-1 ml-4 space-y-1">
-                    {cadastrosItems.map((item) => (
-                      <li key={item.id}>
-                        <NavLink
-                          to={item.path}
-                          onClick={() => setIsMobileMenuOpen(false)}
-                          className={({ isActive }) =>
-                            `w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                              isActive
-                                ? "bg-blue-50 text-blue-700 font-medium"
-                                : "text-slate-600 hover:bg-slate-50 hover:text-slate-800"
-                            }`
-                          }
-                        >
-                          <item.icon className="w-5 h-5" />
-                          {item.label}
-                        </NavLink>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
             </ul>
           </nav>
         </div>

@@ -75,6 +75,8 @@ export const Teacher = () => {
     }
   );
 
+  console.log(data);
+
   const [
     deleteTeacher,
     { loading: loadingDeleteTeacher, error: errorDeleteTeacher },
@@ -86,7 +88,15 @@ export const Teacher = () => {
       await deleteTeacher({
         variables: { id },
       });
-      await refetch();
+      const { data: refetchedData } = await refetch();
+
+      // Se a página atual ficou vazia e não é a primeira página, volta para a anterior
+      if (refetchedData?.listTeachers?.results?.length === 0 && currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+        setBefore(beforeFirsPage);
+        setAfter(null);
+      }
+
       setConfirmationModal(false);
       setSelectedTeacher(null);
       toast.success("Professor excluído com sucesso!");

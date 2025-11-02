@@ -8,6 +8,7 @@ import { Home } from "../pages/home/Home";
 import { Scheduling } from "../pages/scheduling/Scheduling";
 import { Classroom } from "../pages/classroom/Classroom";
 import { Frequency } from "../pages/frequency/Frequency";
+import { Exam } from "../pages/exam/Exam";
 import { ClassReport } from "../pages/reports/ClassReport";
 import SignUp from "../pages/signup/SignUp";
 import type { ReactNode } from "react";
@@ -81,6 +82,14 @@ export const Router = () => {
       element: (
         <PrivateRoute>
           <Frequency />
+        </PrivateRoute>
+      ),
+    },
+    {
+      path: "evaluations",
+      element: (
+        <PrivateRoute>
+          <Exam />
         </PrivateRoute>
       ),
     },

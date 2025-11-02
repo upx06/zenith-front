@@ -91,7 +91,15 @@ export const Class = () => {
       await deleteClass({
         variables: { id },
       });
-      await refetch();
+      const { data: refetchedData } = await refetch();
+
+      // Se a página atual ficou vazia e não é a primeira página, volta para a anterior
+      if (refetchedData?.listClasses?.results?.length === 0 && currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+        setBefore(beforeFirsPage);
+        setAfter(null);
+      }
+
       setConfirmationModal(false);
       setSelectedClass(null);
       toast.success("Turma excluída com sucesso!");

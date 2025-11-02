@@ -80,7 +80,15 @@ export const Classroom = () => {
       await deleteClassroom({
         variables: { id },
       });
-      await refetch();
+      const { data: refetchedData } = await refetch();
+
+      // Se a página atual ficou vazia e não é a primeira página, volta para a anterior
+      if (refetchedData?.listClassrooms?.results?.length === 0 && currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+        setBefore(beforeFirsPage);
+        setAfter(null);
+      }
+
       setConfirmationModal(false);
       setSelectedClassroom(null);
       toast.success("Sala excluída com sucesso!");

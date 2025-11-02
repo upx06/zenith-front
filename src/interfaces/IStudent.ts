@@ -6,5 +6,6 @@ export interface IStudent {
   email: string;
   phone: string;
   photoKey: string;
+  goal?: string | null;
   enrollment: IEnrollment[];
 }

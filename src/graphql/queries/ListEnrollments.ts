@@ -12,6 +12,10 @@ export const LIST_ENROLLMENTS = gql`
           phone
           email
         }
+        class {
+          name
+          level
+        }
       }
     }
   }

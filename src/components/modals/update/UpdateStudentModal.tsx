@@ -24,6 +24,7 @@ export const UpdateStudentModal = ({
     name: student.name,
     email: student.email,
     phone: student.phone,
+    goal: student.goal || "",
   });
 
   const [errors, setErrors] = useState({
@@ -138,6 +139,7 @@ export const UpdateStudentModal = ({
             email: formData.email,
             phone: formData.phone,
             photoKey: !havePhoto ? null : photoKey,
+            goal: formData.goal || null,
           },
         },
       });
@@ -372,6 +374,21 @@ export const UpdateStudentModal = ({
                 {errors.phone && (
                   <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
                 )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Objetivo Atual
+                </label>
+                <input
+                  type="text"
+                  name="goal"
+                  value={formData.goal}
+                  onChange={handleChange}
+                  disabled={loading}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                  placeholder="Ex: Preparação para viagem, certificação, etc."
+                />
               </div>
             </div>
           </div>

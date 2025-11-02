@@ -86,7 +86,15 @@ export const Student = () => {
       await deleteStudent({
         variables: { id },
       });
-      await refetch();
+      const { data: refetchedData } = await refetch();
+
+      // Se a página atual ficou vazia e não é a primeira página, volta para a anterior
+      if (refetchedData?.listStudents?.results?.length === 0 && currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+        setBefore(beforeFirsPage);
+        setAfter(null);
+      }
+
       setConfirmationModal(false);
       setSelectedStudent(null);
       toast.success("Aluno excluído com sucesso!");

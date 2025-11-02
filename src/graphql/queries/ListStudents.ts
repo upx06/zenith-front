@@ -16,6 +16,7 @@ export const LIST_STUDENTS = gql`
         name
         phone
         photoKey
+        goal
         enrollment {
           class {
             level

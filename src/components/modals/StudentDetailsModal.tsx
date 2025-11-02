@@ -6,6 +6,7 @@ import {
   BookOpen,
   Languages,
   Award,
+  Target,
 } from "lucide-react";
 import type { IStudent } from "../../interfaces/IStudent";
 
@@ -80,6 +81,16 @@ export const StudentDetailsModal = ({
                   <span className="font-medium">{student.phone}</span>
                 </div>
               </div>
+
+              {student.goal && (
+                <div className="flex items-center gap-3 text-slate-700">
+                  <Target className="w-5 h-5 text-blue-600 shrink-0" />
+                  <div>
+                    <span className="text-sm text-slate-500 block">Objetivo Atual</span>
+                    <span className="font-medium">{student.goal}</span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
