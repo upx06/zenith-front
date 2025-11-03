@@ -90,9 +90,7 @@ export const Frequency = () => {
       };
     } else if (filters.endDate) {
       filter.datetime = {
-        lessThanOrEqual: new Date(
-          filters.endDate + "T23:59:59"
-        ).toISOString(),
+        lessThanOrEqual: new Date(filters.endDate + "T23:59:59").toISOString(),
       };
     }
 
@@ -161,7 +159,9 @@ export const Frequency = () => {
 
   // Obter lista única de professores para o filtro
   const teachers = Array.from(
-    new Map(lessons.map((lesson) => [lesson.teacher.id, lesson.teacher])).values()
+    new Map(
+      lessons.map((lesson) => [lesson.teacher.id, lesson.teacher])
+    ).values()
   );
 
   const getTotalPages = () => {
@@ -238,11 +238,8 @@ export const Frequency = () => {
               }`}
             >
               <div className="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">
-                      Data Inicial
-                    </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                  <div className="relative">
                     <input
                       type="date"
                       value={filters.startDate}
@@ -253,10 +250,7 @@ export const Frequency = () => {
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">
-                      Data Final
-                    </label>
+                  <div className="relative">
                     <input
                       type="date"
                       value={filters.endDate}
@@ -267,10 +261,7 @@ export const Frequency = () => {
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">
-                      Professor
-                    </label>
+                  <div className="relative">
                     <select
                       value={filters.teacherId}
                       onChange={(e) =>
@@ -287,10 +278,7 @@ export const Frequency = () => {
                     </select>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">
-                      Status
-                    </label>
+                  <div className="relative">
                     <select
                       value={filters.status}
                       onChange={(e) =>
@@ -303,17 +291,16 @@ export const Frequency = () => {
                       <option value="completed">Concluídas</option>
                     </select>
                   </div>
-                </div>
-
-                <div className="mt-3 flex justify-end">
-                  <button
-                    onClick={handleClearFilters}
-                    disabled={!hasActiveFilters}
-                    className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center gap-2"
-                  >
-                    <X className="w-4 h-4" />
-                    Limpar Filtros
-                  </button>
+                  <div>
+                    <button
+                      onClick={handleClearFilters}
+                      disabled={!hasActiveFilters}
+                      className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center gap-2"
+                    >
+                      <X className="w-4 h-4" />
+                      Limpar Filtros
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -426,7 +413,8 @@ export const Frequency = () => {
                                 {lesson.class.name}
                               </h3>
                               <p className="text-xs md:text-sm text-slate-600">
-                                {lesson.class.level} - {lesson.class.language.name}
+                                {lesson.class.level} -{" "}
+                                {lesson.class.language.name}
                               </p>
                             </div>
                           </div>

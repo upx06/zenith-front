@@ -19,12 +19,15 @@ import {
 
 import { Menu } from "../../components/Menu";
 import { CreateEvaluationModal } from "../../components/modals/create/CreateEvaluationModal";
+import { ExamDetailsModal } from "../../components/modals/ExamDetailsModal";
 import type { IListExams } from "../../interfaces/IListExams";
 import { LIST_EXAMS } from "../../graphql/queries/ListExams";
 import type { IExam } from "../../interfaces/IExam";
 
 export const Exam = () => {
-  const [createEvaluationModal, setCreateEvaluationModal] = useState(false);
+  const [createExamModal, setCreateExamModal] = useState(false);
+  const [detailsExamModal, setDetailsExamModal] = useState(false);
+  const [selectedExam, setSelectedExam] = useState<IExam | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
     name: "",
@@ -39,7 +42,7 @@ export const Exam = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  // PLACEHOLDER - Descomente quando criar a query LIST_EVALUATIONS
+  // PLACEHOLDER - Descomente quando criar a query LIST_EXAMS
   const { data, loading, error, refetch } = useQuery<IListExams>(LIST_EXAMS, {
     variables: {
       after: after || undefined,
@@ -191,7 +194,7 @@ export const Exam = () => {
                   )}
                 </button>
                 <button
-                  onClick={() => setCreateEvaluationModal(true)}
+                  onClick={() => setCreateExamModal(true)}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm md:text-base"
                 >
                   <Plus className="w-4 h-4 md:w-5 md:h-5" />
@@ -345,7 +348,7 @@ export const Exam = () => {
                   Crie sua primeira avaliação para começar
                 </p>
                 <button
-                  onClick={() => setCreateEvaluationModal(true)}
+                  onClick={() => setCreateExamModal(true)}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
                 >
                   <Plus className="w-4 h-4" />
@@ -379,7 +382,7 @@ export const Exam = () => {
                         >
                           {/* Nome */}
                           <div className="col-span-3 flex items-center gap-3">
-                            <div className="w-10 h-10 bg-purple-600 rounded-full hidden md:flex items-center justify-center shrink-0">
+                            <div className="w-10 h-10 bg-blue-600 rounded-full hidden md:flex items-center justify-center shrink-0">
                               <ClipboardList className="w-5 h-5 text-white" />
                             </div>
                             <div>
@@ -435,6 +438,10 @@ export const Exam = () => {
                           {/* Ações */}
                           <div className="col-span-1 flex items-center gap-2 justify-end">
                             <button
+                              onClick={() => {
+                                setSelectedExam(exam);
+                                setDetailsExamModal(true);
+                              }}
                               className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                               title="Ver detalhes"
                             >
@@ -504,10 +511,21 @@ export const Exam = () => {
       </div>
 
       {/* Modal de Criação */}
-      {createEvaluationModal && (
+      {createExamModal && (
         <CreateEvaluationModal
-          closeCreateEvaluationModal={() => setCreateEvaluationModal(false)}
+          closeCreateEvaluationModal={() => setCreateExamModal(false)}
           refetchEvaluations={refetch}
+        />
+      )}
+
+      {/* Modal de Detalhes */}
+      {detailsExamModal && selectedExam && (
+        <ExamDetailsModal
+          exam={selectedExam}
+          closeExamDetailsModal={() => {
+            setDetailsExamModal(false);
+            setSelectedExam(null);
+          }}
         />
       )}
     </div>

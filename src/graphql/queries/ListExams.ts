@@ -25,6 +25,17 @@ export const LIST_EXAMS = gql`
         results {
           totalScore
           id
+          score {
+            feedback
+            id
+            resultId
+            score
+            topicId
+            topic {
+              id
+              name
+            }
+          }
         }
         topics {
           id
