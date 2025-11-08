@@ -12,6 +12,7 @@ import { Exam } from "../pages/exam/Exam";
 import { ClassReport } from "../pages/reports/ClassReport";
 import SignUp from "../pages/signup/SignUp";
 import type { ReactNode } from "react";
+import { Dashboard } from "../pages/dashboard/Dashboard";
 
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
   const token = localStorage.getItem("token") || null;
@@ -36,6 +37,10 @@ export const Router = () => {
           <Home />
         </PrivateRoute>
       ),
+    },
+    {
+      path: "/dashboard",
+      element: <Dashboard />,
     },
     {
       path: "scheduling",

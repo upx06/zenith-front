@@ -6,6 +6,7 @@ import {
   Home,
   Calendar1Icon,
   ClipboardCheck,
+  ChartNoAxesCombined,
   ClipboardList,
   BarChart3,
 } from "lucide-react";
@@ -17,6 +18,12 @@ export const Menu = () => {
 
   const sidebarItems = [
     { id: "home", path: "/home", label: "Início", icon: Home },
+    {
+      id: "dashboard",
+      path: "/dashboard",
+      label: "Dashboard",
+      icon: ChartNoAxesCombined,
+    },
     { id: "agenda", path: "/scheduling", label: "Agenda", icon: Calendar1Icon },
     {
       id: "frequencias",
