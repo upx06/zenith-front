@@ -194,7 +194,7 @@ export const Scheduling = () => {
       <div className="flex-1 flex flex-col min-w-0">
         <div className="flex-1 p-4 md:p-6 lg:p-8 mt-16 lg:mt-0">
           <div className="space-y-4 md:space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex flex-row justify-between gap-4 pt-5 md:pt-0">
               <div>
                 <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase">
                   Agendamento de Salas

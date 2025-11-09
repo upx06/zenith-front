@@ -17,8 +17,8 @@ import type { IEnrollment } from "../../interfaces/IEnrollment";
 import type { IListSpecificEnrollments } from "../../interfaces/IListSpecificEnrollments";
 import type { IListStudentNotEnrolledInClass } from "../../interfaces/IListStudentNotEnrolledInClass";
 import { LIST_SPECIFIC_ENROLLMENTS } from "../../graphql/queries/ListSpecificClassEnrollments";
-import { CREATE_ENROLLMENT } from "../../graphql/mutations/CreateEnrollment";
-import { DESTROY_ENROLLMENT } from "../../graphql/mutations/DestroyEnrollment";
+import { CREATE_ENROLLMENT } from "../../graphql/mutations/create/CreateEnrollment";
+import { DESTROY_ENROLLMENT } from "../../graphql/mutations/destroy/DestroyEnrollment";
 
 interface IManageClassModalProps {
   clas: IClass;

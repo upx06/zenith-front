@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 
 import type { ILesson } from "../../interfaces/ILesson";
-import { CREATE_FREQUENCY } from "../../graphql/mutations/CreateFrequency";
-import { UPDATE_FREQUENCY } from "../../graphql/mutations/UpdateFrequency";
-import { UPDATE_LESSON } from "../../graphql/mutations/UpdateLesson";
+import { CREATE_FREQUENCY } from "../../graphql/mutations/create/CreateFrequency";
+import { UPDATE_FREQUENCY } from "../../graphql/mutations/update/UpdateFrequency";
+import { UPDATE_LESSON } from "../../graphql/mutations/update/UpdateLesson";
 
 interface AttendanceModalProps {
   lesson: ILesson;
@@ -64,7 +64,10 @@ export const AttendanceModal = ({
   const enrollments = lesson.class.enrollments || [];
   const lessonDate = new Date(lesson.datetime);
 
-  const handleAttendanceChange = (enrollmentId: string, attendance: boolean) => {
+  const handleAttendanceChange = (
+    enrollmentId: string,
+    attendance: boolean
+  ) => {
     setAttendanceRecords((prev) => ({
       ...prev,
       [enrollmentId]: {
@@ -133,8 +136,9 @@ export const AttendanceModal = ({
   };
 
   const allMarked = enrollments.every(
-    (enrollment) => attendanceRecords[enrollment.id]?.attendance !== null &&
-                     attendanceRecords[enrollment.id]?.attendance !== undefined
+    (enrollment) =>
+      attendanceRecords[enrollment.id]?.attendance !== null &&
+      attendanceRecords[enrollment.id]?.attendance !== undefined
   );
 
   const presentCount = enrollments.filter(
@@ -176,14 +180,18 @@ export const AttendanceModal = ({
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
             <div className="flex items-center gap-2 text-xs md:text-sm text-slate-600 bg-slate-50 px-2 md:px-3 py-2 rounded-lg border border-slate-200">
               <Calendar className="w-4 h-4 text-slate-400" />
-              <span className="truncate">{lessonDate.toLocaleDateString("pt-BR")}</span>
+              <span className="truncate">
+                {lessonDate.toLocaleDateString("pt-BR")}
+              </span>
             </div>
             <div className="flex items-center gap-2 text-xs md:text-sm text-slate-600 bg-slate-50 px-2 md:px-3 py-2 rounded-lg border border-slate-200">
               <Clock className="w-4 h-4 text-slate-400" />
-              <span className="truncate">{lessonDate.toLocaleTimeString("pt-BR", {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}</span>
+              <span className="truncate">
+                {lessonDate.toLocaleTimeString("pt-BR", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
             </div>
             <div className="flex items-center gap-2 text-xs md:text-sm text-slate-600 bg-slate-50 px-2 md:px-3 py-2 rounded-lg border border-slate-200">
               <UsersIcon className="w-4 h-4 text-slate-400" />
@@ -191,7 +199,9 @@ export const AttendanceModal = ({
             </div>
             <div className="flex items-center gap-2 text-xs md:text-sm text-slate-600 bg-green-50 px-2 md:px-3 py-2 rounded-lg border border-green-200">
               <CheckCircle2 className="w-4 h-4 text-green-600" />
-              <span className="truncate text-green-700 font-medium">{presentCount} presente(s)</span>
+              <span className="truncate text-green-700 font-medium">
+                {presentCount} presente(s)
+              </span>
             </div>
           </div>
         </div>

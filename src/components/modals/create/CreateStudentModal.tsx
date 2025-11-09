@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client/react";
 import { X, Loader2, AlertCircle, Upload, Camera } from "lucide-react";
 import { useState, useRef } from "react";
 import { IMaskInput } from "react-imask";
-import { CREATE_STUDENT } from "../../../graphql/mutations/CreateStudent";
+import { CREATE_STUDENT } from "../../../graphql/mutations/create/CreateStudent";
 import { sendToAwsS3 } from "../../../utils/aws";
 import toast from "react-hot-toast";
 
@@ -143,7 +143,10 @@ export const CreateStudentModal = ({
       console.error("Erro ao criar aluno:", err);
       const errorMessage = err.message || "Erro ao criar aluno";
 
-      if (errorMessage.includes("already exists") || errorMessage.includes("já existe")) {
+      if (
+        errorMessage.includes("already exists") ||
+        errorMessage.includes("já existe")
+      ) {
         toast.error("Este email já está cadastrado");
       } else if (errorMessage.includes("Duplicate")) {
         toast.error("Já existe um aluno com este email");

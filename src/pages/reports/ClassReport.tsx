@@ -103,13 +103,15 @@ export const ClassReport = () => {
       <div className="flex-1 flex flex-col min-w-0">
         <div className="flex-1 p-4 md:p-6 lg:p-8 mt-16 lg:mt-0">
           <div className="space-y-4 md:space-y-6">
-            <div>
-              <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase">
-                Relatório dos Alunos
-              </h1>
-              <p className="text-slate-600 text-sm md:text-base">
-                Visualize presenças e faltas de cada aluno
-              </p>
+            <div className="flex flex-row justify-between gap-4 pt-5 md:pt-0">
+              <div>
+                <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase">
+                  Relatório dos Alunos
+                </h1>
+                <p className="text-slate-600 text-sm md:text-base">
+                  Visualize presenças e faltas de cada aluno
+                </p>
+              </div>
             </div>
 
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6">

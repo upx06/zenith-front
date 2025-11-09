@@ -2,7 +2,7 @@ import { Mail, Lock, User, Loader2, EyeOff, Eye } from "lucide-react";
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client/react";
 import { useNavigate } from "react-router";
-import { CREATE_USER } from "../../graphql/mutations/CreateUser";
+import { CREATE_USER } from "../../graphql/mutations/create/CreateUser";
 import toast from "react-hot-toast";
 
 interface SignUpData {
@@ -73,14 +73,20 @@ export default function SignUp() {
       });
 
       if (result.data?.createUser?.result?.id) {
-        toast.success("Conta criada com sucesso! Entre em contato com o administrador para ativação.", {
-          duration: 6000,
-        });
+        toast.success(
+          "Conta criada com sucesso! Entre em contato com o administrador para ativação.",
+          {
+            duration: 6000,
+          }
+        );
         setTimeout(() => navigate("/"), 1500);
       } else if (result.error) {
         const errorMessage = result.error?.message || "Erro ao criar conta";
 
-        if (errorMessage.includes("already exists") || errorMessage.includes("já existe")) {
+        if (
+          errorMessage.includes("already exists") ||
+          errorMessage.includes("já existe")
+        ) {
           toast.error("Este email já está cadastrado");
         } else {
           toast.error(errorMessage);
@@ -90,7 +96,10 @@ export default function SignUp() {
       console.error("Erro ao criar conta:", error);
       const errorMessage = error.message || "Erro ao criar conta";
 
-      if (errorMessage.includes("already exists") || errorMessage.includes("já existe")) {
+      if (
+        errorMessage.includes("already exists") ||
+        errorMessage.includes("já existe")
+      ) {
         toast.error("Este email já está cadastrado");
       } else {
         toast.error(errorMessage);
@@ -102,7 +111,6 @@ export default function SignUp() {
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-blue-50 flex items-center justify-center p-4">
       {/* Modal Container */}
       <div className="w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col lg:flex-row">
-
         {/* Left Side - Brand Section */}
         <div className="lg:w-1/2 bg-white p-8 lg:p-12 flex flex-col items-center justify-between">
           {/* Logo Section */}

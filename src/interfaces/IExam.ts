@@ -15,7 +15,8 @@ export interface IExamScore {
 export interface IExamResult {
   id: string;
   totalScore: number;
-  score: IExamScore[];
+  enrollmentId: string;
+  scores: IExamScore[];
 }
 
 export interface IExam {
@@ -25,5 +26,5 @@ export interface IExam {
   teacher: ITeacher;
   class: IClass;
   topics: ITopic[];
-  results?: IExamResult[];
+  results: IExamResult[];
 }

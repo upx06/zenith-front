@@ -26,7 +26,7 @@ import { ManageClassModal } from "../../components/modals/ManageClassModal";
 import { ClassDetailsModal } from "../../components/modals/ClassDetailsModal";
 
 import { LIST_CLASSES } from "../../graphql/queries/ListClasses";
-import { DESTROY_CLASS } from "../../graphql/mutations/DestroyClass";
+import { DESTROY_CLASS } from "../../graphql/mutations/destroy/DestroyClass";
 import { LIST_LANGUAGES } from "../../graphql/queries/ListLanguages";
 
 import type { IClass } from "../../interfaces/IClass";
@@ -94,7 +94,10 @@ export const Class = () => {
       const { data: refetchedData } = await refetch();
 
       // Se a página atual ficou vazia e não é a primeira página, volta para a anterior
-      if (refetchedData?.listClasses?.results?.length === 0 && currentPage > 1) {
+      if (
+        refetchedData?.listClasses?.results?.length === 0 &&
+        currentPage > 1
+      ) {
         setCurrentPage(currentPage - 1);
         setBefore(beforeFirsPage);
         setAfter(null);
@@ -248,7 +251,7 @@ export const Class = () => {
                     showFilters || hasActiveFilters
                       ? "bg-blue-600 text-white"
                       : "bg-white text-slate-700 border border-slate-300"
-                  } hover:opacity-90 disabled:bg-slate-400 disabled:cursor-not-allowed px-3 py-2 sm:px-4 sm:py-2 rounded-lg flex items-center justify-center gap-2 transition-all text-sm md:text-base relative sm:w-auto w-10 h-10`}
+                  } hover:opacity-90 disabled:bg-slate-400 disabled:cursor-not-allowed px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-all text-sm md:text-base relative`}
                   title="Filtros"
                 >
                   <Filter className="w-4 h-4 md:w-5 md:h-5" />
@@ -260,7 +263,7 @@ export const Class = () => {
                 <button
                   onClick={() => setCreateClassModal(true)}
                   disabled={isProcessing}
-                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm md:text-base sm:w-auto w-10 h-10"
+                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm md:text-base"
                 >
                   <Plus className="w-4 h-4 md:w-5 md:h-5" />
                   <span className="hidden sm:inline">Nova Turma</span>

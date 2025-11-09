@@ -15,18 +15,23 @@ import {
   Pencil,
   Trash2,
   Eye,
+  Award,
 } from "lucide-react";
 
 import { Menu } from "../../components/Menu";
-import { CreateEvaluationModal } from "../../components/modals/create/CreateEvaluationModal";
+import { CreateExamModal } from "../../components/modals/create/CreateExamModal";
 import { ExamDetailsModal } from "../../components/modals/ExamDetailsModal";
+import { GradesControlModal } from "../../components/modals/GradesControlModal";
 import type { IListExams } from "../../interfaces/IListExams";
 import { LIST_EXAMS } from "../../graphql/queries/ListExams";
 import type { IExam } from "../../interfaces/IExam";
+import { UpdateExamModal } from "../../components/modals/update/UpdateExamModal";
 
 export const Exam = () => {
   const [createExamModal, setCreateExamModal] = useState(false);
   const [detailsExamModal, setDetailsExamModal] = useState(false);
+  const [gradesControlModal, setGradesControlModal] = useState(false);
+  const [updateExamModal, setUpdateExamModal] = useState(false);
   const [selectedExam, setSelectedExam] = useState<IExam | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
@@ -42,7 +47,6 @@ export const Exam = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  // PLACEHOLDER - Descomente quando criar a query LIST_EXAMS
   const { data, loading, error, refetch } = useQuery<IListExams>(LIST_EXAMS, {
     variables: {
       after: after || undefined,
@@ -169,13 +173,13 @@ export const Exam = () => {
         <div className="flex-1 p-4 md:p-6 lg:p-8 mt-16 lg:mt-0">
           <div className="space-y-4 md:space-y-6">
             {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-5 md:pt-0">
+            <div className="flex flex-row justify-between gap-4 pt-5 md:pt-0">
               <div>
                 <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase">
                   Avaliações
                 </h1>
                 <p className="text-slate-600 text-sm md:text-base">
-                  Gerencie as avaliações e provas dos alunos
+                  Gerencie as avaliações dos alunos
                 </p>
               </div>
               <div className="flex gap-2">
@@ -360,14 +364,14 @@ export const Exam = () => {
             {/* Tabela de Avaliações */}
             {!loading && exams.length > 0 && (
               <div className="relative">
-                <div className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
+                <div className="bg-white rounded-xl border border-slate-200 shadow-md overflow-hidden">
                   {/* Header da tabela - Desktop */}
-                  <div className="hidden md:grid md:grid-cols-12 gap-4 bg-slate-50 border-b border-slate-200 px-4 md:px-6 py-3 text-sm font-semibold text-slate-700">
+                  <div className="hidden md:grid md:grid-cols-12 gap-4 bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200 px-6 py-4 text-sm font-semibold text-slate-700 uppercase tracking-wide">
                     <div className="col-span-3">Nome</div>
                     <div className="col-span-2">Professor</div>
                     <div className="col-span-2">Tipo</div>
                     <div className="col-span-2">Alvo</div>
-                    <div className="col-span-1">Ações</div>
+                    <div className="col-span-3 text-right">Ações</div>
                   </div>
 
                   {/* Linhas da tabela */}
@@ -378,18 +382,18 @@ export const Exam = () => {
                       return (
                         <div
                           key={exam.id}
-                          className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 px-4 md:px-6 py-4 hover:bg-slate-50 transition-colors"
+                          className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 px-4 md:px-6 py-5 hover:bg-blue-50/40 transition-all duration-200 group"
                         >
                           {/* Nome */}
                           <div className="col-span-3 flex items-center gap-3">
-                            <div className="w-10 h-10 bg-blue-600 rounded-full hidden md:flex items-center justify-center shrink-0">
+                            <div className="w-11 h-11 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl hidden md:flex items-center justify-center shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
                               <ClipboardList className="w-5 h-5 text-white" />
                             </div>
                             <div>
-                              <h3 className="font-semibold text-slate-800 text-sm md:text-base">
+                              <h3 className="font-semibold text-slate-800 text-sm md:text-base group-hover:text-blue-700 transition-colors">
                                 {exam.name}
                               </h3>
-                              <p className="text-xs text-slate-600">
+                              <p className="text-xs text-slate-500 mt-0.5">
                                 {exam.topics.length} tópico(s)
                               </p>
                             </div>
@@ -397,9 +401,9 @@ export const Exam = () => {
 
                           {/* Professor */}
                           <div className="col-span-2 flex items-center">
-                            <div className="flex items-center gap-2 text-sm text-slate-600">
+                            <div className="flex items-center gap-2 text-sm text-slate-700">
                               <GraduationCap className="w-4 h-4 text-slate-400" />
-                              <span className="truncate">
+                              <span className="truncate font-medium">
                                 {exam.teacher.name}
                               </span>
                             </div>
@@ -409,16 +413,16 @@ export const Exam = () => {
                           <div className="col-span-2 flex items-center">
                             <div className="flex items-center gap-2">
                               {isClassEvaluation ? (
-                                <div className="flex items-center gap-2 bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
-                                  <Users className="w-3 h-3" />
-                                  <span className="text-xs font-medium">
+                                <div className="flex items-center gap-1.5 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-700 px-3 py-1.5 rounded-lg shadow-sm border border-blue-200">
+                                  <Users className="w-3.5 h-3.5" />
+                                  <span className="text-xs font-semibold">
                                     Turma
                                   </span>
                                 </div>
                               ) : (
-                                <div className="flex items-center gap-2 bg-green-100 text-green-700 px-3 py-1 rounded-full">
-                                  <User className="w-3 h-3" />
-                                  <span className="text-xs font-medium">
+                                <div className="flex items-center gap-1.5 bg-gradient-to-r from-green-100 to-green-50 text-green-700 px-3 py-1.5 rounded-lg shadow-sm border border-green-200">
+                                  <User className="w-3.5 h-3.5" />
+                                  <span className="text-xs font-semibold">
                                     Aluno
                                   </span>
                                 </div>
@@ -428,7 +432,7 @@ export const Exam = () => {
 
                           {/* Alvo */}
                           <div className="col-span-2 flex items-center">
-                            <span className="text-sm text-slate-600 truncate">
+                            <span className="text-sm text-slate-700 truncate font-medium">
                               {isClassEvaluation
                                 ? exam.class?.name
                                 : exam.enrollment?.student.name}
@@ -436,25 +440,39 @@ export const Exam = () => {
                           </div>
 
                           {/* Ações */}
-                          <div className="col-span-1 flex items-center gap-2 justify-end">
+                          <div className="col-span-3 flex items-center gap-1.5 justify-end">
+                            <button
+                              onClick={() => {
+                                setSelectedExam(exam);
+                                setGradesControlModal(true);
+                              }}
+                              className="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-purple-200"
+                              title="Controle de Notas"
+                            >
+                              <Award className="w-4 h-4" />
+                            </button>
                             <button
                               onClick={() => {
                                 setSelectedExam(exam);
                                 setDetailsExamModal(true);
                               }}
-                              className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                              className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-blue-200"
                               title="Ver detalhes"
                             >
                               <Eye className="w-4 h-4" />
                             </button>
                             <button
-                              className="p-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
+                              onClick={() => {
+                                setSelectedExam(exam);
+                                setUpdateExamModal(true);
+                              }}
+                              className="p-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-slate-200"
                               title="Editar"
                             >
                               <Pencil className="w-4 h-4" />
                             </button>
                             <button
-                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-red-200"
                               title="Excluir"
                             >
                               <Trash2 className="w-4 h-4" />
@@ -512,9 +530,9 @@ export const Exam = () => {
 
       {/* Modal de Criação */}
       {createExamModal && (
-        <CreateEvaluationModal
-          closeCreateEvaluationModal={() => setCreateExamModal(false)}
-          refetchEvaluations={refetch}
+        <CreateExamModal
+          closeCreateExamModal={() => setCreateExamModal(false)}
+          refetchExams={refetch}
         />
       )}
 
@@ -526,6 +544,29 @@ export const Exam = () => {
             setDetailsExamModal(false);
             setSelectedExam(null);
           }}
+        />
+      )}
+
+      {updateExamModal && selectedExam && (
+        <UpdateExamModal
+          exam={selectedExam}
+          closeUpdateExamModal={() => {
+            setUpdateExamModal(false);
+            setSelectedExam(null);
+          }}
+          refetchExams={refetch}
+        />
+      )}
+
+      {/* Modal de Controle de Notas */}
+      {gradesControlModal && selectedExam && (
+        <GradesControlModal
+          exam={selectedExam}
+          closeGradesControlModal={() => {
+            setGradesControlModal(false);
+            setSelectedExam(null);
+          }}
+          refetchExams={refetch}
         />
       )}
     </div>

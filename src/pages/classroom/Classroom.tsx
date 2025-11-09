@@ -22,7 +22,7 @@ import { Menu } from "../../components/Menu";
 import { ConfirmationModal } from "../../components/modals/ConfirmationModal";
 
 import { LIST_CLASSROOMS } from "../../graphql/queries/ListClassrooms";
-import { DESTROY_CLASSROOM } from "../../graphql/mutations/DestroyClassroom";
+import { DESTROY_CLASSROOM } from "../../graphql/mutations/destroy/DestroyClassroom";
 
 import type { IClassroom } from "../../interfaces/IClassroom";
 import type { IListClassrooms } from "../../interfaces/IListClassrooms";
@@ -83,7 +83,10 @@ export const Classroom = () => {
       const { data: refetchedData } = await refetch();
 
       // Se a página atual ficou vazia e não é a primeira página, volta para a anterior
-      if (refetchedData?.listClassrooms?.results?.length === 0 && currentPage > 1) {
+      if (
+        refetchedData?.listClassrooms?.results?.length === 0 &&
+        currentPage > 1
+      ) {
         setCurrentPage(currentPage - 1);
         setBefore(beforeFirsPage);
         setAfter(null);

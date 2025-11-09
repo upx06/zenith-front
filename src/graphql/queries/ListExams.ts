@@ -15,17 +15,26 @@ export const LIST_EXAMS = gql`
           languageId
           level
           name
+          enrollments {
+            id
+            student {
+              name
+              email
+            }
+          }
         }
         enrollment {
           id
           student {
             name
+            email
           }
         }
         results {
           totalScore
           id
-          score {
+          enrollmentId
+          scores {
             feedback
             id
             resultId

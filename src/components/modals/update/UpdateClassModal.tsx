@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client/react";
 import { X, Loader2, AlertCircle } from "lucide-react";
 import { useState } from "react";
-import { UPDATE_CLASS } from "../../../graphql/mutations/UpdateClass";
+import { UPDATE_CLASS } from "../../../graphql/mutations/update/UpdateClass";
 import { LIST_LANGUAGES } from "../../../graphql/queries/ListLanguages";
 import type { IClass } from "../../../interfaces/IClass";
 import type { IListLanguages } from "../../../interfaces/IListLanguages";
@@ -92,7 +92,10 @@ export const UpdateClassModal = ({
       console.error("Erro ao atualizar turma:", err);
       const errorMessage = err.message || "Erro ao atualizar turma";
 
-      if (errorMessage.includes("already exists") || errorMessage.includes("já existe")) {
+      if (
+        errorMessage.includes("already exists") ||
+        errorMessage.includes("já existe")
+      ) {
         toast.error("Esta turma já está cadastrada");
       } else if (errorMessage.includes("Duplicate")) {
         toast.error("Já existe uma turma com este nome");

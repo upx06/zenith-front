@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client/react";
 import { X, Loader2, AlertCircle, Upload, Camera } from "lucide-react";
 import { useState, useRef } from "react";
 import { IMaskInput } from "react-imask";
-import { CREATE_TEACHER } from "../../../graphql/mutations/CreateTeacher";
+import { CREATE_TEACHER } from "../../../graphql/mutations/create/CreateTeacher";
 import { sendToAwsS3 } from "../../../utils/aws";
 import toast from "react-hot-toast";
 
@@ -144,7 +144,10 @@ export const CreateTeacherModal = ({
       console.error("Erro ao criar professor:", err);
       const errorMessage = err.message || "Erro ao criar professor";
 
-      if (errorMessage.includes("already exists") || errorMessage.includes("já existe")) {
+      if (
+        errorMessage.includes("already exists") ||
+        errorMessage.includes("já existe")
+      ) {
         toast.error("Este email já está cadastrado");
       } else if (errorMessage.includes("Duplicate")) {
         toast.error("Já existe um professor com este email");

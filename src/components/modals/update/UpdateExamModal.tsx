@@ -1,55 +1,51 @@
 import { useMutation } from "@apollo/client/react";
 import { X, Loader2, AlertCircle } from "lucide-react";
 import { useState } from "react";
-import { UPDATE_CLASSROOM } from "../../../graphql/mutations/update/UpdateClassroom";
-import type { IClassroom } from "../../../interfaces/IClassroom";
+import { UPDATE_EXAM_BASIC } from "../../../graphql/mutations/update/UpdateExamBasic";
+import type { IExam } from "../../../interfaces/IExam";
 import toast from "react-hot-toast";
+import { useTeachers } from "../../../hooks/useTeachers";
 
-interface IUpdateClassroomModal {
-  classroom: IClassroom;
-  closeUpdateClassroomModal: () => void;
-  refetchClassrooms: () => void;
+interface IUpdateExamModal {
+  exam: IExam;
+  closeUpdateExamModal: () => void;
+  refetchExams: () => void;
 }
 
-export const UpdateClassroomModal = ({
-  classroom,
-  closeUpdateClassroomModal,
-  refetchClassrooms,
-}: IUpdateClassroomModal) => {
+export const UpdateExamModal = ({
+  exam,
+  closeUpdateExamModal,
+  refetchExams,
+}: IUpdateExamModal) => {
   const [formData, setFormData] = useState({
-    name: classroom.name,
-    capacity: classroom.capacity.toString(),
+    name: exam.name,
+    teacherId: exam.teacher?.id || "",
   });
 
   const [errors, setErrors] = useState({
     name: "",
-    capacity: "",
+    teacherId: "",
   });
 
-  const [updateClassroom, { loading, error }] = useMutation(UPDATE_CLASSROOM);
+  const { teachers, loading: loadingTeachers } = useTeachers();
+  const [updateExam, { loading, error }] = useMutation(UPDATE_EXAM_BASIC);
 
   const validateForm = () => {
     const newErrors = {
       name: "",
-      capacity: "",
+      teacherId: "",
     };
 
     let isValid = true;
 
     if (!formData.name.trim()) {
-      newErrors.name = "Nome da sala é obrigatório";
+      newErrors.name = "Nome da avaliação é obrigatório";
       isValid = false;
     }
 
-    if (!formData.capacity.trim()) {
-      newErrors.capacity = "Capacidade é obrigatória";
+    if (!formData.teacherId) {
+      newErrors.teacherId = "Professor é obrigatório";
       isValid = false;
-    } else {
-      const capacityNumber = parseInt(formData.capacity);
-      if (isNaN(capacityNumber) || capacityNumber <= 0) {
-        newErrors.capacity = "Capacidade deve ser um número maior que zero";
-        isValid = false;
-      }
     }
 
     setErrors(newErrors);
@@ -62,37 +58,39 @@ export const UpdateClassroomModal = ({
     if (!validateForm()) return;
 
     try {
-      await updateClassroom({
+      await updateExam({
         variables: {
-          id: classroom.id,
+          id: exam.id,
           input: {
             name: formData.name,
-            capacity: parseInt(formData.capacity),
+            teacherId: formData.teacherId,
           },
         },
       });
 
-      toast.success("Sala atualizada com sucesso!");
-      await refetchClassrooms();
-      closeUpdateClassroomModal();
+      toast.success("Avaliação atualizada com sucesso!");
+      refetchExams();
+      closeUpdateExamModal();
     } catch (err: any) {
-      console.error("Erro ao atualizar sala:", err);
-      const errorMessage = err.message || "Erro ao atualizar sala";
+      console.error("Erro ao atualizar avaliação:", err);
+      const errorMessage = err.message || "Erro ao atualizar avaliação";
 
       if (
         errorMessage.includes("already exists") ||
         errorMessage.includes("já existe")
       ) {
-        toast.error("Esta sala já está cadastrada");
+        toast.error("Esta avaliação já está cadastrada");
       } else if (errorMessage.includes("Duplicate")) {
-        toast.error("Já existe uma sala com este nome");
+        toast.error("Já existe uma avaliação com este nome");
       } else {
         toast.error(errorMessage);
       }
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -110,9 +108,11 @@ export const UpdateClassroomModal = ({
 
   const handleCloseModal = () => {
     if (!loading) {
-      closeUpdateClassroomModal();
+      closeUpdateExamModal();
     }
   };
+
+  const isLoading = loading || loadingTeachers;
 
   return (
     <div
@@ -124,20 +124,24 @@ export const UpdateClassroomModal = ({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Overlay de loading */}
-        {loading && (
+        {isLoading && (
           <div className="absolute inset-0 bg-white/70 flex items-center justify-center rounded-lg z-10">
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-              <p className="text-slate-600 font-medium">Atualizando sala...</p>
+              <p className="text-slate-600 font-medium">
+                {loading ? "Atualizando avaliação..." : "Carregando professores..."}
+              </p>
             </div>
           </div>
         )}
 
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-slate-800">Editar Sala</h2>
+          <h2 className="text-lg font-semibold text-slate-800">
+            Editar Avaliação
+          </h2>
           <button
             onClick={handleCloseModal}
-            disabled={loading}
+            disabled={isLoading}
             className="p-1 text-slate-400 hover:text-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <X className="w-5 h-5" />
@@ -147,18 +151,18 @@ export const UpdateClassroomModal = ({
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              Nome da Sala
+              Nome da Avaliação
             </label>
             <input
               type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
-              disabled={loading}
+              disabled={isLoading}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
                 errors.name ? "border-red-500" : "border-slate-300"
               }`}
-              placeholder="Ex: Sala 101"
+              placeholder="Ex: Prova de Final de Módulo"
             />
             {errors.name && (
               <p className="text-red-500 text-xs mt-1">{errors.name}</p>
@@ -167,22 +171,26 @@ export const UpdateClassroomModal = ({
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              Capacidade
+              Professor Responsável
             </label>
-            <input
-              type="number"
-              name="capacity"
-              value={formData.capacity}
+            <select
+              name="teacherId"
+              value={formData.teacherId}
               onChange={handleChange}
-              disabled={loading}
+              disabled={isLoading}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
-                errors.capacity ? "border-red-500" : "border-slate-300"
+                errors.teacherId ? "border-red-500" : "border-slate-300"
               }`}
-              placeholder="Ex: 30"
-              min="1"
-            />
-            {errors.capacity && (
-              <p className="text-red-500 text-xs mt-1">{errors.capacity}</p>
+            >
+              <option value="">Selecione um professor</option>
+              {teachers.map((teacher) => (
+                <option key={teacher.id} value={teacher.id}>
+                  {teacher.name}
+                </option>
+              ))}
+            </select>
+            {errors.teacherId && (
+              <p className="text-red-500 text-xs mt-1">{errors.teacherId}</p>
             )}
           </div>
 
@@ -192,7 +200,7 @@ export const UpdateClassroomModal = ({
               <div className="flex items-center gap-2 text-red-800 mb-1">
                 <AlertCircle className="w-4 h-4" />
                 <span className="font-medium text-sm">
-                  Erro ao atualizar sala
+                  Erro ao atualizar avaliação
                 </span>
               </div>
               <p className="text-red-700 text-sm">{error.message}</p>
@@ -203,14 +211,14 @@ export const UpdateClassroomModal = ({
             <button
               type="button"
               onClick={handleCloseModal}
-              disabled={loading}
+              disabled={isLoading}
               className="flex-1 px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              disabled={loading}
+              disabled={isLoading}
               className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors text-sm md:text-base flex items-center justify-center gap-2"
             >
               {loading ? (

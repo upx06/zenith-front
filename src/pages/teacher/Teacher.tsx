@@ -23,7 +23,7 @@ import { PhoneDisplay } from "../../components/PhoneDisplay";
 import { ConfirmationModal } from "../../components/modals/ConfirmationModal";
 
 import { LIST_TEACHERS } from "../../graphql/queries/ListTeachers";
-import { DESTROY_TEACHER } from "../../graphql/mutations/DestroyTeacher";
+import { DESTROY_TEACHER } from "../../graphql/mutations/destroy/DestroyTeacher";
 
 import type { ITeacher } from "../../interfaces/ITeacher";
 import type { IListTeachers } from "../../interfaces/IListTeachers";
@@ -91,7 +91,10 @@ export const Teacher = () => {
       const { data: refetchedData } = await refetch();
 
       // Se a página atual ficou vazia e não é a primeira página, volta para a anterior
-      if (refetchedData?.listTeachers?.results?.length === 0 && currentPage > 1) {
+      if (
+        refetchedData?.listTeachers?.results?.length === 0 &&
+        currentPage > 1
+      ) {
         setCurrentPage(currentPage - 1);
         setBefore(beforeFirsPage);
         setAfter(null);

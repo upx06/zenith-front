@@ -10,7 +10,7 @@ import {
   Users,
 } from "lucide-react";
 import { useState } from "react";
-import { CREATE_LESSON } from "../../../graphql/mutations/CreateLesson";
+import { CREATE_LESSON } from "../../../graphql/mutations/create/CreateLesson";
 import { LIST_TEACHERS } from "../../../graphql/queries/ListTeachers";
 import { LIST_CLASSES } from "../../../graphql/queries/ListClasses";
 import { useQuery } from "@apollo/client/react";
@@ -146,7 +146,10 @@ export const CreateSchedulingModal = ({
       console.error("Erro ao criar agendamento:", err);
       const errorMessage = err.message || "Erro ao criar agendamento";
 
-      if (errorMessage.includes("already exists") || errorMessage.includes("já existe")) {
+      if (
+        errorMessage.includes("already exists") ||
+        errorMessage.includes("já existe")
+      ) {
         toast.error("Já existe uma aula agendada para este horário");
       } else if (errorMessage.includes("Duplicate")) {
         toast.error("Já existe uma aula agendada para este horário");

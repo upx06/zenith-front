@@ -17,7 +17,7 @@ import { formatDateTimeForDisplay } from "../../utils/date";
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useMutation } from "@apollo/client/react";
-import { DESTROY_LESSON } from "../../graphql/mutations/DestroyLesson";
+import { DESTROY_LESSON } from "../../graphql/mutations/destroy/DestroyLesson";
 import toast from "react-hot-toast";
 
 interface DetailsSchedulingModalProps {

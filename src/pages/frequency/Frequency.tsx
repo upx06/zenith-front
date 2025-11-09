@@ -204,7 +204,7 @@ export const Frequency = () => {
         <div className="flex-1 p-4 md:p-6 lg:p-8 mt-16 lg:mt-0">
           <div className="space-y-4 md:space-y-6">
             {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-5 md:pt-0">
+            <div className="flex flex-row justify-between gap-4 pt-5 md:pt-0">
               <div>
                 <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase">
                   Frequências
@@ -213,20 +213,22 @@ export const Frequency = () => {
                   Registre a presença dos alunos nas aulas
                 </p>
               </div>
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className={`${
-                  showFilters || hasActiveFilters
-                    ? "bg-blue-600 text-white"
-                    : "bg-white text-slate-700 border border-slate-300"
-                } hover:opacity-90 px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-all text-sm md:text-base relative`}
-              >
-                <Filter className="w-4 h-4 md:w-5 md:h-5" />
-                <span className="hidden sm:inline">Filtros</span>
-                {hasActiveFilters && (
-                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
-                )}
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowFilters(!showFilters)}
+                  className={`${
+                    showFilters || hasActiveFilters
+                      ? "bg-blue-600 text-white"
+                      : "bg-white text-slate-700 border border-slate-300"
+                  } hover:opacity-90 px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-all text-sm md:text-base relative`}
+                >
+                  <Filter className="w-4 h-4 md:w-5 md:h-5" />
+                  <span className="hidden sm:inline">Filtros</span>
+                  {hasActiveFilters && (
+                    <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
+                  )}
+                </button>
+              </div>
             </div>
 
             {/* Filtros */}

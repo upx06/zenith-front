@@ -32,16 +32,16 @@ export const Menu = () => {
       icon: ClipboardCheck,
     },
     {
-      id: "avaliacoes",
-      path: "/evaluations",
-      label: "Avaliações",
-      icon: ClipboardList,
-    },
-    {
       id: "relatorios",
       path: "/reports/class",
       label: "Relatórios",
       icon: BarChart3,
+    },
+    {
+      id: "avaliacoes",
+      path: "/evaluations",
+      label: "Avaliações",
+      icon: ClipboardList,
     },
     { id: "turmas", path: "/classes", label: "Turmas", icon: BookOpen },
     { id: "alunos", path: "/students", label: "Alunos", icon: GraduationCap },

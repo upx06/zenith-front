@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client/react";
 import { X, Loader2, AlertCircle, Upload, Camera } from "lucide-react";
 import { useState, useRef } from "react";
 import { IMaskInput } from "react-imask";
-import { UPDATE_STUDENT } from "../../../graphql/mutations/UpdateStudent";
+import { UPDATE_STUDENT } from "../../../graphql/mutations/update/UpdateStudent";
 import type { IStudent } from "../../../interfaces/IStudent";
 import { sendToAwsS3 } from "../../../utils/aws";
 import toast from "react-hot-toast";
@@ -151,7 +151,10 @@ export const UpdateStudentModal = ({
       console.error("Erro ao atualizar aluno:", err);
       const errorMessage = err.message || "Erro ao atualizar aluno";
 
-      if (errorMessage.includes("already exists") || errorMessage.includes("já existe")) {
+      if (
+        errorMessage.includes("already exists") ||
+        errorMessage.includes("já existe")
+      ) {
         toast.error("Este email já está cadastrado");
       } else if (errorMessage.includes("Duplicate")) {
         toast.error("Já existe um aluno com este email");

@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client/react";
 import { X, Loader2, AlertCircle } from "lucide-react";
 import { useState } from "react";
-import { CREATE_CLASS } from "../../../graphql/mutations/CreateClass";
+import { CREATE_CLASS } from "../../../graphql/mutations/create/CreateClass";
 import { LIST_LANGUAGES } from "../../../graphql/queries/ListLanguages";
 import type { IListLanguages } from "../../../interfaces/IListLanguages";
 import toast from "react-hot-toast";

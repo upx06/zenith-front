@@ -26,7 +26,7 @@ import type { IStudent } from "../../interfaces/IStudent";
 import type { IListStudents } from "../../interfaces/IListStudents";
 
 import { LIST_STUDENTS } from "../../graphql/queries/ListStudents";
-import { DESTROY_STUDENT } from "../../graphql/mutations/DestroyStudent";
+import { DESTROY_STUDENT } from "../../graphql/mutations/destroy/DestroyStudent";
 import { StudentDetailsModal } from "../../components/modals/StudentDetailsModal";
 import { getPresignedUrlFromAwsS3 } from "../../utils/aws";
 
@@ -89,7 +89,10 @@ export const Student = () => {
       const { data: refetchedData } = await refetch();
 
       // Se a página atual ficou vazia e não é a primeira página, volta para a anterior
-      if (refetchedData?.listStudents?.results?.length === 0 && currentPage > 1) {
+      if (
+        refetchedData?.listStudents?.results?.length === 0 &&
+        currentPage > 1
+      ) {
         setCurrentPage(currentPage - 1);
         setBefore(beforeFirsPage);
         setAfter(null);

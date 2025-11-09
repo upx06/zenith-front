@@ -9,8 +9,8 @@ import {
   Trash2,
 } from "lucide-react";
 import { useState } from "react";
-import { CREATE_LESSON } from "../../graphql/mutations/CreateLesson";
-import { DESTROY_LESSON } from "../../graphql/mutations/DestroyLesson";
+import { CREATE_LESSON } from "../../graphql/mutations/create/CreateLesson";
+import { DESTROY_LESSON } from "../../graphql/mutations/destroy/DestroyLesson";
 import { LIST_LESSONS } from "../../graphql/queries/ListLessons";
 import type { ILesson } from "../../interfaces/ILesson";
 import toast from "react-hot-toast";
@@ -335,8 +335,7 @@ export const RescheduleGridModal = ({
                     Reagendar Dia
                   </h4>
                   <p className="text-sm text-slate-600">
-                    Duplicar todas as aulas de um dia específico para outra
-                    data
+                    Duplicar todas as aulas de um dia específico para outra data
                   </p>
                 </div>
               </div>
@@ -387,7 +386,11 @@ export const RescheduleGridModal = ({
               />
               {rescheduleType === "weekly" && sourceDate && (
                 <p className="text-xs text-slate-500 mt-1">
-                  Semana: {getSunday(new Date(sourceDate + "T00:00:00")).toLocaleDateString("pt-BR")} a{" "}
+                  Semana:{" "}
+                  {getSunday(
+                    new Date(sourceDate + "T00:00:00")
+                  ).toLocaleDateString("pt-BR")}{" "}
+                  a{" "}
                   {new Date(
                     getSunday(new Date(sourceDate + "T00:00:00")).getTime() +
                       6 * 24 * 60 * 60 * 1000
@@ -411,7 +414,11 @@ export const RescheduleGridModal = ({
               />
               {rescheduleType === "weekly" && targetDate && (
                 <p className="text-xs text-slate-500 mt-1">
-                  Semana: {getSunday(new Date(targetDate + "T00:00:00")).toLocaleDateString("pt-BR")} a{" "}
+                  Semana:{" "}
+                  {getSunday(
+                    new Date(targetDate + "T00:00:00")
+                  ).toLocaleDateString("pt-BR")}{" "}
+                  a{" "}
                   {new Date(
                     getSunday(new Date(targetDate + "T00:00:00")).getTime() +
                       6 * 24 * 60 * 60 * 1000
@@ -472,18 +479,33 @@ export const RescheduleGridModal = ({
                       {rescheduleType === "daily" ? (
                         <>
                           <strong>{targetLessonsCount}</strong>{" "}
-                          {targetLessonsCount === 1 ? "aula será excluída" : "aulas serão excluídas"} do dia{" "}
-                          {new Date(targetDate + "T00:00:00").toLocaleDateString("pt-BR")} antes de duplicar as aulas do dia de origem.
+                          {targetLessonsCount === 1
+                            ? "aula será excluída"
+                            : "aulas serão excluídas"}{" "}
+                          do dia{" "}
+                          {new Date(
+                            targetDate + "T00:00:00"
+                          ).toLocaleDateString("pt-BR")}{" "}
+                          antes de duplicar as aulas do dia de origem.
                         </>
                       ) : (
                         <>
                           <strong>{targetLessonsCount}</strong>{" "}
-                          {targetLessonsCount === 1 ? "aula será excluída" : "aulas serão excluídas"} da semana de{" "}
-                          {getSunday(new Date(targetDate + "T00:00:00")).toLocaleDateString("pt-BR")} a{" "}
+                          {targetLessonsCount === 1
+                            ? "aula será excluída"
+                            : "aulas serão excluídas"}{" "}
+                          da semana de{" "}
+                          {getSunday(
+                            new Date(targetDate + "T00:00:00")
+                          ).toLocaleDateString("pt-BR")}{" "}
+                          a{" "}
                           {new Date(
-                            getSunday(new Date(targetDate + "T00:00:00")).getTime() +
+                            getSunday(
+                              new Date(targetDate + "T00:00:00")
+                            ).getTime() +
                               6 * 24 * 60 * 60 * 1000
-                          ).toLocaleDateString("pt-BR")} antes de duplicar as aulas da semana de origem.
+                          ).toLocaleDateString("pt-BR")}{" "}
+                          antes de duplicar as aulas da semana de origem.
                         </>
                       )}
                     </>
@@ -492,16 +514,25 @@ export const RescheduleGridModal = ({
                       {rescheduleType === "daily" ? (
                         <>
                           Não há aulas agendadas para o dia{" "}
-                          {new Date(targetDate + "T00:00:00").toLocaleDateString("pt-BR")}. As aulas do dia de origem serão duplicadas.
+                          {new Date(
+                            targetDate + "T00:00:00"
+                          ).toLocaleDateString("pt-BR")}
+                          . As aulas do dia de origem serão duplicadas.
                         </>
                       ) : (
                         <>
                           Não há aulas agendadas para a semana de{" "}
-                          {getSunday(new Date(targetDate + "T00:00:00")).toLocaleDateString("pt-BR")} a{" "}
+                          {getSunday(
+                            new Date(targetDate + "T00:00:00")
+                          ).toLocaleDateString("pt-BR")}{" "}
+                          a{" "}
                           {new Date(
-                            getSunday(new Date(targetDate + "T00:00:00")).getTime() +
+                            getSunday(
+                              new Date(targetDate + "T00:00:00")
+                            ).getTime() +
                               6 * 24 * 60 * 60 * 1000
-                          ).toLocaleDateString("pt-BR")}. As aulas da semana de origem serão duplicadas.
+                          ).toLocaleDateString("pt-BR")}
+                          . As aulas da semana de origem serão duplicadas.
                         </>
                       )}
                     </>
@@ -511,19 +542,31 @@ export const RescheduleGridModal = ({
             </div>
 
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-              <h4 className="font-semibold text-slate-900 mb-2">Resumo da operação:</h4>
+              <h4 className="font-semibold text-slate-900 mb-2">
+                Resumo da operação:
+              </h4>
               <div className="space-y-2 text-sm text-slate-700">
                 <div className="flex items-start gap-2">
                   <Copy className="w-4 h-4 text-slate-500 mt-0.5 shrink-0" />
                   <div>
                     <strong>Origem:</strong>{" "}
                     {rescheduleType === "daily" ? (
-                      <>{new Date(sourceDate + "T00:00:00").toLocaleDateString("pt-BR")}</>
+                      <>
+                        {new Date(sourceDate + "T00:00:00").toLocaleDateString(
+                          "pt-BR"
+                        )}
+                      </>
                     ) : (
                       <>
-                        Semana de {getSunday(new Date(sourceDate + "T00:00:00")).toLocaleDateString("pt-BR")} a{" "}
+                        Semana de{" "}
+                        {getSunday(
+                          new Date(sourceDate + "T00:00:00")
+                        ).toLocaleDateString("pt-BR")}{" "}
+                        a{" "}
                         {new Date(
-                          getSunday(new Date(sourceDate + "T00:00:00")).getTime() +
+                          getSunday(
+                            new Date(sourceDate + "T00:00:00")
+                          ).getTime() +
                             6 * 24 * 60 * 60 * 1000
                         ).toLocaleDateString("pt-BR")}
                       </>
@@ -535,18 +578,33 @@ export const RescheduleGridModal = ({
                   <div>
                     <strong>Destino:</strong>{" "}
                     {rescheduleType === "daily" ? (
-                      <>{new Date(targetDate + "T00:00:00").toLocaleDateString("pt-BR")}</>
+                      <>
+                        {new Date(targetDate + "T00:00:00").toLocaleDateString(
+                          "pt-BR"
+                        )}
+                      </>
                     ) : (
                       <>
-                        Semana de {getSunday(new Date(targetDate + "T00:00:00")).toLocaleDateString("pt-BR")} a{" "}
+                        Semana de{" "}
+                        {getSunday(
+                          new Date(targetDate + "T00:00:00")
+                        ).toLocaleDateString("pt-BR")}{" "}
+                        a{" "}
                         {new Date(
-                          getSunday(new Date(targetDate + "T00:00:00")).getTime() +
+                          getSunday(
+                            new Date(targetDate + "T00:00:00")
+                          ).getTime() +
                             6 * 24 * 60 * 60 * 1000
                         ).toLocaleDateString("pt-BR")}
                       </>
                     )}
                     {targetLessonsCount > 0 && (
-                      <span className="text-red-600 font-medium"> ({targetLessonsCount} {targetLessonsCount === 1 ? "aula" : "aulas"} serão excluídas)</span>
+                      <span className="text-red-600 font-medium">
+                        {" "}
+                        ({targetLessonsCount}{" "}
+                        {targetLessonsCount === 1 ? "aula" : "aulas"} serão
+                        excluídas)
+                      </span>
                     )}
                   </div>
                 </div>
