@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client/react";
 import { X, Loader2, Plus, Trash2, ClipboardList } from "lucide-react";
 import toast from "react-hot-toast";
+import { v4 as uuidv4 } from "uuid";
 
 import { CREATE_EXAM } from "../../../graphql/mutations/create/CreateExam";
 
@@ -33,7 +34,7 @@ export const CreateExamModal = ({
   });
 
   const [topics, setTopics] = useState<ITopic[]>([
-    { id: crypto.randomUUID(), name: "", description: "" },
+    { id: uuidv4(), name: "", description: "" },
   ]);
 
   const [errors, setErrors] = useState({
@@ -163,10 +164,7 @@ export const CreateExamModal = ({
   };
 
   const addTopic = () => {
-    setTopics((prev) => [
-      ...prev,
-      { id: crypto.randomUUID(), name: "", description: "" },
-    ]);
+    setTopics((prev) => [...prev, { id: uuidv4(), name: "", description: "" }]);
   };
 
   const removeTopic = (id: string) => {
