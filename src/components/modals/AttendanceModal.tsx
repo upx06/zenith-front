@@ -311,11 +311,6 @@ export const AttendanceModal = ({
               </button>
             </div>
           </div>
-          {!allMarked && enrollments.length > 0 && (
-            <p className="text-xs text-amber-600 mt-2 text-center sm:text-right">
-              Marque a presença de todos os alunos antes de salvar
-            </p>
-          )}
         </div>
       </div>
     </div>

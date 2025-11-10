@@ -216,24 +216,31 @@ export const Classroom = () => {
           )}
 
           <div className="space-y-4 md:space-y-6">
-            <div className="flex flex-row justify-between gap-4 pt-5 md:pt-0">
-              <div>
+            <div className="flex flex-row justify-between items-center gap-4 pt-5 md:pt-0">
+              <div className="flex-1 min-w-0">
                 <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase">
                   Salas de Aula
-                </h1>
-                <p className="text-slate-600 text-sm md:text-base">
+                </h1>{" "}
+                <p className="hidden sm:block text-slate-600 text-sm md:text-base">
                   Gerencie as salas de aula da instituição
                 </p>
               </div>
-              <div className="flex gap-2">
+
+              <div className="flex gap-2 flex-shrink-0">
                 <button
                   onClick={() => setShowFilters(!showFilters)}
                   disabled={isProcessing}
-                  className={`${
-                    showFilters || hasActiveFilters
-                      ? "bg-blue-600 text-white"
-                      : "bg-white text-slate-700 border border-slate-300"
-                  } hover:opacity-90 disabled:bg-slate-400 disabled:cursor-not-allowed px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-all text-sm md:text-base relative`}
+                  className={`
+                    ${
+                      showFilters || hasActiveFilters
+                        ? "bg-blue-600 text-white"
+                        : "bg-white text-slate-700 border border-slate-300"
+                    } 
+                    hover:opacity-90 disabled:bg-slate-400 disabled:cursor-not-allowed 
+                    rounded-lg flex items-center justify-center gap-2 transition-all 
+                    text-sm md:text-base relative
+                    w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2
+                  `}
                   title="Filtros"
                 >
                   <Filter className="w-4 h-4 md:w-5 md:h-5" />
@@ -242,10 +249,16 @@ export const Classroom = () => {
                     <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
                   )}
                 </button>
+
                 <button
                   onClick={() => setCreateClassroomModal(true)}
                   disabled={isProcessing}
-                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm md:text-base"
+                  className="
+                    bg-blue-600 hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed 
+                    text-white rounded-lg flex items-center justify-center gap-2 
+                    transition-colors text-sm md:text-base
+                    w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2
+                  "
                 >
                   <Plus className="w-4 h-4 md:w-5 md:h-5" />
                   <span className="hidden sm:inline">Nova Sala</span>

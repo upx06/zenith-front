@@ -194,23 +194,26 @@ export const Scheduling = () => {
       <div className="flex-1 flex flex-col min-w-0">
         <div className="flex-1 p-4 md:p-6 lg:p-8 mt-16 lg:mt-0">
           <div className="space-y-4 md:space-y-6">
-            <div className="flex flex-row justify-between gap-4 pt-5 md:pt-0">
-              <div>
+            <div className="flex flex-row justify-between items-center gap-4 pt-5 md:pt-0">
+              <div className="flex-1 min-w-0">
                 <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase">
-                  Agendamento de Salas
+                  Agendamentos
                 </h1>
-                <p className="text-slate-600 text-sm md:text-base">
+                <p className="hidden sm:block text-slate-600 text-sm md:text-base">
                   Gerencie a ocupação das salas por horário
                 </p>
               </div>
-              <div className="flex gap-2">
+
+              <div className="flex gap-2 flex-shrink-0">
                 <button
                   onClick={() => setShowFilters(!showFilters)}
                   className={`${
                     showFilters || hasActiveFilters
                       ? "bg-blue-600 text-white"
                       : "bg-white text-slate-700 border border-slate-300"
-                  } hover:opacity-90 px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-all text-sm md:text-base relative`}
+                  } hover:opacity-90 rounded-lg flex items-center justify-center gap-2 transition-all
+                    text-sm md:text-base relative
+                    w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2`}
                   title="Filtros"
                 >
                   <Filter className="w-4 h-4 md:w-5 md:h-5" />
@@ -221,7 +224,9 @@ export const Scheduling = () => {
                 </button>
                 <button
                   onClick={() => setShowRescheduleModal(true)}
-                  className="bg-slate-500 hover:bg-slate-600 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm md:text-base"
+                  className="bg-slate-500 hover:bg-slate-600 text-white rounded-lg flex items-center justify-center gap-2
+                    transition-colors text-sm md:text-base
+                    w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2"
                   title="Reagendar Grade"
                 >
                   <Copy className="w-4 h-4 md:w-5 md:h-5" />
@@ -233,7 +238,7 @@ export const Scheduling = () => {
             <div
               className={`overflow-hidden transition-all duration-300 ease-in-out ${
                 showFilters
-                  ? "max-h-96 opacity-100 mb-4"
+                  ? "opacity-100 mb-4"
                   : "max-h-0 opacity-0 pointer-events-none mb-0"
               }`}
             >

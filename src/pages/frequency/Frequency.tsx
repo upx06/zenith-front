@@ -204,23 +204,29 @@ export const Frequency = () => {
         <div className="flex-1 p-4 md:p-6 lg:p-8 mt-16 lg:mt-0">
           <div className="space-y-4 md:space-y-6">
             {/* Header */}
-            <div className="flex flex-row justify-between gap-4 pt-5 md:pt-0">
-              <div>
+            <div className="flex flex-row justify-between items-center gap-4 pt-5 md:pt-0">
+              <div className="flex-1 min-w-0">
                 <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase">
                   Frequências
                 </h1>
-                <p className="text-slate-600 text-sm md:text-base">
+                <p className="hidden sm:block text-slate-600 text-sm md:text-base">
                   Registre a presença dos alunos nas aulas
                 </p>
               </div>
-              <div className="flex gap-2">
+
+              <div className="flex gap-2 flex-shrink-0">
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className={`${
-                    showFilters || hasActiveFilters
-                      ? "bg-blue-600 text-white"
-                      : "bg-white text-slate-700 border border-slate-300"
-                  } hover:opacity-90 px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-all text-sm md:text-base relative`}
+                  className={`
+                    ${
+                      showFilters || hasActiveFilters
+                        ? "bg-blue-600 text-white"
+                        : "bg-white text-slate-700 border border-slate-300"
+                    }
+                    hover:opacity-90 rounded-lg flex items-center justify-center gap-2 transition-all
+                    text-sm md:text-base relative
+                    w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2
+                  `}
                 >
                   <Filter className="w-4 h-4 md:w-5 md:h-5" />
                   <span className="hidden sm:inline">Filtros</span>
@@ -244,23 +250,41 @@ export const Frequency = () => {
                   <div className="relative">
                     <input
                       type="date"
+                      placeholder="Data inicial"
                       value={filters.startDate}
                       onChange={(e) =>
                         handleFilterChange("startDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
                     />
+                    {filters.startDate && (
+                      <button
+                        onClick={() => handleFilterChange("startDate", "")}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
                   </div>
 
                   <div className="relative">
                     <input
                       type="date"
+                      placeholder="Data final"
                       value={filters.endDate}
                       onChange={(e) =>
                         handleFilterChange("endDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
                     />
+                    {filters.endDate && (
+                      <button
+                        onClick={() => handleFilterChange("endDate", "")}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
                   </div>
 
                   <div className="relative">
@@ -271,7 +295,7 @@ export const Frequency = () => {
                       }
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
                     >
-                      <option value="">Todos</option>
+                      <option value="">Todos os professores</option>
                       {teachers.map((teacher) => (
                         <option key={teacher.id} value={teacher.id}>
                           {teacher.name}
@@ -288,21 +312,20 @@ export const Frequency = () => {
                       }
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
                     >
-                      <option value="all">Todos</option>
+                      <option value="all">Todos os status</option>
                       <option value="pending">Pendentes</option>
                       <option value="completed">Concluídas</option>
                     </select>
                   </div>
-                  <div>
-                    <button
-                      onClick={handleClearFilters}
-                      disabled={!hasActiveFilters}
-                      className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center gap-2"
-                    >
-                      <X className="w-4 h-4" />
-                      Limpar Filtros
-                    </button>
-                  </div>
+
+                  <button
+                    onClick={handleClearFilters}
+                    disabled={!hasActiveFilters}
+                    className="w-full px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
+                  >
+                    <X className="w-4 h-4" />
+                    Limpar Filtros
+                  </button>
                 </div>
               </div>
             </div>
@@ -353,119 +376,165 @@ export const Frequency = () => {
             {/* Tabela de Aulas */}
             {!loading && lessons.length > 0 && (
               <div className="relative">
-                <div className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
+                <div className="md:bg-white md:rounded-xl md:border md:border-slate-200 md:shadow-md md:overflow-hidden">
                   {/* Header da tabela - Desktop */}
-                  <div className="hidden md:grid md:grid-cols-12 gap-4 bg-slate-50 border-b border-slate-200 px-4 md:px-6 py-3 text-sm font-semibold text-slate-700">
-                    <div className="col-span-1 flex items-center justify-center">
-                      Status
-                    </div>
+                  <div className="hidden md:grid md:grid-cols-12 gap-4 bg-slate-50 px-6 py-4 text-sm font-semibold text-slate-700 uppercase tracking-wide">
+                    <div className="col-span-1 text-center">Status</div>
                     <div className="col-span-3">Turma</div>
                     <div className="col-span-2">Data/Hora</div>
                     <div className="col-span-3">Professor</div>
                     <div className="col-span-2">Alunos</div>
-                    <div className="col-span-1"></div>
+                    <div className="col-span-1 text-right">Ação</div>
                   </div>
 
                   {/* Linhas da tabela */}
-                  <div className="divide-y divide-slate-100">
+                  <div className="flex flex-col gap-3 md:gap-0 md:divide-y md:divide-slate-100">
                     {lessons.map((lesson) => {
                       const lessonDate = new Date(lesson.datetime);
                       const enrollments = lesson.class.enrollments || [];
-                      const isPast = lessonDate < new Date();
 
                       return (
                         <div
                           key={lesson.id}
                           onClick={() => handleLessonClick(lesson)}
-                          className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 px-4 md:px-6 py-4 hover:bg-slate-50 transition-colors cursor-pointer"
+                          className="hover:bg-blue-50/40 transition-all duration-200 group cursor-pointer"
                         >
-                          {/* Status */}
-                          <div className="col-span-1 flex items-center justify-start md:justify-center">
-                            <div className="flex items-center gap-2">
-                              {lesson.attendanceTaken ? (
-                                <div className="flex items-center gap-2">
-                                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                                  <span className="text-xs font-medium text-green-700 md:hidden">
-                                    Chamada Feita
-                                  </span>
-                                  <CheckCircle2 className="w-5 h-5 text-green-600 hidden md:block" />
+                          {/* Layout Mobile */}
+                          <div className="md:hidden bg-white rounded-xl shadow-sm border border-slate-200 p-4 hover:shadow-md hover:border-slate-300 transition-all duration-200 mb-3">
+                            <div className="flex items-start justify-between mb-4">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center shrink-0">
+                                  <BookOpen className="w-5 h-5 text-white" />
                                 </div>
-                              ) : (
-                                <div className="flex items-center gap-2">
-                                  <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
-                                  <span className="text-xs font-medium text-amber-700 md:hidden">
-                                    Pendente
-                                  </span>
-                                  <ClipboardCheck className="w-5 h-5 text-amber-600 hidden md:block" />
+                                <div>
+                                  <h3 className="font-semibold text-slate-800 text-sm">
+                                    {lesson.class.name}
+                                  </h3>
+                                  <p className="text-xs text-slate-600">
+                                    {lesson.class.level} -{" "}
+                                    {lesson.class.language.name}
+                                  </p>
                                 </div>
-                              )}
-                              {isPast && !lesson.attendanceTaken && (
-                                <XCircle className="w-4 h-4 text-red-500" />
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Turma */}
-                          <div className="col-span-3 flex items-center gap-3">
-                            <div className="w-10 h-10 bg-blue-600 rounded-full hidden md:flex items-center justify-center shrink-0">
-                              <BookOpen className="w-5 h-5 text-white" />
-                            </div>
-                            <div>
-                              <h3 className="font-semibold text-slate-800 text-sm md:text-base">
-                                {lesson.class.name}
-                              </h3>
-                              <p className="text-xs md:text-sm text-slate-600">
-                                {lesson.class.level} -{" "}
-                                {lesson.class.language.name}
-                              </p>
-                            </div>
-                          </div>
-
-                          {/* Data/Hora */}
-                          <div className="col-span-2 flex flex-col justify-center">
-                            <div className="flex items-center gap-2 text-sm text-slate-600">
-                              <Calendar className="w-4 h-4 text-slate-400" />
-                              {lessonDate.toLocaleDateString("pt-BR")}
-                            </div>
-                            <div className="flex items-center gap-2 text-sm text-slate-600 mt-1">
-                              <Clock className="w-4 h-4 text-slate-400" />
-                              {lessonDate.toLocaleTimeString("pt-BR", {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              })}
-                            </div>
-                          </div>
-
-                          {/* Professor */}
-                          <div className="col-span-3 flex items-center">
-                            <div className="flex items-center gap-2 text-sm text-slate-600">
-                              <Users className="w-4 h-4 text-slate-400" />
-                              <span className="truncate">
-                                {lesson.teacher.name}
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* Alunos */}
-                          <div className="col-span-2 flex items-center">
-                            <div className="flex items-center gap-2">
-                              <div className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium">
-                                {enrollments.length} aluno(s)
                               </div>
                             </div>
+
+                            <div className="space-y-2 mb-4">
+                              <div className="flex items-center gap-2 text-slate-600">
+                                <Calendar className="w-4 h-4 text-slate-400" />
+                                <span className="text-sm">
+                                  {lessonDate.toLocaleDateString("pt-BR")} às{" "}
+                                  {lessonDate.toLocaleTimeString("pt-BR", {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  })}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2 text-slate-600">
+                                <Users className="w-4 h-4 text-slate-400" />
+                                <span className="text-sm">
+                                  {lesson.teacher.name}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <CheckCircle2 className="w-4 h-4 text-slate-600" />
+                                <span className="text-sm text-slate-600">
+                                  {enrollments.length} aluno(s)
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="flex gap-2 pt-2 border-t border-slate-100">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleLessonClick(lesson);
+                                }}
+                                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 border border-slate-200 rounded-lg transition-colors text-sm font-medium"
+                              >
+                                {lesson.attendanceTaken
+                                  ? "Ver chamada"
+                                  : "Registrar"}
+                              </button>
+                            </div>
                           </div>
 
-                          {/* Ação */}
-                          <div className="col-span-1 flex items-center justify-end">
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleLessonClick(lesson);
-                              }}
-                              className="text-blue-600 hover:text-blue-700 text-sm font-medium hidden md:block"
-                            >
-                              {lesson.attendanceTaken ? "Editar" : "Registrar"}
-                            </button>
+                          {/* Layout Desktop */}
+                          <div className="hidden md:grid md:grid-cols-12 gap-4 px-6 py-5">
+                            {/* Status */}
+                            <div className="col-span-1 flex items-center justify-center">
+                              {lesson.attendanceTaken ? (
+                                <CheckCircle2 className="w-5 h-5 text-green-600" />
+                              ) : (
+                                <ClipboardCheck className="w-5 h-5 text-amber-600" />
+                              )}
+                            </div>
+
+                            {/* Turma */}
+                            <div className="col-span-3 flex items-center">
+                              <div>
+                                <h3 className="font-semibold text-slate-800 text-base group-hover:text-blue-700 transition-colors">
+                                  {lesson.class.name}
+                                </h3>
+                                <p className="text-sm text-slate-600">
+                                  {lesson.class.level} -{" "}
+                                  {lesson.class.language.name}
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* Data/Hora */}
+                            <div className="col-span-2 flex flex-col justify-center">
+                              <div className="flex items-center gap-2 text-sm text-slate-700">
+                                <Calendar className="w-4 h-4 text-slate-400" />
+                                {lessonDate.toLocaleDateString("pt-BR")}
+                              </div>
+                              <div className="flex items-center gap-2 text-sm text-slate-600 mt-1">
+                                <Clock className="w-4 h-4 text-slate-400" />
+                                {lessonDate.toLocaleTimeString("pt-BR", {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })}
+                              </div>
+                            </div>
+
+                            {/* Professor */}
+                            <div className="col-span-3 flex items-center">
+                              <div className="flex items-center gap-2 text-sm text-slate-700">
+                                <Users className="w-4 h-4 text-slate-400" />
+                                <span className="truncate font-medium">
+                                  {lesson.teacher.name}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Alunos */}
+                            <div className="col-span-2 flex items-center justify-center">
+                              <span className="text-sm font-medium text-slate-700">
+                                {enrollments.length} aluno(s)
+                              </span>
+                            </div>
+
+                            {/* Ação */}
+                            <div className="col-span-1 flex items-center justify-end">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleLessonClick(lesson);
+                                }}
+                                className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-blue-200"
+                                title={
+                                  lesson.attendanceTaken
+                                    ? "Editar"
+                                    : "Registrar"
+                                }
+                              >
+                                {lesson.attendanceTaken ? (
+                                  <Pencil className="w-4 h-4" />
+                                ) : (
+                                  <ClipboardCheck className="w-4 h-4" />
+                                )}
+                              </button>
+                            </div>
                           </div>
                         </div>
                       );

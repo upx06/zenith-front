@@ -1,5 +1,13 @@
 import { useEffect, useState, useCallback } from "react";
-import { X, Award, BookOpen, User, Save, Loader2, AlertCircle } from "lucide-react";
+import {
+  X,
+  Award,
+  BookOpen,
+  User,
+  Save,
+  Loader2,
+  AlertCircle,
+} from "lucide-react";
 import { UPDATE_EXAM } from "../../graphql/mutations/update/UpdateExam";
 import type { IExam } from "../../interfaces/IExam";
 import { useMutation } from "@apollo/client/react";
@@ -241,24 +249,15 @@ export const GradesControlModal = ({
                     <div className="bg-slate-50 px-5 py-4 border-b border-slate-200">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
-                            <User className="w-5 h-5 text-blue-600" />
-                          </div>
                           <div>
                             <h3 className="font-semibold text-slate-800">
                               {enrollment.student.name}
                             </h3>
-                            <p className="text-sm text-slate-600">
-                              {enrollment.student.email}
-                            </p>
                           </div>
                         </div>
                         <div className="text-right">
                           <div className="text-sm text-slate-600">
                             {studentAssignedGrades} de {topics.length}
-                          </div>
-                          <div className="text-xs text-slate-500">
-                            tópicos avaliados
                           </div>
                         </div>
                       </div>
@@ -266,7 +265,7 @@ export const GradesControlModal = ({
 
                     {/* Topics */}
                     <div className="p-5 space-y-4">
-                      {topics.map((topic, index) => {
+                      {topics.map((topic) => {
                         const currentGrade = studentGrades[topic.id];
 
                         return (
@@ -276,32 +275,26 @@ export const GradesControlModal = ({
                           >
                             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                               <div className="flex items-center gap-3 flex-1 min-w-0">
-                                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
-                                  <span className="text-blue-700 font-semibold text-sm">
-                                    {index + 1}
-                                  </span>
-                                </div>
                                 <div className="flex-1 min-w-0">
-                                  <div className="font-medium text-slate-800 truncate">
+                                  <div className="font-medium text-slate-800 break-words">
                                     {topic.name}
                                   </div>
                                 </div>
-                              </div>
 
-                              {/* Grade Buttons */}
-                              <div className="flex gap-2">
-                                {GRADE_OPTIONS.map((option) => (
-                                  <button
-                                    key={option.value}
-                                    onClick={() =>
-                                      handleGradeChange(
-                                        enrollment.id,
-                                        topic.id,
-                                        option.value
-                                      )
-                                    }
-                                    disabled={loadingExam}
-                                    className={`
+                                {/* Grade Buttons */}
+                                <div className="flex gap-2">
+                                  {GRADE_OPTIONS.map((option) => (
+                                    <button
+                                      key={option.value}
+                                      onClick={() =>
+                                        handleGradeChange(
+                                          enrollment.id,
+                                          topic.id,
+                                          option.value
+                                        )
+                                      }
+                                      disabled={loadingExam}
+                                      className={`
                                       px-3 py-2 rounded-lg text-sm font-medium transition-all
                                       ${
                                         currentGrade === option.value
@@ -314,10 +307,11 @@ export const GradesControlModal = ({
                                       }
                                       disabled:opacity-50 disabled:cursor-not-allowed
                                     `}
-                                  >
-                                    {option.value}
-                                  </button>
-                                ))}
+                                    >
+                                      {option.value}
+                                    </button>
+                                  ))}
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -333,11 +327,6 @@ export const GradesControlModal = ({
 
         <div className="border-t border-slate-200 p-6 bg-slate-50">
           <div className="flex flex-col sm:flex-row items-center gap-3">
-            <div className="flex-1 text-sm text-slate-600">
-              {assignedGrades > 0 && (
-                <span>Você pode salvar mesmo sem completar todas as notas</span>
-              )}
-            </div>
             <div className="flex gap-3 w-full sm:w-auto">
               <button
                 onClick={closeGradesControlModal}
@@ -365,11 +354,11 @@ export const GradesControlModal = ({
               </button>
             </div>
           </div>
-          {assignedGrades === 0 && enrollments.length > 0 && (
+          {/* {assignedGrades === 0 && enrollments.length > 0 && (
             <p className="text-xs text-amber-600 mt-2 text-center sm:text-right">
               Atribua pelo menos uma nota antes de salvar
             </p>
-          )}
+          )} */}
           {errorExam && (
             <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg flex items-start gap-2">
               <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
@@ -378,7 +367,8 @@ export const GradesControlModal = ({
                   Erro ao salvar notas
                 </p>
                 <p className="text-xs text-red-700 mt-1">
-                  {errorExam.message || "Ocorreu um erro ao tentar salvar as notas. Por favor, tente novamente."}
+                  {errorExam.message ||
+                    "Ocorreu um erro ao tentar salvar as notas. Por favor, tente novamente."}
                 </p>
               </div>
             </div>

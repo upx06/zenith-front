@@ -24,16 +24,17 @@ export const ClassReport = () => {
 
   const classes = classesData?.listClasses?.results || [];
 
-  useMemo(() => {
-    if (classes.length > 0 && !selectedClassId) {
-      const classesWithStudents = classes.filter(
-        (c) => c.enrollments && c.enrollments.length > 0
-      );
-      if (classesWithStudents.length > 0) {
-        setSelectedClassId(classesWithStudents[0].id);
-      }
-    }
-  }, [classes, selectedClassId]);
+  // REMOVER este useMemo que seleciona automaticamente a primeira turma
+  // useMemo(() => {
+  //   if (classes.length > 0 && !selectedClassId) {
+  //     const classesWithStudents = classes.filter(
+  //       (c) => c.enrollments && c.enrollments.length > 0
+  //     );
+  //     if (classesWithStudents.length > 0) {
+  //       setSelectedClassId(classesWithStudents[0].id);
+  //     }
+  //   }
+  // }, [classes, selectedClassId]);
 
   const { data: enrollmentsData, loading: enrollmentsLoading } =
     useQuery<IListClassEnrollments>(LIST_SPECIFIC_ENROLLMENTS, {
@@ -114,30 +115,30 @@ export const ClassReport = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Users className="w-5 h-5 text-blue-600" />
-                <h2 className="text-lg font-semibold text-slate-800">
-                  Selecione a Turma
-                </h2>
+            <div className="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                <div className="flex items-center gap-2 text-slate-700 min-w-fit">
+                  <Users className="w-5 h-5 text-blue-600" />
+                  <span className="text-sm font-medium">Turma:</span>
+                </div>
+                <select
+                  value={selectedClassId}
+                  onChange={(e) => setSelectedClassId(e.target.value)}
+                  disabled={classesLoading}
+                  className="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  <option value="">Selecione uma turma</option>
+                  {classes
+                    .filter((c) => c.enrollments && c.enrollments.length > 0)
+                    .map((classItem) => (
+                      <option key={classItem.id} value={classItem.id}>
+                        {classItem.name} - {classItem.level} (
+                        {classItem.enrollments?.length || 0} aluno
+                        {classItem.enrollments?.length === 1 ? "" : "s"})
+                      </option>
+                    ))}
+                </select>
               </div>
-              <select
-                value={selectedClassId}
-                onChange={(e) => setSelectedClassId(e.target.value)}
-                disabled={classesLoading}
-                className="w-full max-w-md px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <option value="">Selecione uma turma</option>
-                {classes
-                  .filter((c) => c.enrollments && c.enrollments.length > 0)
-                  .map((classItem) => (
-                    <option key={classItem.id} value={classItem.id}>
-                      {classItem.name} - {classItem.level} (
-                      {classItem.enrollments?.length || 0} aluno
-                      {classItem.enrollments?.length === 1 ? "" : "s"})
-                    </option>
-                  ))}
-              </select>
             </div>
 
             {loading && selectedClassId && (
@@ -157,97 +158,144 @@ export const ClassReport = () => {
             )}
 
             {!loading && selectedClassId && selectedClass && (
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-4 md:px-6 py-3 border-b border-slate-200">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <BookOpen className="h-5 w-5 text-blue-600" />
-                      <span className="text-sm font-semibold text-slate-700">
-                        {selectedClass.name} - {selectedClass.level}
+              <div className="relative">
+                <div className="md:bg-white md:rounded-xl md:border md:border-slate-200 md:shadow-md md:overflow-hidden">
+                  {/* Header da turma */}
+                  <div className="hidden md:block bg-slate-100 px-4 md:px-6 py-3 border-b border-slate-200">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <BookOpen className="h-5 w-5 text-blue-600" />
+                        <span className="text-sm font-semibold text-slate-700">
+                          {selectedClass.name} - {selectedClass.level}
+                        </span>
+                      </div>
+                      <span className="text-xs text-slate-600">
+                        {studentsReport.length} aluno
+                        {studentsReport.length === 1 ? "" : "s"}
                       </span>
                     </div>
-                    <span className="text-xs text-slate-600">
-                      {studentsReport.length} aluno
-                      {studentsReport.length === 1 ? "" : "s"}
-                    </span>
                   </div>
-                </div>
 
-                {studentsReport.length === 0 ? (
-                  <div className="p-8 text-center">
-                    <p className="text-slate-600">
-                      Nenhum aluno encontrado nesta turma
-                    </p>
-                  </div>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead className="bg-slate-50 border-b border-slate-200">
-                        <tr>
-                          <th className="px-4 md:px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">
-                            Aluno
-                          </th>
-                          <th className="px-4 md:px-6 py-3 text-center text-xs font-semibold text-slate-700 uppercase tracking-wider">
-                            <div className="flex items-center justify-center gap-1">
-                              <BookOpen className="w-4 h-4" />
-                              <span>Total de Aulas</span>
-                            </div>
-                          </th>
-                          <th className="px-4 md:px-6 py-3 text-center text-xs font-semibold text-slate-700 uppercase tracking-wider">
-                            <div className="flex items-center justify-center gap-1">
-                              <CheckCircle className="w-4 h-4" />
-                              <span>Presenças</span>
-                            </div>
-                          </th>
-                          <th className="px-4 md:px-6 py-3 text-center text-xs font-semibold text-slate-700 uppercase tracking-wider">
-                            <div className="flex items-center justify-center gap-1">
-                              <XCircle className="w-4 h-4" />
-                              <span>Faltas</span>
-                            </div>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-200">
+                  {studentsReport.length === 0 ? (
+                    <div className="p-8 text-center">
+                      <p className="text-slate-600">
+                        Nenhum aluno encontrado nesta turma
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      {/* Header da tabela - Desktop */}
+                      <div className="hidden md:grid md:grid-cols-12 gap-4 bg-slate-50 px-6 py-4 text-sm font-semibold text-slate-700 uppercase tracking-wide">
+                        <div className="col-span-5">Aluno</div>
+                        <div className="col-span-2 text-center">
+                          Total de Aulas
+                        </div>
+                        <div className="col-span-2 text-center">Presenças</div>
+                        <div className="col-span-3 text-center">Faltas</div>
+                      </div>
+
+                      {/* Linhas da tabela */}
+                      <div className="flex flex-col gap-3 md:gap-0 md:divide-y md:divide-slate-100">
                         {studentsReport.map((student) => (
-                          <tr
+                          <div
                             key={student.studentId}
-                            className="hover:bg-slate-50 transition-colors"
+                            className="hover:bg-blue-50/40 transition-all duration-200 group"
                           >
-                            <td className="px-4 md:px-6 py-4">
-                              <div className="flex items-center">
-                                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                                  <span className="text-sm font-semibold text-blue-600">
+                            {/* Layout Mobile */}
+                            <div className="md:hidden px-4 py-4 space-y-3 rounded-lg border border-slate-200 shadow-sm">
+                              {/* Header do Card */}
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shrink-0 shadow-sm">
+                                  <span className="text-base font-bold text-white">
                                     {student.studentName
                                       .charAt(0)
                                       .toUpperCase()}
                                   </span>
                                 </div>
-                                <span className="text-sm font-medium text-slate-900">
-                                  {student.studentName}
-                                </span>
+                                <div className="flex-1">
+                                  <h3 className="font-semibold text-slate-800 text-sm">
+                                    {student.studentName}
+                                  </h3>
+                                </div>
                               </div>
-                            </td>
-                            <td className="px-4 md:px-6 py-4 text-center">
-                              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">
-                                {student.totalLessons}
-                              </span>
-                            </td>
-                            <td className="px-4 md:px-6 py-4 text-center">
-                              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-                                {student.presences}
-                              </span>
-                            </td>
-                            <td className="px-4 md:px-6 py-4 text-center">
-                              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
-                                {student.absences}
-                              </span>
-                            </td>
-                          </tr>
+
+                              {/* Métricas */}
+                              <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100">
+                                <div className="flex flex-col items-center p-2 bg-slate-50 rounded-lg">
+                                  <BookOpen className="w-4 h-4 text-slate-400 mb-1" />
+                                  <span className="text-xs text-slate-500 mb-1">
+                                    Aulas
+                                  </span>
+                                  <span className="text-sm font-bold text-slate-700">
+                                    {student.totalLessons}
+                                  </span>
+                                </div>
+                                <div className="flex flex-col items-center p-2 bg-blue-50 rounded-lg">
+                                  <CheckCircle className="w-4 h-4 text-blue-500 mb-1" />
+                                  <span className="text-xs text-blue-600 mb-1">
+                                    Presenças
+                                  </span>
+                                  <span className="text-sm font-bold text-blue-700">
+                                    {student.presences}
+                                  </span>
+                                </div>
+                                <div className="flex flex-col items-center p-2 bg-red-50 rounded-lg">
+                                  <XCircle className="w-4 h-4 text-red-500 mb-1" />
+                                  <span className="text-xs text-red-600 mb-1">
+                                    Faltas
+                                  </span>
+                                  <span className="text-sm font-bold text-red-700">
+                                    {student.absences}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Layout Desktop */}
+                            <div className="hidden md:grid md:grid-cols-12 gap-4 px-6 py-5">
+                              {/* Nome do Aluno */}
+                              <div className="col-span-5 flex items-center">
+                                <h3 className="font-semibold text-slate-800 text-base group-hover:text-blue-700 transition-colors">
+                                  {student.studentName}
+                                </h3>
+                              </div>
+
+                              {/* Total de Aulas */}
+                              <div className="col-span-2 flex items-center justify-center">
+                                <div className="flex items-center gap-2">
+                                  <BookOpen className="w-4 h-4 text-slate-400" />
+                                  <span className="text-sm font-medium text-slate-700">
+                                    {student.totalLessons}
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Presenças */}
+                              <div className="col-span-2 flex items-center justify-center">
+                                <div className="flex items-center gap-2">
+                                  <CheckCircle className="w-4 h-4 text-green-500" />
+                                  <span className="text-sm font-medium text-slate-700">
+                                    {student.presences}
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Faltas */}
+                              <div className="col-span-3 flex items-center justify-center">
+                                <div className="flex items-center gap-2">
+                                  <XCircle className="w-4 h-4 text-red-500" />
+                                  <span className="text-sm font-medium text-slate-700">
+                                    {student.absences}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
             )}
 

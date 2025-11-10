@@ -216,7 +216,7 @@ export const CreateExamModal = ({
         )}
 
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-white">
+        <div className="bg-blue-600 p-6 text-white">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center shrink-0">
@@ -312,7 +312,9 @@ export const CreateExamModal = ({
                       formData.evaluationType === "class"
                         ? "border-blue-500 bg-blue-50"
                         : "border-slate-300 hover:border-slate-400"
-                    } ${loadingCreateExam ? "opacity-50 cursor-not-allowed" : ""}`}
+                    } ${
+                      loadingCreateExam ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                   >
                     <input
                       type="radio"
@@ -337,9 +339,11 @@ export const CreateExamModal = ({
                   <label
                     className={`flex items-center gap-2 px-4 py-2.5 border-2 rounded-lg cursor-pointer transition-all whitespace-nowrap ${
                       formData.evaluationType === "student"
-                        ? "border-purple-500 bg-purple-50"
+                        ? "border-red-500 bg-red-50"
                         : "border-slate-300 hover:border-slate-400"
-                    } ${loadingCreateExam ? "opacity-50 cursor-not-allowed" : ""}`}
+                    } ${
+                      loadingCreateExam ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                   >
                     <input
                       type="radio"
@@ -348,12 +352,12 @@ export const CreateExamModal = ({
                       checked={formData.evaluationType === "student"}
                       onChange={() => handleEvaluationTypeChange("student")}
                       disabled={loadingCreateExam}
-                      className="w-4 h-4 text-purple-600"
+                      className="w-4 h-4 text-red-600"
                     />
                     <span
                       className={`font-medium text-sm ${
                         formData.evaluationType === "student"
-                          ? "text-purple-700"
+                          ? "text-red-700"
                           : "text-slate-700"
                       }`}
                     >
@@ -411,8 +415,8 @@ export const CreateExamModal = ({
                         <option value="">Selecione uma matrícula</option>
                         {enrollments.map((enrollment) => (
                           <option key={enrollment.id} value={enrollment.id}>
-                            {enrollment.student.name} - {enrollment.class.name} (
-                            {enrollment.class.level})
+                            {enrollment.student.name} - {enrollment.class.name}{" "}
+                            ({enrollment.class.level})
                           </option>
                         ))}
                       </select>

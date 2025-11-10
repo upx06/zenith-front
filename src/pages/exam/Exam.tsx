@@ -53,7 +53,7 @@ export const Exam = () => {
       before: before || undefined,
       filter: buildEvaluationFilter(),
     },
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "network-only",
   });
 
   function buildEvaluationFilter() {
@@ -173,23 +173,30 @@ export const Exam = () => {
         <div className="flex-1 p-4 md:p-6 lg:p-8 mt-16 lg:mt-0">
           <div className="space-y-4 md:space-y-6">
             {/* Header */}
-            <div className="flex flex-row justify-between gap-4 pt-5 md:pt-0">
-              <div>
+            <div className="flex flex-row justify-between items-center gap-4 pt-5 md:pt-0">
+              <div className="flex-1 min-w-0">
                 <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase">
                   Avaliações
                 </h1>
-                <p className="text-slate-600 text-sm md:text-base">
+                <p className="hidden sm:block text-slate-600 text-sm md:text-base">
                   Gerencie as avaliações dos alunos
                 </p>
               </div>
-              <div className="flex gap-2">
+
+              <div className="flex gap-2 flex-shrink-0">
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className={`${
-                    showFilters || hasActiveFilters
-                      ? "bg-blue-600 text-white"
-                      : "bg-white text-slate-700 border border-slate-300"
-                  } hover:opacity-90 px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-all text-sm md:text-base relative`}
+                  className={`
+                    ${
+                      showFilters || hasActiveFilters
+                        ? "bg-blue-600 text-white"
+                        : "bg-white text-slate-700 border border-slate-300"
+                    }
+                    hover:opacity-90 rounded-lg flex items-center justify-center gap-2 transition-all
+                    text-sm md:text-base relative
+                    w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2
+                  `}
+                  title="Filtros"
                 >
                   <Filter className="w-4 h-4 md:w-5 md:h-5" />
                   <span className="hidden sm:inline">Filtros</span>
@@ -197,9 +204,14 @@ export const Exam = () => {
                     <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
                   )}
                 </button>
+
                 <button
                   onClick={() => setCreateExamModal(true)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm md:text-base"
+                  className="
+                    bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center justify-center gap-2
+                    transition-colors text-sm md:text-base
+                    w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2
+                  "
                 >
                   <Plus className="w-4 h-4 md:w-5 md:h-5" />
                   <span className="hidden sm:inline">Nova Avaliação</span>
@@ -216,11 +228,8 @@ export const Exam = () => {
               }`}
             >
               <div className="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">
-                      Nome
-                    </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+                  <div className="relative">
                     <input
                       type="text"
                       placeholder="Filtrar por nome..."
@@ -228,42 +237,59 @@ export const Exam = () => {
                       onChange={(e) =>
                         handleFilterChange("name", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
                     />
+                    {filters.name && (
+                      <button
+                        onClick={() => handleFilterChange("name", "")}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">
-                      Data Inicial
-                    </label>
+                  <div className="relative">
                     <input
                       type="date"
+                      placeholder="Data inicial"
                       value={filters.startDate}
                       onChange={(e) =>
                         handleFilterChange("startDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
                     />
+                    {filters.startDate && (
+                      <button
+                        onClick={() => handleFilterChange("startDate", "")}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">
-                      Data Final
-                    </label>
+                  <div className="relative">
                     <input
                       type="date"
+                      placeholder="Data final"
                       value={filters.endDate}
                       onChange={(e) =>
                         handleFilterChange("endDate", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
                     />
+                    {filters.endDate && (
+                      <button
+                        onClick={() => handleFilterChange("endDate", "")}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">
-                      Professor
-                    </label>
+                  <div className="relative">
                     <select
                       value={filters.teacherId}
                       onChange={(e) =>
@@ -271,7 +297,7 @@ export const Exam = () => {
                       }
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
                     >
-                      <option value="">Todos</option>
+                      <option value="">Todos os professores</option>
                       {/* {teachers.map((teacher: any) => (
                         <option key={teacher.id} value={teacher.id}>
                           {teacher.name}
@@ -280,10 +306,7 @@ export const Exam = () => {
                     </select>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">
-                      Tipo
-                    </label>
+                  <div className="relative">
                     <select
                       value={filters.type}
                       onChange={(e) =>
@@ -291,18 +314,16 @@ export const Exam = () => {
                       }
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
                     >
-                      <option value="all">Todos</option>
+                      <option value="all">Todos os tipos</option>
                       <option value="class">Turma Completa</option>
                       <option value="student">Aluno Específico</option>
                     </select>
                   </div>
-                </div>
 
-                <div className="mt-3 flex justify-end">
                   <button
                     onClick={handleClearFilters}
                     disabled={!hasActiveFilters}
-                    className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center gap-2"
+                    className="w-full px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
                   >
                     <X className="w-4 h-4" />
                     Limpar Filtros
@@ -364,9 +385,9 @@ export const Exam = () => {
             {/* Tabela de Avaliações */}
             {!loading && exams.length > 0 && (
               <div className="relative">
-                <div className="bg-white rounded-xl border border-slate-200 shadow-md overflow-hidden">
+                <div className="md:bg-white md:rounded-xl md:border md:border-slate-200 md:shadow-md md:overflow-hidden">
                   {/* Header da tabela - Desktop */}
-                  <div className="hidden md:grid md:grid-cols-12 gap-4 bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200 px-6 py-4 text-sm font-semibold text-slate-700 uppercase tracking-wide">
+                  <div className="hidden md:grid md:grid-cols-12 gap-4 bg-slate-50 px-6 py-4 text-sm font-semibold text-slate-700 uppercase tracking-wide">
                     <div className="col-span-3">Nome</div>
                     <div className="col-span-2">Professor</div>
                     <div className="col-span-2">Tipo</div>
@@ -375,108 +396,199 @@ export const Exam = () => {
                   </div>
 
                   {/* Linhas da tabela */}
-                  <div className="divide-y divide-slate-100">
+                  <div className="flex flex-col gap-3 md:gap-0 md:divide-y md:divide-slate-100">
                     {exams.map((exam: IExam) => {
                       const isClassEvaluation = !!exam.class;
 
                       return (
                         <div
                           key={exam.id}
-                          className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 px-4 md:px-6 py-5 hover:bg-blue-50/40 transition-all duration-200 group"
+                          className="hover:bg-blue-50/40 transition-all duration-200 group"
                         >
-                          {/* Nome */}
-                          <div className="col-span-3 flex items-center gap-3">
-                            <div className="w-11 h-11 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl hidden md:flex items-center justify-center shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
-                              <ClipboardList className="w-5 h-5 text-white" />
+                          {/* Layout Mobile */}
+                          <div className="md:hidden bg-white rounded-xl shadow-sm border border-slate-200 p-4 hover:shadow-md hover:border-slate-300 transition-all duration-200">
+                            {/* Header do Card */}
+                            <div className="flex items-start justify-between mb-4">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center shrink-0">
+                                  <ClipboardList className="w-5 h-5 text-white" />
+                                </div>
+                                <div>
+                                  <h3 className="font-semibold text-slate-800 text-sm">
+                                    {exam.name}
+                                  </h3>
+                                  {isClassEvaluation ? (
+                                    <span className="text-xs text-blue-600 font-medium">
+                                      Turma
+                                    </span>
+                                  ) : (
+                                    <span className="text-xs text-red-600 font-medium">
+                                      Aluno
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
                             </div>
-                            <div>
-                              <h3 className="font-semibold text-slate-800 text-sm md:text-base group-hover:text-blue-700 transition-colors">
-                                {exam.name}
-                              </h3>
-                              <p className="text-xs text-slate-500 mt-0.5">
-                                {exam.topics.length} tópico(s)
-                              </p>
+
+                            {/* Info */}
+                            <div className="space-y-2 mb-4">
+                              <div className="flex items-center gap-2 text-slate-600">
+                                <GraduationCap className="w-4 h-4 text-slate-400" />
+                                <span className="text-sm">
+                                  {exam.teacher.name}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2 text-slate-600">
+                                {isClassEvaluation ? (
+                                  <Users className="w-4 h-4 text-slate-400" />
+                                ) : (
+                                  <User className="w-4 h-4 text-slate-400" />
+                                )}
+                                <span className="text-sm">
+                                  {isClassEvaluation
+                                    ? exam.class?.name
+                                    : exam.enrollment?.student.name}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Ações */}
+                            <div className="flex gap-2 pt-2 border-t border-slate-100">
+                              <button
+                                onClick={() => {
+                                  setSelectedExam(exam);
+                                  setGradesControlModal(true);
+                                }}
+                                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 border border-slate-200 rounded-lg transition-colors text-sm font-medium"
+                                title="Controle de Notas"
+                              >
+                                Notas
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setSelectedExam(exam);
+                                  setDetailsExamModal(true);
+                                }}
+                                className="flex items-center justify-center px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg transition-colors"
+                                title="Ver detalhes"
+                              >
+                                <Eye className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setSelectedExam(exam);
+                                  setUpdateExamModal(true);
+                                }}
+                                className="flex items-center justify-center px-3 py-2 text-red-600 hover:bg-red-50 border border-red-200 rounded-lg transition-colors"
+                                title="Editar"
+                              >
+                                <Pencil className="w-4 h-4" />
+                              </button>
+                              <button
+                                className="flex items-center justify-center px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg transition-colors"
+                                title="Excluir"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
                             </div>
                           </div>
 
-                          {/* Professor */}
-                          <div className="col-span-2 flex items-center">
-                            <div className="flex items-center gap-2 text-sm text-slate-700">
-                              <GraduationCap className="w-4 h-4 text-slate-400" />
-                              <span className="truncate font-medium">
-                                {exam.teacher.name}
+                          {/* Layout Desktop */}
+                          <div className="hidden md:grid md:grid-cols-12 gap-4 px-6 py-5">
+                            {/* Nome */}
+                            <div className="col-span-3 flex items-center gap-3">
+                              {/* <div className="w-11 h-11 bg-blue-600 rounded-xl flex items-center justify-center shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
+                                <ClipboardList className="w-5 h-5 text-white" />
+                              </div> */}
+                              <div>
+                                <h3 className="font-semibold text-slate-800 text-base group-hover:text-blue-700 transition-colors">
+                                  {exam.name}
+                                </h3>
+                                {/* <p className="text-xs text-slate-500 mt-0.5">
+                                  {exam.topics.length} tópico(s)
+                                </p> */}
+                              </div>
+                            </div>
+
+                            {/* Professor */}
+                            <div className="col-span-2 flex items-center">
+                              <div className="flex items-center gap-2 text-sm text-slate-700">
+                                <GraduationCap className="w-4 h-4 text-slate-400" />
+                                <span className="truncate font-medium">
+                                  {exam.teacher.name}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Tipo */}
+                            <div className="col-span-2 flex items-center">
+                              <div className="flex items-center gap-2">
+                                {isClassEvaluation ? (
+                                  <div className="flex items-center gap-1.5 text-blue-700 px-3 py-1.5 rounded-lg shadow-sm border border-blue-200">
+                                    <Users className="w-3.5 h-3.5" />
+                                    <span className="text-xs font-semibold">
+                                      Turma
+                                    </span>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-1.5 text-red-700 px-3 py-1.5 rounded-lg shadow-sm border border-red-200">
+                                    <User className="w-3.5 h-3.5" />
+                                    <span className="text-xs font-semibold">
+                                      Aluno
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Alvo */}
+                            <div className="col-span-2 flex items-center">
+                              <span className="text-sm text-slate-700 truncate font-medium">
+                                {isClassEvaluation
+                                  ? exam.class?.name
+                                  : exam.enrollment?.student.name}
                               </span>
                             </div>
-                          </div>
 
-                          {/* Tipo */}
-                          <div className="col-span-2 flex items-center">
-                            <div className="flex items-center gap-2">
-                              {isClassEvaluation ? (
-                                <div className="flex items-center gap-1.5 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-700 px-3 py-1.5 rounded-lg shadow-sm border border-blue-200">
-                                  <Users className="w-3.5 h-3.5" />
-                                  <span className="text-xs font-semibold">
-                                    Turma
-                                  </span>
-                                </div>
-                              ) : (
-                                <div className="flex items-center gap-1.5 bg-gradient-to-r from-green-100 to-green-50 text-green-700 px-3 py-1.5 rounded-lg shadow-sm border border-green-200">
-                                  <User className="w-3.5 h-3.5" />
-                                  <span className="text-xs font-semibold">
-                                    Aluno
-                                  </span>
-                                </div>
-                              )}
+                            {/* Ações */}
+                            <div className="col-span-3 flex items-center gap-1.5 justify-end">
+                              <button
+                                onClick={() => {
+                                  setSelectedExam(exam);
+                                  setGradesControlModal(true);
+                                }}
+                                className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-blue-200"
+                                title="Controle de Notas"
+                              >
+                                <Award className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setSelectedExam(exam);
+                                  setDetailsExamModal(true);
+                                }}
+                                className="p-2 text-red-600 hover:bg-blue-50 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-red-200"
+                                title="Ver detalhes"
+                              >
+                                <Eye className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setSelectedExam(exam);
+                                  setUpdateExamModal(true);
+                                }}
+                                className="p-2 text-blue-600 hover:bg-slate-50 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-blue-200"
+                                title="Editar"
+                              >
+                                <Pencil className="w-4 h-4" />
+                              </button>
+                              <button
+                                className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-red-200"
+                                title="Excluir"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
                             </div>
-                          </div>
-
-                          {/* Alvo */}
-                          <div className="col-span-2 flex items-center">
-                            <span className="text-sm text-slate-700 truncate font-medium">
-                              {isClassEvaluation
-                                ? exam.class?.name
-                                : exam.enrollment?.student.name}
-                            </span>
-                          </div>
-
-                          {/* Ações */}
-                          <div className="col-span-3 flex items-center gap-1.5 justify-end">
-                            <button
-                              onClick={() => {
-                                setSelectedExam(exam);
-                                setGradesControlModal(true);
-                              }}
-                              className="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-purple-200"
-                              title="Controle de Notas"
-                            >
-                              <Award className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={() => {
-                                setSelectedExam(exam);
-                                setDetailsExamModal(true);
-                              }}
-                              className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-blue-200"
-                              title="Ver detalhes"
-                            >
-                              <Eye className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={() => {
-                                setSelectedExam(exam);
-                                setUpdateExamModal(true);
-                              }}
-                              className="p-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-slate-200"
-                              title="Editar"
-                            >
-                              <Pencil className="w-4 h-4" />
-                            </button>
-                            <button
-                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-red-200"
-                              title="Excluir"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
                           </div>
                         </div>
                       );
@@ -558,7 +670,6 @@ export const Exam = () => {
         />
       )}
 
-      {/* Modal de Controle de Notas */}
       {gradesControlModal && selectedExam && (
         <GradesControlModal
           exam={selectedExam}
