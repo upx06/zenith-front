@@ -75,8 +75,6 @@ export const Teacher = () => {
     }
   );
 
-  console.log(data);
-
   const [
     deleteTeacher,
     { loading: loadingDeleteTeacher, error: errorDeleteTeacher },
