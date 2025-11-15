@@ -184,16 +184,6 @@ export const TeacherDetailsModal = ({
             )}
           </div>
         </div>
-
-        {/* Footer */}
-        <div className="border-t border-slate-200 p-4 bg-slate-50">
-          <button
-            onClick={closeTeacherDetailsModal}
-            className="w-full md:w-auto px-6 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg transition-colors font-medium"
-          >
-            Fechar
-          </button>
-        </div>
       </div>
     </div>
   );

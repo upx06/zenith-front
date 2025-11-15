@@ -4,9 +4,10 @@ import {
   Award,
   BookOpen,
   User,
-  Save,
+  // Save,
   Loader2,
   AlertCircle,
+  MessageSquare,
 } from "lucide-react";
 import { UPDATE_EXAM } from "../../graphql/mutations/update/UpdateExam";
 import type { IExam } from "../../interfaces/IExam";
@@ -19,6 +20,8 @@ interface IGradesControlModal {
 }
 
 type GradeState = Record<string, Record<string, number | null>>;
+type FeedbackState = Record<string, Record<string, string>>;
+type ShowFeedbackState = Record<string, Record<string, boolean>>;
 
 const GRADE_OPTIONS = [
   { value: 1, label: "Insuficiente", color: "red" },
@@ -56,6 +59,28 @@ export const GradesControlModal = ({
     return existingGrades;
   }, [exam.results]);
 
+  const loadExistingFeedbacks = useCallback((): FeedbackState => {
+    const existingFeedbacks: FeedbackState = {};
+
+    // Percorre os results do exam
+    exam.results?.forEach((result) => {
+      if (!result?.enrollmentId) return;
+
+      if (!existingFeedbacks[result.enrollmentId]) {
+        existingFeedbacks[result.enrollmentId] = {};
+      }
+
+      // Percorre os scores de cada result
+      result.scores?.forEach((score) => {
+        if (score?.topic?.id && score?.feedback) {
+          existingFeedbacks[result.enrollmentId][score.topic.id] =
+            score.feedback;
+        }
+      });
+    });
+    return existingFeedbacks;
+  }, [exam.results]);
+
   const [grades, setGrades] = useState<GradeState>(() => {
     const existingGrades: GradeState = {};
 
@@ -80,13 +105,18 @@ export const GradesControlModal = ({
     return existingGrades;
   });
 
+  const [feedbacks, setFeedbacks] = useState<FeedbackState>({});
+  const [showFeedback, setShowFeedback] = useState<ShowFeedbackState>({});
+
   const [updateExam, { loading: loadingExam, error: errorExam }] =
     useMutation(UPDATE_EXAM);
 
   useEffect(() => {
     const newGrades = loadExistingGrades();
+    const newFeedbacks = loadExistingFeedbacks();
     setGrades(newGrades);
-  }, [loadExistingGrades]);
+    setFeedbacks(newFeedbacks);
+  }, [loadExistingGrades, loadExistingFeedbacks]);
 
   const isClassExam = !!exam.class;
 
@@ -107,6 +137,23 @@ export const GradesControlModal = ({
       const currentGrade = prev[enrollmentId]?.[topicId];
 
       if (currentGrade === score) {
+        // Ao remover a nota, também limpa o feedback e esconde o campo
+        setFeedbacks((prevFeedbacks) => ({
+          ...prevFeedbacks,
+          [enrollmentId]: {
+            ...prevFeedbacks[enrollmentId],
+            [topicId]: "",
+          },
+        }));
+
+        setShowFeedback((prevShow) => ({
+          ...prevShow,
+          [enrollmentId]: {
+            ...prevShow[enrollmentId],
+            [topicId]: false,
+          },
+        }));
+
         return {
           ...prev,
           [enrollmentId]: {
@@ -126,22 +173,54 @@ export const GradesControlModal = ({
     });
   };
 
+  const toggleFeedback = (enrollmentId: string, topicId: string) => {
+    setShowFeedback((prev) => ({
+      ...prev,
+      [enrollmentId]: {
+        ...prev[enrollmentId],
+        [topicId]: !prev[enrollmentId]?.[topicId],
+      },
+    }));
+  };
+
+  const handleFeedbackChange = (
+    enrollmentId: string,
+    topicId: string,
+    feedback: string
+  ) => {
+    setFeedbacks((prev) => ({
+      ...prev,
+      [enrollmentId]: {
+        ...prev[enrollmentId],
+        [topicId]: feedback,
+      },
+    }));
+  };
+
   const handleSave = async () => {
     try {
       // Agrupa scores por enrollment
       const resultsByEnrollment: Record<
         string,
-        { topicId: string; score: number }[]
+        { topicId: string; score: number | null; feedback: string | null }[]
       > = {};
 
       Object.entries(grades).forEach(([enrollmentId, topicGrades]) => {
         Object.entries(topicGrades).forEach(([topicId, score]) => {
-          if (score !== null) {
-            if (!resultsByEnrollment[enrollmentId]) {
-              resultsByEnrollment[enrollmentId] = [];
-            }
-            resultsByEnrollment[enrollmentId].push({ topicId, score });
+          if (!resultsByEnrollment[enrollmentId]) {
+            resultsByEnrollment[enrollmentId] = [];
           }
+
+          // Se não tem score, feedback deve ser null também
+          // Se tem score, pega o feedback (ou "" se vazio)
+          const feedback =
+            score !== null ? feedbacks[enrollmentId]?.[topicId] || "" : null;
+
+          resultsByEnrollment[enrollmentId].push({
+            topicId,
+            score,
+            feedback,
+          });
         });
       });
 
@@ -153,10 +232,10 @@ export const GradesControlModal = ({
             ([enrollmentId, scores]) => ({
               enrollmentId,
               totalScore: 10, // ou calcule baseado nos scores
-              scores: scores.map(({ topicId, score }) => ({
+              scores: scores.map(({ topicId, score, feedback }) => ({
                 topicId,
                 score,
-                feedback: "",
+                feedback,
               })),
             })
           ),
@@ -173,12 +252,6 @@ export const GradesControlModal = ({
       console.error("Erro ao salvar notas:", error);
     }
   };
-
-  const assignedGrades = Object.values(grades).reduce(
-    (acc, topicGrades) =>
-      acc + Object.values(topicGrades).filter((grade) => grade !== null).length,
-    0
-  );
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -267,6 +340,10 @@ export const GradesControlModal = ({
                     <div className="p-5 space-y-4">
                       {topics.map((topic) => {
                         const currentGrade = studentGrades[topic.id];
+                        const currentFeedback =
+                          feedbacks[enrollment.id]?.[topic.id] || "";
+                        const isFeedbackVisible =
+                          showFeedback[enrollment.id]?.[topic.id];
 
                         return (
                           <div
@@ -312,8 +389,48 @@ export const GradesControlModal = ({
                                     </button>
                                   ))}
                                 </div>
+
+                                {/* Feedback Toggle Button */}
+                                <button
+                                  onClick={() =>
+                                    toggleFeedback(enrollment.id, topic.id)
+                                  }
+                                  disabled={loadingExam}
+                                  className={`
+                                    p-2 rounded-lg transition-all
+                                    ${
+                                      isFeedbackVisible
+                                        ? "bg-blue-100 text-blue-700 border-2 border-blue-500"
+                                        : "bg-white text-slate-600 border-2 border-slate-200 hover:border-slate-400"
+                                    }
+                                    disabled:opacity-50 disabled:cursor-not-allowed
+                                  `}
+                                  title="Adicionar feedback"
+                                >
+                                  <MessageSquare className="w-4 h-4" />
+                                </button>
                               </div>
                             </div>
+
+                            {/* Feedback Textarea */}
+                            {isFeedbackVisible && (
+                              <div className="mt-3 animate-in slide-in-from-top duration-200">
+                                <textarea
+                                  value={currentFeedback}
+                                  onChange={(e) =>
+                                    handleFeedbackChange(
+                                      enrollment.id,
+                                      topic.id,
+                                      e.target.value
+                                    )
+                                  }
+                                  disabled={loadingExam}
+                                  placeholder="Digite o feedback para o aluno sobre este tópico..."
+                                  className="w-full px-3 py-2 border-2 border-slate-200 rounded-lg focus:border-blue-500 focus:outline-none resize-none text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                                  rows={3}
+                                />
+                              </div>
+                            )}
                           </div>
                         );
                       })}
@@ -337,7 +454,7 @@ export const GradesControlModal = ({
               </button>
               <button
                 onClick={handleSave}
-                disabled={loadingExam || assignedGrades === 0}
+                disabled={loadingExam}
                 className="flex-1 sm:flex-none px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {loadingExam ? (
@@ -347,8 +464,8 @@ export const GradesControlModal = ({
                   </>
                 ) : (
                   <>
-                    <Save className="w-5 h-5" />
-                    Salvar Notas
+                    {/* <Save className="w-5 h-5" /> */}
+                    Salvar
                   </>
                 )}
               </button>

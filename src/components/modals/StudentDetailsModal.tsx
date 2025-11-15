@@ -86,7 +86,9 @@ export const StudentDetailsModal = ({
                 <div className="flex items-center gap-3 text-slate-700">
                   <Target className="w-5 h-5 text-blue-600 shrink-0" />
                   <div>
-                    <span className="text-sm text-slate-500 block">Objetivo Atual</span>
+                    <span className="text-sm text-slate-500 block">
+                      Objetivo Atual
+                    </span>
                     <span className="font-medium">{student.goal}</span>
                   </div>
                 </div>
@@ -155,16 +157,6 @@ export const StudentDetailsModal = ({
               </div>
             )}
           </div>
-        </div>
-
-        {/* Footer */}
-        <div className="border-t border-slate-200 p-4 bg-slate-50">
-          <button
-            onClick={closeStudentDetailsModal}
-            className="w-full md:w-auto px-6 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg transition-colors font-medium"
-          >
-            Fechar
-          </button>
         </div>
       </div>
     </div>
