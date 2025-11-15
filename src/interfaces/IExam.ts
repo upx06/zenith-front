@@ -5,18 +5,12 @@ import type { ITopic } from "./ITopic";
 
 export interface IExamScore {
   id: string;
-  resultId: string;
+  examId: string;
+  enrollmentId: string;
   topicId: string;
   score: number;
   feedback: string;
   topic: ITopic;
-}
-
-export interface IExamResult {
-  id: string;
-  totalScore: number;
-  enrollmentId: string;
-  scores: IExamScore[];
 }
 
 export interface IExam {
@@ -26,5 +20,5 @@ export interface IExam {
   teacher: ITeacher;
   class: IClass;
   topics: ITopic[];
-  results: IExamResult[];
+  scores: IExamScore[];
 }

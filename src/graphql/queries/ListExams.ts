@@ -30,21 +30,15 @@ export const LIST_EXAMS = gql`
             email
           }
         }
-        results {
-          totalScore
+        scores {
           id
+          score
+          feedback
+          topicId
           enrollmentId
-          scores {
-            feedback
+          topic {
             id
-            resultId
-            score
-            feedback
-            topicId
-            topic {
-              id
-              name
-            }
+            name
           }
         }
         topics {

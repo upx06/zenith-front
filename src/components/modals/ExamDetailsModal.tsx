@@ -43,25 +43,30 @@ export const ExamDetailsModal = ({
   closeExamDetailsModal,
 }: IExamDetailsModal) => {
   const isClassEvaluation = !!exam.class;
-  const hasResults = exam.results && exam.results.length > 0;
+  const hasResults = exam.scores && exam.scores.length > 0;
 
-  // Pegar lista de alunos com seus resultados
+  // Pegar lista de alunos com seus scores
   const getStudentResults = () => {
     if (!isClassEvaluation || !exam.class?.enrollments) return [];
 
     return exam.class.enrollments.map((enrollment) => {
-      const studentResult = exam.results?.find(
-        (result) => result.enrollmentId === enrollment.id
+      const studentScores = exam.scores?.filter(
+        (score) => score.enrollmentId === enrollment.id
       );
 
       return {
         enrollment,
-        result: studentResult,
+        scores: studentScores || [],
       };
     });
   };
 
   const studentResults = isClassEvaluation ? getStudentResults() : [];
+
+  // Para avaliação individual, pegar scores do aluno
+  const individualScores = !isClassEvaluation && exam.enrollment
+    ? exam.scores?.filter((score) => score.enrollmentId === exam.enrollment.id) || []
+    : [];
 
   return (
     <div
@@ -194,11 +199,11 @@ export const ExamDetailsModal = ({
               <h3 className="text-sm font-semibold text-slate-700 mb-3 uppercase tracking-wide flex items-center gap-2">
                 <Award className="w-4 h-4" />
                 Resultados
-                {hasResults && (
+                {hasResults && isClassEvaluation && (
                   <span className="text-xs font-normal text-slate-500 ml-1">
-                    ({exam.results.length} aluno
-                    {exam.results.length !== 1 ? "s" : ""} avaliado
-                    {exam.results.length !== 1 ? "s" : ""})
+                    ({studentResults.filter(sr => sr.scores.length > 0).length} aluno
+                    {studentResults.filter(sr => sr.scores.length > 0).length !== 1 ? "s" : ""} avaliado
+                    {studentResults.filter(sr => sr.scores.length > 0).length !== 1 ? "s" : ""})
                   </span>
                 )}
               </h3>
@@ -216,7 +221,7 @@ export const ExamDetailsModal = ({
               ) : (
                 <div className="space-y-4">
                   {/* Avaliação Individual */}
-                  {!isClassEvaluation && exam.results?.[0] && (
+                  {!isClassEvaluation && individualScores.length > 0 && (
                     <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
                       <div className="bg-slate-50 px-4 py-3 border-b border-slate-200">
                         <div className="flex items-center gap-3">
@@ -233,7 +238,7 @@ export const ExamDetailsModal = ({
                       </div>
 
                       <div className="p-4 space-y-3">
-                        {exam.results[0].scores?.map((scoreItem) => {
+                        {individualScores.map((scoreItem) => {
                           const gradeConfig =
                             GRADE_CONFIG[
                               scoreItem.score as keyof typeof GRADE_CONFIG
@@ -278,7 +283,7 @@ export const ExamDetailsModal = ({
                   {/* Avaliação de Turma */}
                   {isClassEvaluation && studentResults.length > 0 && (
                     <div className="space-y-3">
-                      {studentResults.map(({ enrollment, result }) => (
+                      {studentResults.map(({ enrollment, scores }) => (
                         <div
                           key={enrollment.id}
                           className="bg-white border border-slate-200 rounded-lg overflow-hidden"
@@ -296,7 +301,7 @@ export const ExamDetailsModal = ({
                                   </p>
                                 </div>
                               </div>
-                              {!result && (
+                              {scores.length === 0 && (
                                 <span className="px-2 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded">
                                   Não avaliado
                                 </span>
@@ -304,57 +309,48 @@ export const ExamDetailsModal = ({
                             </div>
                           </div>
 
-                          {result &&
-                            result.scores &&
-                            result.scores.length > 0 && (
-                              <div className="p-4 space-y-3">
-                                {result.scores.map((scoreItem) => {
-                                  const gradeConfig =
-                                    GRADE_CONFIG[
-                                      scoreItem.score as keyof typeof GRADE_CONFIG
-                                    ];
+                          {scores.length > 0 && (
+                            <div className="p-4 space-y-3">
+                              {scores.map((scoreItem) => {
+                                const gradeConfig =
+                                  GRADE_CONFIG[
+                                    scoreItem.score as keyof typeof GRADE_CONFIG
+                                  ];
 
-                                  return (
-                                    <div
-                                      key={scoreItem.id}
-                                      className={`${gradeConfig.bgColor} ${gradeConfig.borderColor} border rounded-lg p-3`}
-                                    >
-                                      <div className="flex items-center justify-between">
-                                        <span className="font-medium text-slate-800 text-sm">
-                                          {scoreItem.topic.name}
+                                return (
+                                  <div
+                                    key={scoreItem.id}
+                                    className={`${gradeConfig.bgColor} ${gradeConfig.borderColor} border rounded-lg p-3`}
+                                  >
+                                    <div className="flex items-center justify-between">
+                                      <span className="font-medium text-slate-800 text-sm">
+                                        {scoreItem.topic.name}
+                                      </span>
+                                      <div className="flex items-center gap-2">
+                                        <span
+                                          className={`${gradeConfig.textColor} text-lg font-bold`}
+                                        >
+                                          {scoreItem.score}
                                         </span>
-                                        <div className="flex items-center gap-2">
-                                          <span
-                                            className={`${gradeConfig.textColor} text-lg font-bold`}
-                                          >
-                                            {scoreItem.score}
-                                          </span>
-                                          <span
-                                            className={`text-xs ${gradeConfig.textColor} font-medium`}
-                                          >
-                                            {gradeConfig.label}
-                                          </span>
-                                        </div>
+                                        <span
+                                          className={`text-xs ${gradeConfig.textColor} font-medium`}
+                                        >
+                                          {gradeConfig.label}
+                                        </span>
                                       </div>
-                                      {scoreItem.feedback && (
-                                        <div className="mt-2 pt-2 border-t border-slate-200">
-                                          <p className="text-xs text-slate-600">
-                                            {scoreItem.feedback}
-                                          </p>
-                                        </div>
-                                      )}
                                     </div>
-                                  );
-                                })}
-                              </div>
-                            )}
-
-                          {result &&
-                            (!result.scores || result.scores.length === 0) && (
-                              <div className="p-4 text-center text-sm text-slate-500">
-                                Nenhuma nota lançada
-                              </div>
-                            )}
+                                    {scoreItem.feedback && (
+                                      <div className="mt-2 pt-2 border-t border-slate-200">
+                                        <p className="text-xs text-slate-600">
+                                          {scoreItem.feedback}
+                                        </p>
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>

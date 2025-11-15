@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useState } from "react";
 import {
   X,
   Award,
@@ -9,7 +9,7 @@ import {
   AlertCircle,
   MessageSquare,
 } from "lucide-react";
-import { UPDATE_EXAM } from "../../graphql/mutations/update/UpdateExam";
+import { UPDATE_SCORE } from "../../graphql/mutations/update/UpdateScore";
 import type { IExam } from "../../interfaces/IExam";
 import { useMutation } from "@apollo/client/react";
 
@@ -34,89 +34,46 @@ export const GradesControlModal = ({
   closeGradesControlModal,
   refetchExams,
 }: IGradesControlModal) => {
-  const loadExistingGrades = useCallback((): GradeState => {
-    const existingGrades: GradeState = {};
-
-    // Percorre os results do exam
-    exam.results?.forEach((result) => {
-      if (!result?.enrollmentId) return;
-
-      if (!existingGrades[result.enrollmentId]) {
-        existingGrades[result.enrollmentId] = {};
-      }
-
-      // Percorre os scores de cada result
-      result.scores?.forEach((score) => {
-        if (
-          score?.topic?.id &&
-          score?.score !== undefined &&
-          score?.score !== null
-        ) {
-          existingGrades[result.enrollmentId][score.topic.id] = score.score;
-        }
-      });
-    });
-    return existingGrades;
-  }, [exam.results]);
-
-  const loadExistingFeedbacks = useCallback((): FeedbackState => {
-    const existingFeedbacks: FeedbackState = {};
-
-    // Percorre os results do exam
-    exam.results?.forEach((result) => {
-      if (!result?.enrollmentId) return;
-
-      if (!existingFeedbacks[result.enrollmentId]) {
-        existingFeedbacks[result.enrollmentId] = {};
-      }
-
-      // Percorre os scores de cada result
-      result.scores?.forEach((score) => {
-        if (score?.topic?.id && score?.feedback) {
-          existingFeedbacks[result.enrollmentId][score.topic.id] =
-            score.feedback;
-        }
-      });
-    });
-    return existingFeedbacks;
-  }, [exam.results]);
-
   const [grades, setGrades] = useState<GradeState>(() => {
     const existingGrades: GradeState = {};
 
-    exam.results?.forEach((result) => {
-      if (!result?.enrollmentId) return;
+    // Percorre os scores do exam
+    exam.scores?.forEach((score) => {
+      if (!score?.enrollmentId || !score?.topic?.id) return;
 
-      if (!existingGrades[result.enrollmentId]) {
-        existingGrades[result.enrollmentId] = {};
+      if (!existingGrades[score.enrollmentId]) {
+        existingGrades[score.enrollmentId] = {};
       }
 
-      result.scores?.forEach((score) => {
-        if (
-          score?.topic?.id &&
-          score?.score !== undefined &&
-          score?.score !== null
-        ) {
-          existingGrades[result.enrollmentId][score.topic.id] = score.score;
-        }
-      });
+      if (score?.score !== undefined && score?.score !== null) {
+        existingGrades[score.enrollmentId][score.topic.id] = score.score;
+      }
     });
-
     return existingGrades;
   });
 
-  const [feedbacks, setFeedbacks] = useState<FeedbackState>({});
+  const [feedbacks, setFeedbacks] = useState<FeedbackState>(() => {
+    const existingFeedbacks: FeedbackState = {};
+
+    // Percorre os scores do exam
+    exam.scores?.forEach((score) => {
+      if (!score?.enrollmentId || !score?.topic?.id) return;
+
+      if (!existingFeedbacks[score.enrollmentId]) {
+        existingFeedbacks[score.enrollmentId] = {};
+      }
+
+      if (score?.feedback) {
+        existingFeedbacks[score.enrollmentId][score.topic.id] = score.feedback;
+      }
+    });
+    return existingFeedbacks;
+  });
+
   const [showFeedback, setShowFeedback] = useState<ShowFeedbackState>({});
 
-  const [updateExam, { loading: loadingExam, error: errorExam }] =
-    useMutation(UPDATE_EXAM);
-
-  useEffect(() => {
-    const newGrades = loadExistingGrades();
-    const newFeedbacks = loadExistingFeedbacks();
-    setGrades(newGrades);
-    setFeedbacks(newFeedbacks);
-  }, [loadExistingGrades, loadExistingFeedbacks]);
+  const [updateScore, { loading: loadingExam, error: errorExam }] =
+    useMutation(UPDATE_SCORE);
 
   const isClassExam = !!exam.class;
 
@@ -199,28 +156,30 @@ export const GradesControlModal = ({
 
   const handleSave = async () => {
     try {
-      // Agrupa scores por enrollment
+      // Agrupa scores por enrollment (apenas os que têm nota)
       const resultsByEnrollment: Record<
         string,
-        { topicId: string; score: number | null; feedback: string | null }[]
+        { topicId: string; score: number; feedback: string }[]
       > = {};
 
       Object.entries(grades).forEach(([enrollmentId, topicGrades]) => {
         Object.entries(topicGrades).forEach(([topicId, score]) => {
-          if (!resultsByEnrollment[enrollmentId]) {
-            resultsByEnrollment[enrollmentId] = [];
+          // Apenas envia scores que têm valor (não null)
+          // Se não tem score, não envia nada (será removido do banco)
+          if (score !== null) {
+            if (!resultsByEnrollment[enrollmentId]) {
+              resultsByEnrollment[enrollmentId] = [];
+            }
+
+            // Pega o feedback (ou "" se vazio)
+            const feedback = feedbacks[enrollmentId]?.[topicId] || "";
+
+            resultsByEnrollment[enrollmentId].push({
+              topicId,
+              score,
+              feedback,
+            });
           }
-
-          // Se não tem score, feedback deve ser null também
-          // Se tem score, pega o feedback (ou "" se vazio)
-          const feedback =
-            score !== null ? feedbacks[enrollmentId]?.[topicId] || "" : null;
-
-          resultsByEnrollment[enrollmentId].push({
-            topicId,
-            score,
-            feedback,
-          });
         });
       });
 
@@ -228,21 +187,20 @@ export const GradesControlModal = ({
       const finalInput = {
         id: exam.id,
         input: {
-          results: Object.entries(resultsByEnrollment).map(
-            ([enrollmentId, scores]) => ({
-              enrollmentId,
-              totalScore: 10, // ou calcule baseado nos scores
-              scores: scores.map(({ topicId, score, feedback }) => ({
+          scores: Object.entries(resultsByEnrollment)
+            .map(([enrollmentId, scores]) =>
+              scores.map(({ topicId, score, feedback }) => ({
                 topicId,
                 score,
                 feedback,
-              })),
-            })
-          ),
+                enrollmentId,
+              }))
+            )
+            .flat(),
         },
       };
 
-      await updateExam({
+      await updateScore({
         variables: finalInput,
       });
 
