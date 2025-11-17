@@ -10,6 +10,8 @@ import {
   Filter,
   X,
   Copy,
+  LayoutGrid,
+  TableProperties,
 } from "lucide-react";
 import { useQuery } from "@apollo/client/react";
 import { Menu } from "../../components/Menu";
@@ -58,6 +60,7 @@ export const Scheduling = () => {
 
   const [showFilters, setShowFilters] = useState(false);
   const [showRescheduleModal, setShowRescheduleModal] = useState(false);
+  const [viewMode, setViewMode] = useState<"grid" | "cards">("grid");
   const [filters, setFilters] = useState({
     className: "",
     teacherName: "",
@@ -205,6 +208,22 @@ export const Scheduling = () => {
               </div>
 
               <div className="flex gap-2 flex-shrink-0">
+                <button
+                  onClick={() => setViewMode(viewMode === "grid" ? "cards" : "grid")}
+                  className="bg-white text-slate-700 border border-slate-300 hover:opacity-90 rounded-lg flex items-center justify-center gap-2 transition-all
+                    text-sm md:text-base
+                    w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2"
+                  title={viewMode === "grid" ? "Ver em Cards" : "Ver em Grade"}
+                >
+                  {viewMode === "grid" ? (
+                    <LayoutGrid className="w-4 h-4 md:w-5 md:h-5" />
+                  ) : (
+                    <TableProperties className="w-4 h-4 md:w-5 md:h-5" />
+                  )}
+                  <span className="hidden sm:inline">
+                    {viewMode === "grid" ? "Cards" : "Grade"}
+                  </span>
+                </button>
                 <button
                   onClick={() => setShowFilters(!showFilters)}
                   className={`${
@@ -425,69 +444,167 @@ export const Scheduling = () => {
                   </div>
                 </div>
               </div>
-            ) : (
+            ) : viewMode === "grid" ? (
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <div className="bg-linear-to-r from-slate-50 to-slate-100 border-b border-slate-200">
-                  <div
-                    className="grid gap-px"
-                    style={{
-                      gridTemplateColumns: `200px repeat(${timeSlots.length}, minmax(120px, 1fr))`,
-                    }}
-                  >
-                    <div className="p-3 md:p-4 bg-white">
-                      <div className="flex items-center space-x-2">
-                        <BookOpen className="h-4 w-4 text-slate-500" />
-                        <span className="font-semibold text-slate-900 text-sm md:text-base">
-                          Salas
-                        </span>
-                      </div>
-                    </div>
-                    {timeSlots.map((timeSlot) => (
-                      <div
-                        key={timeSlot}
-                        className="p-3 md:p-4 bg-white text-center"
-                      >
-                        <div className="flex items-center justify-center space-x-1">
-                          <Clock className="h-3 w-3 text-slate-500" />
-                          <span className="text-sm font-semibold text-slate-900">
-                            {timeSlot}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                {/* Hint de scroll */}
+                <div className="bg-blue-50 border-b border-blue-200 px-4 py-2">
+                  <p className="text-xs text-blue-700 text-center flex items-center justify-center gap-2">
+                    <ChevronLeft className="w-3 h-3" />
+                    <span className="hidden sm:inline">Use o scroll horizontal para ver todos os horários</span>
+                    <span className="sm:hidden">Deslize para ver todos os horários</span>
+                    <ChevronRight className="w-3 h-3" />
+                  </p>
                 </div>
 
-                <div className="divide-y divide-slate-200 relative">
-                  {lessonsLoading && (
-                    <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-10">
-                      <div className="flex flex-col items-center space-y-3">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                        <span className="text-sm text-slate-600">
-                          Atualizando agendamentos...
-                        </span>
+                <div className="overflow-x-auto">
+                  <div className="min-w-max">
+                    <div className="bg-linear-to-r from-slate-50 to-slate-100 border-b border-slate-200">
+                      <div
+                        className="grid gap-px"
+                        style={{
+                          gridTemplateColumns: `200px repeat(${timeSlots.length}, minmax(120px, 1fr))`,
+                        }}
+                      >
+                        <div className="p-3 md:p-4 bg-white sticky left-0 z-10">
+                          <div className="flex items-center space-x-2">
+                            <BookOpen className="h-4 w-4 text-slate-500" />
+                            <span className="font-semibold text-slate-900 text-sm md:text-base">
+                              Salas
+                            </span>
+                          </div>
+                        </div>
+                        {timeSlots.map((timeSlot) => (
+                          <div
+                            key={timeSlot}
+                            className="p-3 md:p-4 bg-white text-center"
+                          >
+                            <div className="flex items-center justify-center space-x-1">
+                              <Clock className="h-3 w-3 text-slate-500" />
+                              <span className="text-sm font-semibold text-slate-900">
+                                {timeSlot}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
-                  )}
 
-                  {classrooms.map((classroom) => (
-                    <div
-                      key={classroom.id}
-                      className="grid gap-px bg-slate-200"
-                      style={{
-                        gridTemplateColumns: `200px repeat(${timeSlots.length}, minmax(120px, 1fr))`,
-                      }}
-                    >
-                      <div className="p-3 md:p-4 bg-white flex flex-col justify-center border-r border-slate-100">
-                        <div className="text-sm font-semibold text-slate-900">
-                          {classroom.name}
+                    <div className="divide-y divide-slate-200 relative">
+                      {lessonsLoading && (
+                        <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-10">
+                          <div className="flex flex-col items-center space-y-3">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                            <span className="text-sm text-slate-600">
+                              Atualizando agendamentos...
+                            </span>
+                          </div>
                         </div>
-                        <div className="text-xs text-slate-500 mt-1 flex items-center space-x-1">
-                          <Users className="h-3 w-3" />
-                          <span>{classroom.capacity} lugares</span>
+                      )}
+
+                      {classrooms.map((classroom) => (
+                        <div
+                          key={classroom.id}
+                          className="grid gap-px bg-slate-200"
+                          style={{
+                            gridTemplateColumns: `200px repeat(${timeSlots.length}, minmax(120px, 1fr))`,
+                          }}
+                        >
+                          <div className="p-3 md:p-4 bg-white flex flex-col justify-center border-r border-slate-100 sticky left-0 z-10">
+                            <div className="text-sm font-semibold text-slate-900">
+                              {classroom.name}
+                            </div>
+                            <div className="text-xs text-slate-500 mt-1 flex items-center space-x-1">
+                              <Users className="h-3 w-3" />
+                              <span>{classroom.capacity} lugares</span>
+                            </div>
+                          </div>
+
+                          {timeSlots.map((timeSlot) => {
+                            const schedulingKey = getSchedulingKey(
+                              classroom.id,
+                              timeSlot
+                            );
+                            const scheduling = schedulings[schedulingKey];
+
+                            return (
+                              <div
+                                key={timeSlot}
+                                className={`p-2 md:p-3 bg-white cursor-pointer transition-all duration-200 min-h-16 md:min-h-20 flex items-center hover:shadow-sm ${
+                                  scheduling
+                                    ? "bg-linear-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 border-l-4 border-blue-500"
+                                    : "hover:bg-slate-50 border border-transparent hover:border-slate-300 rounded-sm"
+                                }`}
+                                onClick={() =>
+                                  handleSlotClick(
+                                    classroom.id,
+                                    classroom.name,
+                                    timeSlot
+                                  )
+                                }
+                              >
+                                {scheduling ? (
+                                  <div className="w-full">
+                                    <div className="flex items-center space-x-1 mb-1">
+                                      <BookOpen className="h-3 w-3 text-blue-600 shrink-0" />
+                                      <span className="text-xs font-semibold text-blue-900 truncate">
+                                        {scheduling.lesson.class.name}
+                                      </span>
+                                    </div>
+                                    <div className="text-xs text-slate-600 truncate">
+                                      {scheduling.lesson.teacher.name}
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                                    <Plus className="h-4 w-4 text-slate-400" />
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              // Visualização em Cards para mobile
+              <div className="space-y-4">
+                {lessonsLoading && (
+                  <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 text-center">
+                    <div className="flex flex-col items-center space-y-3">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                      <span className="text-sm text-slate-600">
+                        Atualizando agendamentos...
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {classrooms.map((classroom) => (
+                  <div
+                    key={classroom.id}
+                    className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"
+                  >
+                    {/* Header da Sala */}
+                    <div className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200 p-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="font-semibold text-slate-900">
+                            {classroom.name}
+                          </h3>
+                          <div className="text-xs text-slate-500 mt-1 flex items-center space-x-1">
+                            <Users className="h-3 w-3" />
+                            <span>{classroom.capacity} lugares</span>
+                          </div>
+                        </div>
+                        <BookOpen className="h-5 w-5 text-slate-400" />
                       </div>
+                    </div>
 
+                    {/* Grid de horários */}
+                    <div className="p-3 grid grid-cols-2 gap-2">
                       {timeSlots.map((timeSlot) => {
                         const schedulingKey = getSchedulingKey(
                           classroom.id,
@@ -498,10 +615,10 @@ export const Scheduling = () => {
                         return (
                           <div
                             key={timeSlot}
-                            className={`p-2 md:p-3 bg-white cursor-pointer transition-all duration-200 min-h-16 md:min-h-20 flex items-center hover:shadow-sm ${
+                            className={`p-3 rounded-lg cursor-pointer transition-all duration-200 border-2 ${
                               scheduling
-                                ? "bg-linear-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 border-l-4 border-blue-500"
-                                : "hover:bg-slate-50 border border-transparent hover:border-slate-300 rounded-sm"
+                                ? "bg-gradient-to-br from-blue-50 to-blue-100 border-blue-300 hover:border-blue-400"
+                                : "bg-slate-50 border-slate-200 hover:border-slate-300 hover:bg-slate-100"
                             }`}
                             onClick={() =>
                               handleSlotClick(
@@ -511,9 +628,15 @@ export const Scheduling = () => {
                               )
                             }
                           >
+                            <div className="flex items-center gap-1 mb-2">
+                              <Clock className="h-3 w-3 text-slate-500" />
+                              <span className="text-xs font-semibold text-slate-700">
+                                {timeSlot}
+                              </span>
+                            </div>
                             {scheduling ? (
-                              <div className="w-full">
-                                <div className="flex items-center space-x-1 mb-1">
+                              <div>
+                                <div className="flex items-center gap-1 mb-1">
                                   <BookOpen className="h-3 w-3 text-blue-600 shrink-0" />
                                   <span className="text-xs font-semibold text-blue-900 truncate">
                                     {scheduling.lesson.class.name}
@@ -524,7 +647,7 @@ export const Scheduling = () => {
                                 </div>
                               </div>
                             ) : (
-                              <div className="w-full h-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                              <div className="flex items-center justify-center py-2">
                                 <Plus className="h-4 w-4 text-slate-400" />
                               </div>
                             )}
@@ -532,8 +655,8 @@ export const Scheduling = () => {
                         );
                       })}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             )}
 
