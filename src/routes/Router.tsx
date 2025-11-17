@@ -13,6 +13,7 @@ import { ClassReport } from "../pages/reports/ClassReport";
 import SignUp from "../pages/signup/SignUp";
 import type { ReactNode } from "react";
 import { Dashboard } from "../pages/dashboard/Dashboard";
+import { FutureFeatures } from "../pages/futureFeatures/FutureFeatures";
 
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
   const token = localStorage.getItem("token") || null;
@@ -103,6 +104,14 @@ export const Router = () => {
       element: (
         <PrivateRoute>
           <ClassReport />
+        </PrivateRoute>
+      ),
+    },
+    {
+      path: "future-features",
+      element: (
+        <PrivateRoute>
+          <FutureFeatures />
         </PrivateRoute>
       ),
     },
