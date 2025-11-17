@@ -14,6 +14,7 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  FileText,
 } from "lucide-react";
 
 import { Menu } from "../../components/Menu";
@@ -41,6 +42,9 @@ export const Student = () => {
     string | null
   >(null);
   const [deletingStudentId, setDeletingStudentId] = useState<string | null>(
+    null
+  );
+  const [generatingReportId, setGeneratingReportId] = useState<string | null>( // 👈 NOVO ESTADO
     null
   );
   const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({});
@@ -80,6 +84,58 @@ export const Student = () => {
     { loading: loadingDeleteStudent, error: errorDeleteStudent },
   ] = useMutation(DESTROY_STUDENT);
 
+  // 👇 NOVA FUNÇÃO PARA GERAR RELATÓRIO
+  const handleGenerateReport = async (student: IStudent) => {
+    setGeneratingReportId(student.id);
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/reports/student/${student.id}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Erro ao gerar relatório");
+      }
+
+      // Converte resposta em blob (arquivo PDF)
+      const blob = await response.blob();
+
+      // Cria URL temporária para download
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `relatorio_${student.name.replace(/\s+/g, "_")}_${
+        new Date().toISOString().split("T")[0]
+      }.pdf`;
+
+      // Adiciona ao DOM, clica e remove
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Limpa a URL temporária
+      window.URL.revokeObjectURL(url);
+
+      toast.success("Relatório gerado com sucesso!");
+    } catch (err) {
+      console.error("Erro ao gerar relatório:", err);
+      toast.error(
+        err instanceof Error ? err.message : "Erro ao gerar relatório"
+      );
+    } finally {
+      setGeneratingReportId(null);
+    }
+  };
+
   const handleDeleteStudent = async (id: string) => {
     setDeletingStudentId(id);
     try {
@@ -88,7 +144,6 @@ export const Student = () => {
       });
       const { data: refetchedData } = await refetch();
 
-      // Se a página atual ficou vazia e não é a primeira página, volta para a anterior
       if (
         refetchedData?.listStudents?.results?.length === 0 &&
         currentPage > 1
@@ -143,8 +198,8 @@ export const Student = () => {
 
   const hasActiveFilters = filters.name || filters.email || filters.phone;
 
-  // Estados auxiliares
-  const isProcessing = loadingDeleteStudent;
+  // Estados auxiliares - 👇 ATUALIZADO
+  const isProcessing = loadingDeleteStudent || generatingReportId !== null;
   const alunos = data?.listStudents?.results || [];
   const isLoadingData = loading || photosLoading;
 
@@ -227,18 +282,21 @@ export const Student = () => {
         aria-hidden="true"
       />
       <div className="flex-1 flex flex-col min-w-0 relative">
-        {/* Overlay de loading durante deleção */}
         {isProcessing && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-              <p className="text-slate-600 font-medium">Excluindo aluno...</p>
+              <p className="text-slate-600 font-medium">
+                {/* 👇 MENSAGEM ATUALIZADA */}
+                {deletingStudentId
+                  ? "Excluindo aluno..."
+                  : "Gerando relatório..."}
+              </p>
             </div>
           </div>
         )}
 
         <div className="flex-1 p-4 md:p-6 lg:p-8 mt-16 lg:mt-0">
-          {/* Mensagem de erro da mutation de deleção */}
           {errorDeleteStudent && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
               <div className="flex items-center gap-2 text-red-800 mb-2">
@@ -412,7 +470,10 @@ export const Student = () => {
                     <div
                       key={student.id}
                       className={`bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6 hover:shadow-md hover:border-slate-300 transition-all duration-200 ${
-                        deletingStudentId === student.id ? "opacity-50" : ""
+                        deletingStudentId === student.id ||
+                        generatingReportId === student.id
+                          ? "opacity-50"
+                          : ""
                       }`}
                     >
                       <div className="flex items-start justify-between mb-4">
@@ -457,6 +518,7 @@ export const Student = () => {
                         </div>
                       </div>
 
+                      {/* 👇 BOTÕES ATUALIZADOS */}
                       <div className="flex gap-2 pt-2 border-t border-slate-100">
                         <button
                           onClick={() =>
@@ -467,12 +529,26 @@ export const Student = () => {
                         >
                           Ver detalhes
                         </button>
+
+                        <button
+                          onClick={() => handleGenerateReport(student)}
+                          disabled={isProcessing}
+                          className="flex items-center justify-center px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                          title="Gerar Relatório"
+                        >
+                          {generatingReportId === student.id ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : (
+                            <FileText className="w-4 h-4" />
+                          )}
+                        </button>
+
                         <button
                           onClick={() =>
                             handleOpenUpdateModal(student, photoUrl)
                           }
                           disabled={isProcessing}
-                          className="flex items-center justify-center px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                          className="flex items-center justify-center px-3 py-2 text-red-600 hover:bg-red-50 border border-red-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                           title="Editar"
                         >
                           <Pencil className="w-4 h-4" />
@@ -480,7 +556,7 @@ export const Student = () => {
                         <button
                           onClick={() => handleOpenConfirmationModal(student)}
                           disabled={isProcessing}
-                          className="flex items-center justify-center px-3 py-2 text-red-600 hover:bg-red-50 border border-red-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                          className="flex items-center justify-center px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                           title="Excluir"
                         >
                           {deletingStudentId === student.id ? (
