@@ -110,33 +110,36 @@ export default function SignUp() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800 flex items-center justify-center p-4">
-      {/* Modal Container */}
       <div className="w-full max-w-5xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl dark:shadow-slate-950/50 overflow-hidden flex flex-col lg:flex-row">
-        {/* Left Side - Brand Section */}
         <div className="lg:w-1/2 bg-white dark:bg-slate-800 p-8 lg:p-12 flex flex-col items-center justify-between">
-          {/* Logo Section */}
           <div className="flex-shrink-0 mb-6">
             <img
-              src="/logo.jpg"
+              src="/logo-light.png"
               alt="Logo"
-              className="h-24 w-auto object-contain"
+              className="h-48 w-auto object-contain dark:hidden"
+            />
+            <img
+              src="/logo-dark.png"
+              alt="Logo"
+              className="h-48 w-auto object-contain hidden dark:block"
             />
           </div>
 
-          {/* Image Section */}
           <div className="flex-grow flex items-center justify-center w-full">
             <img
-              src="/image2.png"
+              src="/signup-light.png"
               alt="Instituição"
-              className="w-full h-auto object-contain max-h-96"
+              className="w-full h-auto object-contain max-h-80 dark:hidden"
             />
-            {/* Troque para /image1.png se preferir a outra imagem */}
+            <img
+              src="/signup-dark.png"
+              alt="Instituição"
+              className="w-full h-auto object-contain max-h-80 hidden dark:block"
+            />
           </div>
         </div>
 
-        {/* Right Side - Form Section */}
         <div className="lg:w-1/2 bg-white dark:bg-slate-900 p-8 lg:p-12 flex items-center justify-center relative">
-          {/* Theme Toggle - Top Right */}
           <div className="absolute top-4 right-4">
             <ThemeToggle />
           </div>
@@ -268,7 +271,7 @@ export default function SignUp() {
               <button
                 type="submit"
                 disabled={loadingSignUp}
-                className="w-full bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 disabled:bg-red-400 dark:disabled:bg-red-900 text-white py-2.5 px-4 rounded-md cursor-pointer flex items-center justify-center gap-2 transition-colors font-medium text-sm shadow-sm dark:shadow-red-900/20"
+                className="w-full border border-red-600 dark:border-red-500 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30  py-2.5 px-4 rounded-md cursor-pointer flex items-center justify-center gap-2 transition-colors font-medium text-sm shadow-sm dark:shadow-red-900/20"
               >
                 {loadingSignUp ? (
                   <>

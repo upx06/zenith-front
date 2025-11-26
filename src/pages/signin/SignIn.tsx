@@ -104,40 +104,45 @@ export default function SignIn() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-red-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800 flex items-center justify-center p-4">
-      {/* Modal Container */}
       <div className="w-full max-w-5xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl dark:shadow-slate-950/50 overflow-hidden flex flex-col lg:flex-row">
-        {/* Left Side - Brand Section */}
-        <div className="lg:w-1/2 bg-white dark:bg-slate-800 p-8 lg:p-12 flex flex-col items-center justify-between">
-          {/* Logo Section */}
+        <div className="lg:w-1/2 bg-slate-50 dark:bg-slate-800 p-8 lg:p-12 flex flex-col items-center justify-between">
           <div className="flex-shrink-0 mb-6">
             <img
-              src="/logo.jpg"
+              src="/logo-light.png"
               alt="Logo"
-              className="h-24 w-auto object-contain"
+              className="h-48 w-auto object-contain dark:hidden"
+            />
+            <img
+              src="/logo-dark.png"
+              alt="Logo"
+              className="h-48 w-auto object-contain hidden dark:block"
             />
           </div>
 
-          {/* Image Section */}
           <div className="flex-grow flex items-center justify-center w-full">
             <img
-              src="/image1.png"
+              src="/signin-light-1.png"
               alt="Instituição"
-              className="w-full h-auto object-contain max-h-96"
+              className="w-full h-auto object-contain max-h-90 dark:hidden"
             />
-            {/* Troque para /image2.png se preferir a outra imagem */}
+            <img
+              src="/signin-dark-1.png"
+              alt="Instituição"
+              className="w-full h-auto object-contain max-h-90 hidden dark:block"
+            />
           </div>
         </div>
 
-        {/* Right Side - Form Section */}
         <div className="lg:w-1/2 bg-white dark:bg-slate-900 p-8 lg:p-12 flex items-center justify-center relative">
-          {/* Theme Toggle - Top Right */}
           <div className="absolute top-4 right-4">
             <ThemeToggle />
           </div>
 
           <div className="w-full max-w-md">
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Entrar</h2>
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                Entrar
+              </h2>
               <p className="text-gray-600 dark:text-slate-300">
                 Entre com suas credenciais para acessar o sistema
               </p>
@@ -161,6 +166,7 @@ export default function SignIn() {
                     placeholder="seu@email.com"
                     className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-1 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors outline-none text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     disabled={loadingSignIn || loadingGetUser}
+                    autoComplete="off"
                   />
                 </div>
               </div>
@@ -182,6 +188,7 @@ export default function SignIn() {
                     placeholder="Digite sua senha"
                     className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-1 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors outline-none text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     disabled={loadingSignIn || loadingGetUser}
+                    autoComplete="off"
                   />
                 </div>
               </div>
@@ -189,7 +196,7 @@ export default function SignIn() {
               <button
                 type="submit"
                 disabled={loadingSignIn || loadingGetUser}
-                className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 disabled:bg-blue-400 dark:disabled:bg-blue-900 text-white py-2.5 px-4 rounded-md cursor-pointer flex items-center justify-center gap-2 transition-colors font-medium text-sm shadow-sm dark:shadow-blue-900/20"
+                className="w-full border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 py-2.5 px-4 rounded-md cursor-pointer flex items-center justify-center gap-2 transition-colors font-medium text-sm shadow-sm dark:shadow-blue-900/20"
               >
                 {loadingSignIn || loadingGetUser ? (
                   <>
