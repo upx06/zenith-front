@@ -188,7 +188,7 @@ export const Scheduling = () => {
     filters.className || filters.teacherName || filters.classroomName;
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex">
       <Menu />
       <div
         className="hidden lg:block lg:w-64 xl:w-72 shrink-0"
@@ -199,10 +199,10 @@ export const Scheduling = () => {
           <div className="space-y-4 md:space-y-6">
             <div className="flex flex-row justify-between items-center gap-4 pt-5 md:pt-0">
               <div className="flex-1 min-w-0">
-                <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase">
+                <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white uppercase">
                   Agendamentos
                 </h1>
-                <p className="hidden sm:block text-slate-600 text-sm md:text-base">
+                <p className="hidden sm:block text-slate-600 dark:text-slate-300 text-sm md:text-base">
                   Gerencie a ocupação das salas por horário
                 </p>
               </div>
@@ -210,7 +210,7 @@ export const Scheduling = () => {
               <div className="flex gap-2 flex-shrink-0">
                 <button
                   onClick={() => setViewMode(viewMode === "grid" ? "cards" : "grid")}
-                  className="bg-white text-slate-700 border border-slate-300 hover:opacity-90 rounded-lg flex items-center justify-center gap-2 transition-all
+                  className="bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:opacity-90 rounded-lg flex items-center justify-center gap-2 transition-all
                     text-sm md:text-base
                     w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2"
                   title={viewMode === "grid" ? "Ver em Cards" : "Ver em Grade"}
@@ -228,8 +228,8 @@ export const Scheduling = () => {
                   onClick={() => setShowFilters(!showFilters)}
                   className={`${
                     showFilters || hasActiveFilters
-                      ? "bg-blue-600 text-white"
-                      : "bg-white text-slate-700 border border-slate-300"
+                      ? "bg-blue-600 dark:bg-blue-500 text-white"
+                      : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700"
                   } hover:opacity-90 rounded-lg flex items-center justify-center gap-2 transition-all
                     text-sm md:text-base relative
                     w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2`}
@@ -243,7 +243,7 @@ export const Scheduling = () => {
                 </button>
                 <button
                   onClick={() => setShowRescheduleModal(true)}
-                  className="bg-slate-500 hover:bg-slate-600 text-white rounded-lg flex items-center justify-center gap-2
+                  className="bg-slate-500 dark:bg-slate-600 hover:bg-slate-600 dark:hover:bg-slate-700 text-white rounded-lg flex items-center justify-center gap-2
                     transition-colors text-sm md:text-base
                     w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2"
                   title="Reagendar Grade"
@@ -261,7 +261,7 @@ export const Scheduling = () => {
                   : "max-h-0 opacity-0 pointer-events-none mb-0"
               }`}
             >
-              <div className="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
+              <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-4 shadow-sm dark:shadow-slate-950/50">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                   <div className="relative">
                     <input
@@ -271,12 +271,12 @@ export const Scheduling = () => {
                       onChange={(e) =>
                         handleFilterChange("className", e.target.value)
                       }
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     />
                     {filters.className && (
                       <button
                         onClick={() => handleFilterChange("className", "")}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -326,7 +326,7 @@ export const Scheduling = () => {
                   <button
                     onClick={handleClearFilters}
                     disabled={!hasActiveFilters}
-                    className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
+                    className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
                   >
                     <X className="w-4 h-4" />
                     Limpar Filtros
@@ -335,12 +335,12 @@ export const Scheduling = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-              <div className="bg-linear-to-r from-blue-50 to-indigo-50 px-4 md:px-6 py-3 border-b border-slate-200">
+            <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 overflow-hidden">
+              <div className="bg-linear-to-r from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-800 px-4 md:px-6 py-3 border-b border-slate-200 dark:border-slate-700">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Calendar className="h-5 w-5 text-blue-600" />
-                    <span className="text-sm font-semibold text-slate-700">
+                    <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
                       Selecione a Data
                     </span>
                   </div>
@@ -373,12 +373,12 @@ export const Scheduling = () => {
                   </div>
 
                   <div className="flex-1 text-center order-1 md:order-2">
-                    <div className="text-xl md:text-2xl font-bold text-slate-900 capitalize mb-1">
+                    <div className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white capitalize mb-1">
                       {selectedDate.toLocaleDateString("pt-BR", {
                         weekday: "long",
                       })}
                     </div>
-                    <div className="text-base md:text-lg text-slate-600 font-medium">
+                    <div className="text-base md:text-lg text-slate-600 dark:text-slate-300 font-medium">
                       {selectedDate.toLocaleDateString("pt-BR", {
                         day: "2-digit",
                         month: "long",
@@ -404,7 +404,7 @@ export const Scheduling = () => {
                     </div>
                     <button
                       onClick={() => setSelectedDate(new Date())}
-                      className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2 text-sm font-semibold shadow-sm hover:shadow-md"
+                      className="px-4 py-2.5 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-lg transition-colors flex items-center gap-2 text-sm font-semibold shadow-sm hover:shadow-md"
                     >
                       <Clock className="h-4 w-4" />
                       Hoje
@@ -415,37 +415,37 @@ export const Scheduling = () => {
             </div>
 
             {classroomsLoading ? (
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 text-center">
+              <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 p-8 text-center">
                 <div className="flex flex-col items-center justify-center space-y-4">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400"></div>
                   <div>
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                       Carregando salas...
                     </h3>
-                    <p className="text-sm text-slate-600">
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
                       Buscando informações das salas de aula
                     </p>
                   </div>
                 </div>
               </div>
             ) : classrooms.length === 0 ? (
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
+              <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 p-12 text-center">
                 <div className="flex flex-col items-center justify-center space-y-4">
-                  <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center">
-                    <BookOpen className="h-8 w-8 text-slate-400" />
+                  <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center">
+                    <BookOpen className="h-8 w-8 text-slate-400 dark:text-slate-500" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                       Nenhuma sala cadastrada
                     </h3>
-                    <p className="text-sm text-slate-600">
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
                       Cadastre salas para começar a fazer agendamentos
                     </p>
                   </div>
                 </div>
               </div>
             ) : viewMode === "grid" ? (
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+              <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 overflow-hidden">
                 {/* Hint de scroll */}
                 <div className="bg-blue-50 border-b border-blue-200 px-4 py-2">
                   <p className="text-xs text-blue-700 text-center flex items-center justify-center gap-2">
@@ -661,22 +661,22 @@ export const Scheduling = () => {
             )}
 
             {!classroomsLoading && classrooms.length > 0 && (
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6">
-                <h3 className="font-semibold text-slate-900 mb-3 text-sm md:text-base">
+              <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 p-4 md:p-6">
+                <h3 className="font-semibold text-slate-900 dark:text-white mb-3 text-sm md:text-base">
                   Legenda
                 </h3>
                 <div className="flex flex-wrap gap-4 md:gap-6">
                   <div className="flex items-center space-x-2">
                     <div className="w-4 h-4 bg-linear-to-r from-blue-50 to-blue-100 border-l-4 border-blue-500 rounded-sm"></div>
-                    <span className="text-sm text-slate-600">Ocupado</span>
+                    <span className="text-sm text-slate-600 dark:text-slate-400">Ocupado</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-white border border-slate-200 rounded-sm"></div>
-                    <span className="text-sm text-slate-600">Disponível</span>
+                    <div className="w-4 h-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-sm"></div>
+                    <span className="text-sm text-slate-600 dark:text-slate-400">Disponível</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Plus className="w-4 h-4 text-slate-400" />
-                    <span className="text-sm text-slate-600">
+                    <Plus className="w-4 h-4 text-slate-400 dark:text-slate-500" />
+                    <span className="text-sm text-slate-600 dark:text-slate-400">
                       Clique para agendar
                     </span>
                   </div>

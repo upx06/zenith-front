@@ -3,7 +3,7 @@ import { GraduationCap } from "lucide-react";
 
 export const Home = () => {
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex">
       <Menu />
       <div
         className="hidden lg:block lg:w-64 xl:w-72 shrink-0"
@@ -13,19 +13,19 @@ export const Home = () => {
         <div className="flex-1 flex items-center justify-center p-4 md:p-6 lg:p-8 mt-16 lg:mt-0">
           <div className="max-w-4xl w-full text-center">
             <div className="mb-8">
-              <div className="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <div className="w-20 h-20 bg-blue-600 dark:bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <GraduationCap className="w-10 h-10 text-white" />
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-800 mb-4">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-800 dark:text-white mb-4">
                 Rejoy | Zenith
               </h1>
-              <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto">
+              <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
                 Sistema de gerenciamento completo para a escola de idiomas Rejoy
               </p>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8 mb-8">
-              <p className="text-slate-700 leading-relaxed">
+            <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 p-6 md:p-8 mb-8">
+              <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                 O Zenith foi desenvolvido para simplificar a gestão das rotinas
                 escolares, centralizando informações de professores, alunos,
                 turmas e muito mais em uma única plataforma intuitiva e

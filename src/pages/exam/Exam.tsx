@@ -141,7 +141,7 @@ export const Exam = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-slate-50 flex">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex">
         <Menu />
         <div className="flex-1 flex flex-col items-center justify-center p-8">
           <div className="text-center max-w-md">
@@ -163,7 +163,7 @@ export const Exam = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex">
       <Menu />
       <div
         className="hidden lg:block lg:w-64 xl:w-72 shrink-0"
@@ -175,10 +175,10 @@ export const Exam = () => {
             {/* Header */}
             <div className="flex flex-row justify-between items-center gap-4 pt-5 md:pt-0">
               <div className="flex-1 min-w-0">
-                <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase">
+                <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white uppercase">
                   Avaliações
                 </h1>
-                <p className="hidden sm:block text-slate-600 text-sm md:text-base">
+                <p className="hidden sm:block text-slate-600 dark:text-slate-300 text-sm md:text-base">
                   Gerencie as avaliações dos alunos
                 </p>
               </div>
@@ -190,7 +190,7 @@ export const Exam = () => {
                     ${
                       showFilters || hasActiveFilters
                         ? "bg-blue-600 text-white"
-                        : "bg-white text-slate-700 border border-slate-300"
+                        : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700"
                     }
                     hover:opacity-90 rounded-lg flex items-center justify-center gap-2 transition-all
                     text-sm md:text-base relative
@@ -208,7 +208,7 @@ export const Exam = () => {
                 <button
                   onClick={() => setCreateExamModal(true)}
                   className="
-                    bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center justify-center gap-2
+                    bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-lg flex items-center justify-center gap-2
                     transition-colors text-sm md:text-base
                     w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2
                   "
@@ -227,7 +227,7 @@ export const Exam = () => {
                   : "max-h-0 opacity-0 pointer-events-none mb-0"
               }`}
             >
-              <div className="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
+              <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-4 shadow-sm dark:shadow-slate-950/50">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
                   <div className="relative">
                     <input
@@ -237,12 +237,12 @@ export const Exam = () => {
                       onChange={(e) =>
                         handleFilterChange("name", e.target.value)
                       }
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm"
                     />
                     {filters.name && (
                       <button
                         onClick={() => handleFilterChange("name", "")}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-slate-300"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -257,12 +257,12 @@ export const Exam = () => {
                       onChange={(e) =>
                         handleFilterChange("startDate", e.target.value)
                       }
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm"
                     />
                     {filters.startDate && (
                       <button
                         onClick={() => handleFilterChange("startDate", "")}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-slate-300"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -277,12 +277,12 @@ export const Exam = () => {
                       onChange={(e) =>
                         handleFilterChange("endDate", e.target.value)
                       }
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm"
                     />
                     {filters.endDate && (
                       <button
                         onClick={() => handleFilterChange("endDate", "")}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-slate-300"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -295,7 +295,7 @@ export const Exam = () => {
                       onChange={(e) =>
                         handleFilterChange("teacherId", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm"
                     >
                       <option value="">Todos os professores</option>
                       {/* {teachers.map((teacher: any) => (
@@ -312,7 +312,7 @@ export const Exam = () => {
                       onChange={(e) =>
                         handleFilterChange("type", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm"
                     >
                       <option value="all">Todos os tipos</option>
                       <option value="class">Turma Completa</option>
@@ -323,7 +323,7 @@ export const Exam = () => {
                   <button
                     onClick={handleClearFilters}
                     disabled={!hasActiveFilters}
-                    className="w-full px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
+                    className="w-full px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
                   >
                     <X className="w-4 h-4" />
                     Limpar Filtros
@@ -334,7 +334,7 @@ export const Exam = () => {
 
             {/* Loading */}
             {loading && (
-              <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10 rounded-lg">
+              <div className="absolute inset-0 bg-white/80 dark:bg-slate-900/80 flex items-center justify-center z-10 rounded-lg">
                 <div className="flex flex-col items-center gap-4">
                   <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
                   <p className="text-slate-600 font-medium">
@@ -374,7 +374,7 @@ export const Exam = () => {
                 </p>
                 <button
                   onClick={() => setCreateExamModal(true)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
+                  className="bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
                 >
                   <Plus className="w-4 h-4" />
                   Nova Avaliação
@@ -385,7 +385,7 @@ export const Exam = () => {
             {/* Tabela de Avaliações */}
             {!loading && exams.length > 0 && (
               <div className="relative">
-                <div className="md:bg-white md:rounded-xl md:border md:border-slate-200 md:shadow-md md:overflow-hidden">
+                <div className="md:bg-white md:rounded-xl md:border md:border-slate-200 dark:border-slate-700 md:shadow-md md:overflow-hidden">
                   {/* Header da tabela - Desktop */}
                   <div className="hidden md:grid md:grid-cols-12 gap-4 bg-slate-50 px-6 py-4 text-sm font-semibold text-slate-700 uppercase tracking-wide">
                     <div className="col-span-3">Nome</div>
@@ -406,7 +406,7 @@ export const Exam = () => {
                           className="hover:bg-blue-50/40 transition-all duration-200 group"
                         >
                           {/* Layout Mobile */}
-                          <div className="md:hidden bg-white rounded-xl shadow-sm border border-slate-200 p-4 hover:shadow-md hover:border-slate-300 transition-all duration-200">
+                          <div className="md:hidden bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 hover:shadow-md hover:border-slate-300 transition-all duration-200">
                             {/* Header do Card */}
                             <div className="flex items-start justify-between mb-4">
                               <div className="flex items-center gap-3">
@@ -432,17 +432,17 @@ export const Exam = () => {
 
                             {/* Info */}
                             <div className="space-y-2 mb-4">
-                              <div className="flex items-center gap-2 text-slate-600">
-                                <GraduationCap className="w-4 h-4 text-slate-400" />
+                              <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                                <GraduationCap className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                                 <span className="text-sm">
                                   {exam.teacher.name}
                                 </span>
                               </div>
-                              <div className="flex items-center gap-2 text-slate-600">
+                              <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
                                 {isClassEvaluation ? (
-                                  <Users className="w-4 h-4 text-slate-400" />
+                                  <Users className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                                 ) : (
-                                  <User className="w-4 h-4 text-slate-400" />
+                                  <User className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                                 )}
                                 <span className="text-sm">
                                   {isClassEvaluation
@@ -453,13 +453,13 @@ export const Exam = () => {
                             </div>
 
                             {/* Ações */}
-                            <div className="flex gap-2 pt-2 border-t border-slate-100">
+                            <div className="flex gap-2 pt-2 border-t border-slate-100 dark:border-slate-800-100">
                               <button
                                 onClick={() => {
                                   setSelectedExam(exam);
                                   setGradesControlModal(true);
                                 }}
-                                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 border border-slate-200 rounded-lg transition-colors text-sm font-medium"
+                                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 border border-slate-200 dark:border-slate-700 rounded-lg transition-colors text-sm font-medium"
                                 title="Controle de Notas"
                               >
                                 Notas
@@ -512,8 +512,8 @@ export const Exam = () => {
 
                             {/* Professor */}
                             <div className="col-span-2 flex items-center">
-                              <div className="flex items-center gap-2 text-sm text-slate-700">
-                                <GraduationCap className="w-4 h-4 text-slate-400" />
+                              <div className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-200">
+                                <GraduationCap className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                                 <span className="truncate font-medium">
                                   {exam.teacher.name}
                                 </span>

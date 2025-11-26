@@ -95,7 +95,7 @@ export const ClassReport = () => {
   const selectedClass = classes.find((c) => c.id === selectedClassId);
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex">
       <Menu />
       <div
         className="hidden lg:block lg:w-64 xl:w-72 shrink-0"
@@ -106,26 +106,26 @@ export const ClassReport = () => {
           <div className="space-y-4 md:space-y-6">
             <div className="flex flex-row justify-between gap-4 pt-5 md:pt-0">
               <div>
-                <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase">
+                <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white uppercase">
                   Relatório dos Alunos
                 </h1>
-                <p className="text-slate-600 text-sm md:text-base">
+                <p className="text-slate-600 dark:text-slate-300 text-sm md:text-base">
                   Visualize presenças e faltas de cada aluno
                 </p>
               </div>
             </div>
 
-            <div className="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
+            <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-4 shadow-sm dark:shadow-slate-950/50">
               <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                 <div className="flex items-center gap-2 text-slate-700 min-w-fit">
-                  <Users className="w-5 h-5 text-blue-600" />
+                  <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   <span className="text-sm font-medium">Turma:</span>
                 </div>
                 <select
                   value={selectedClassId}
                   onChange={(e) => setSelectedClassId(e.target.value)}
                   disabled={classesLoading}
-                  className="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   <option value="">Selecione uma turma</option>
                   {classes
@@ -142,14 +142,14 @@ export const ClassReport = () => {
             </div>
 
             {loading && selectedClassId && (
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 text-center">
+              <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center">
                 <div className="flex flex-col items-center justify-center space-y-4">
                   <Loader2 className="w-12 h-12 text-blue-600 animate-spin" />
                   <div>
                     <h3 className="text-lg font-semibold text-slate-900 mb-2">
                       Carregando dados...
                     </h3>
-                    <p className="text-sm text-slate-600">
+                    <p className="text-sm text-slate-600 dark:text-slate-300">
                       Buscando informações da turma
                     </p>
                   </div>
@@ -159,17 +159,17 @@ export const ClassReport = () => {
 
             {!loading && selectedClassId && selectedClass && (
               <div className="relative">
-                <div className="md:bg-white md:rounded-xl md:border md:border-slate-200 md:shadow-md md:overflow-hidden">
+                <div className="md:bg-white md:rounded-xl md:border md:border-slate-200 dark:border-slate-700 md:shadow-md md:overflow-hidden">
                   {/* Header da turma */}
-                  <div className="hidden md:block bg-slate-100 px-4 md:px-6 py-3 border-b border-slate-200">
+                  <div className="hidden md:block bg-slate-100 px-4 md:px-6 py-3 border-b border-slate-200 dark:border-slate-700">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <BookOpen className="h-5 w-5 text-blue-600" />
-                        <span className="text-sm font-semibold text-slate-700">
+                        <BookOpen className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                        <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
                           {selectedClass.name} - {selectedClass.level}
                         </span>
                       </div>
-                      <span className="text-xs text-slate-600">
+                      <span className="text-xs text-slate-600 dark:text-slate-300">
                         {studentsReport.length} aluno
                         {studentsReport.length === 1 ? "" : "s"}
                       </span>
@@ -178,7 +178,7 @@ export const ClassReport = () => {
 
                   {studentsReport.length === 0 ? (
                     <div className="p-8 text-center">
-                      <p className="text-slate-600">
+                      <p className="text-slate-600 dark:text-slate-300">
                         Nenhum aluno encontrado nesta turma
                       </p>
                     </div>
@@ -202,10 +202,10 @@ export const ClassReport = () => {
                             className="hover:bg-blue-50/40 transition-all duration-200 group"
                           >
                             {/* Layout Mobile */}
-                            <div className="md:hidden px-4 py-4 space-y-3 rounded-lg border border-slate-200 shadow-sm">
+                            <div className="md:hidden px-4 py-4 space-y-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-950/50">
                               {/* Header do Card */}
                               <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shrink-0 shadow-sm">
+                                <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shrink-0 shadow-sm dark:shadow-slate-950/50">
                                   <span className="text-base font-bold text-white">
                                     {student.studentName
                                       .charAt(0)
@@ -220,13 +220,13 @@ export const ClassReport = () => {
                               </div>
 
                               {/* Métricas */}
-                              <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100">
+                              <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100 dark:border-slate-800-100">
                                 <div className="flex flex-col items-center p-2 bg-slate-50 rounded-lg">
                                   <BookOpen className="w-4 h-4 text-slate-400 mb-1" />
                                   <span className="text-xs text-slate-500 mb-1">
                                     Aulas
                                   </span>
-                                  <span className="text-sm font-bold text-slate-700">
+                                  <span className="text-sm font-bold text-slate-700 dark:text-slate-200">
                                     {student.totalLessons}
                                   </span>
                                 </div>
@@ -263,8 +263,8 @@ export const ClassReport = () => {
                               {/* Total de Aulas */}
                               <div className="col-span-2 flex items-center justify-center">
                                 <div className="flex items-center gap-2">
-                                  <BookOpen className="w-4 h-4 text-slate-400" />
-                                  <span className="text-sm font-medium text-slate-700">
+                                  <BookOpen className="w-4 h-4 text-slate-400 dark:text-slate-500" />
+                                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
                                     {student.totalLessons}
                                   </span>
                                 </div>
@@ -274,7 +274,7 @@ export const ClassReport = () => {
                               <div className="col-span-2 flex items-center justify-center">
                                 <div className="flex items-center gap-2">
                                   <CheckCircle className="w-4 h-4 text-green-500" />
-                                  <span className="text-sm font-medium text-slate-700">
+                                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
                                     {student.presences}
                                   </span>
                                 </div>
@@ -284,7 +284,7 @@ export const ClassReport = () => {
                               <div className="col-span-3 flex items-center justify-center">
                                 <div className="flex items-center gap-2">
                                   <XCircle className="w-4 h-4 text-red-500" />
-                                  <span className="text-sm font-medium text-slate-700">
+                                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
                                     {student.absences}
                                   </span>
                                 </div>
@@ -300,16 +300,16 @@ export const ClassReport = () => {
             )}
 
             {!loading && !selectedClassId && (
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
+              <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-12 text-center">
                 <div className="flex flex-col items-center justify-center space-y-4">
                   <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center">
-                    <Users className="h-8 w-8 text-slate-400" />
+                    <Users className="h-8 w-8 text-slate-400 dark:text-slate-500" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-slate-900 mb-2">
                       Selecione uma turma
                     </h3>
-                    <p className="text-sm text-slate-600">
+                    <p className="text-sm text-slate-600 dark:text-slate-300">
                       Escolha uma turma para visualizar o relatório de alunos
                     </p>
                   </div>

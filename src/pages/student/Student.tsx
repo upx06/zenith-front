@@ -253,7 +253,7 @@ export const Student = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-slate-50 flex">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex">
         <Menu />
         <div className="flex-1 flex flex-col items-center justify-center p-8">
           <div className="text-center max-w-md">
@@ -275,7 +275,7 @@ export const Student = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex">
       <Menu />
       <div
         className="hidden lg:block lg:w-64 xl:w-72 shrink-0"
@@ -284,7 +284,7 @@ export const Student = () => {
       <div className="flex-1 flex flex-col min-w-0 relative">
         {isProcessing && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 flex flex-col items-center gap-3">
+            <div className="bg-white dark:bg-slate-900 rounded-lg p-6 flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
               <p className="text-slate-600 font-medium">
                 {/* 👇 MENSAGEM ATUALIZADA */}
@@ -318,10 +318,10 @@ export const Student = () => {
           <div className="space-y-4 md:space-y-6">
             <div className="flex flex-row justify-between items-center gap-4 pt-5 md:pt-0">
               <div className="flex-1 min-w-0">
-                <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase">
+                <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white uppercase">
                   Alunos
                 </h1>
-                <p className="hidden sm:block text-slate-600 text-sm md:text-base">
+                <p className="hidden sm:block text-slate-600 dark:text-slate-300 text-sm md:text-base">
                   Gerencie os alunos da instituição
                 </p>
               </div>
@@ -334,7 +334,7 @@ export const Student = () => {
                     ${
                       showFilters || hasActiveFilters
                         ? "bg-blue-600 text-white"
-                        : "bg-white text-slate-700 border border-slate-300"
+                        : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700"
                     }
                     hover:opacity-90 disabled:bg-slate-400 disabled:cursor-not-allowed
                     rounded-lg flex items-center justify-center gap-2 transition-all
@@ -354,7 +354,7 @@ export const Student = () => {
                   onClick={() => setCreateStudentModal(true)}
                   disabled={isProcessing}
                   className="
-                    bg-blue-600 hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed
+                    bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-slate-400 disabled:cursor-not-allowed
                     text-white rounded-lg flex items-center justify-center gap-2
                     transition-colors text-sm md:text-base
                     w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2
@@ -373,7 +373,7 @@ export const Student = () => {
                   : "max-h-0 opacity-0 pointer-events-none mb-0"
               }`}
             >
-              <div className="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
+              <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-4 shadow-sm dark:shadow-slate-950/50">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                   <div className="relative">
                     <input
@@ -384,12 +384,12 @@ export const Student = () => {
                         handleFilterChange("name", e.target.value)
                       }
                       disabled={isProcessing}
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                     {filters.name && (
                       <button
                         onClick={() => handleFilterChange("name", "")}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-slate-300"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -405,12 +405,12 @@ export const Student = () => {
                         handleFilterChange("email", e.target.value)
                       }
                       disabled={isProcessing}
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                     {filters.email && (
                       <button
                         onClick={() => handleFilterChange("email", "")}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-slate-300"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -426,12 +426,12 @@ export const Student = () => {
                         handleFilterChange("phone", e.target.value)
                       }
                       disabled={isProcessing}
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                     {filters.phone && (
                       <button
                         onClick={() => handleFilterChange("phone", "")}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-slate-300"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -441,7 +441,7 @@ export const Student = () => {
                   <button
                     onClick={handleClearFilters}
                     disabled={!hasActiveFilters || isProcessing}
-                    className="w-full px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
+                    className="w-full px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
                   >
                     <X className="w-4 h-4" />
                     Limpar Filtros
@@ -451,7 +451,7 @@ export const Student = () => {
             </div>
 
             {isLoadingData && (
-              <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10 rounded-lg">
+              <div className="absolute inset-0 bg-white/80 dark:bg-slate-900/80 flex items-center justify-center z-10 rounded-lg">
                 <div className="flex flex-col items-center gap-4">
                   <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
                   <p className="text-slate-600 font-medium">
@@ -469,7 +469,7 @@ export const Student = () => {
                   return (
                     <div
                       key={student.id}
-                      className={`bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6 hover:shadow-md hover:border-slate-300 transition-all duration-200 ${
+                      className={`bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 md:p-6 hover:shadow-md hover:border-slate-300 transition-all duration-200 ${
                         deletingStudentId === student.id ||
                         generatingReportId === student.id
                           ? "opacity-50"
@@ -479,7 +479,7 @@ export const Student = () => {
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center gap-3">
                           {photoUrl ? (
-                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border border-slate-200 shrink-0">
+                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700 shrink-0">
                               <img
                                 src={photoUrl}
                                 alt={`Foto de ${student.name}`}
@@ -503,14 +503,14 @@ export const Student = () => {
                       </div>
 
                       <div className="space-y-2 mb-4">
-                        <div className="flex items-center gap-2 text-slate-600">
-                          <Mail className="w-4 h-4 text-slate-400" />
+                        <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                          <Mail className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                           <span className="text-sm truncate">
                             {student.email}
                           </span>
                         </div>
-                        <div className="flex items-center gap-2 text-slate-600">
-                          <Phone className="w-4 h-4 text-slate-400" />
+                        <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                          <Phone className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                           <PhoneDisplay
                             phone={student.phone}
                             className="text-sm"
@@ -519,13 +519,13 @@ export const Student = () => {
                       </div>
 
                       {/* 👇 BOTÕES ATUALIZADOS */}
-                      <div className="flex gap-2 pt-2 border-t border-slate-100">
+                      <div className="flex gap-2 pt-2 border-t border-slate-100 dark:border-slate-800-100">
                         <button
                           onClick={() =>
                             handleOpenDetailsModal(student, photoUrl)
                           }
                           disabled={isProcessing}
-                          className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 border border-slate-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                          className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 border border-slate-200 dark:border-slate-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
                         >
                           Ver detalhes
                         </button>
@@ -634,7 +634,7 @@ export const Student = () => {
                 <button
                   onClick={() => setCreateStudentModal(true)}
                   disabled={isProcessing}
-                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
+                  className="bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-slate-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
                 >
                   <Plus className="w-4 h-4" />
                   Adicionar Aluno

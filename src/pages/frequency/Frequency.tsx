@@ -172,7 +172,7 @@ export const Frequency = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-slate-50 flex">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex">
         <Menu />
         <div className="flex-1 flex flex-col items-center justify-center p-8">
           <div className="text-center max-w-md">
@@ -194,7 +194,7 @@ export const Frequency = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex">
       <Menu />
       <div
         className="hidden lg:block lg:w-64 xl:w-72 shrink-0"
@@ -206,10 +206,10 @@ export const Frequency = () => {
             {/* Header */}
             <div className="flex flex-row justify-between items-center gap-4 pt-5 md:pt-0">
               <div className="flex-1 min-w-0">
-                <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase">
+                <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white uppercase">
                   Frequências
                 </h1>
-                <p className="hidden sm:block text-slate-600 text-sm md:text-base">
+                <p className="hidden sm:block text-slate-600 dark:text-slate-300 text-sm md:text-base">
                   Registre a presença dos alunos nas aulas
                 </p>
               </div>
@@ -221,7 +221,7 @@ export const Frequency = () => {
                     ${
                       showFilters || hasActiveFilters
                         ? "bg-blue-600 text-white"
-                        : "bg-white text-slate-700 border border-slate-300"
+                        : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700"
                     }
                     hover:opacity-90 rounded-lg flex items-center justify-center gap-2 transition-all
                     text-sm md:text-base relative
@@ -245,7 +245,7 @@ export const Frequency = () => {
                   : "max-h-0 opacity-0 pointer-events-none mb-0"
               }`}
             >
-              <div className="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
+              <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-4 shadow-sm dark:shadow-slate-950/50">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
                   <div className="relative">
                     <input
@@ -255,12 +255,12 @@ export const Frequency = () => {
                       onChange={(e) =>
                         handleFilterChange("startDate", e.target.value)
                       }
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm"
                     />
                     {filters.startDate && (
                       <button
                         onClick={() => handleFilterChange("startDate", "")}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-slate-300"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -275,12 +275,12 @@ export const Frequency = () => {
                       onChange={(e) =>
                         handleFilterChange("endDate", e.target.value)
                       }
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm"
                     />
                     {filters.endDate && (
                       <button
                         onClick={() => handleFilterChange("endDate", "")}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-slate-300"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -293,7 +293,7 @@ export const Frequency = () => {
                       onChange={(e) =>
                         handleFilterChange("teacherId", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm"
                     >
                       <option value="">Todos os professores</option>
                       {teachers.map((teacher) => (
@@ -310,7 +310,7 @@ export const Frequency = () => {
                       onChange={(e) =>
                         handleFilterChange("status", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm"
                     >
                       <option value="all">Todos os status</option>
                       <option value="pending">Pendentes</option>
@@ -321,7 +321,7 @@ export const Frequency = () => {
                   <button
                     onClick={handleClearFilters}
                     disabled={!hasActiveFilters}
-                    className="w-full px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
+                    className="w-full px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
                   >
                     <X className="w-4 h-4" />
                     Limpar Filtros
@@ -332,7 +332,7 @@ export const Frequency = () => {
 
             {/* Loading */}
             {loading && (
-              <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10 rounded-lg">
+              <div className="absolute inset-0 bg-white/80 dark:bg-slate-900/80 flex items-center justify-center z-10 rounded-lg">
                 <div className="flex flex-col items-center gap-4">
                   <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
                   <p className="text-slate-600 font-medium">
@@ -364,10 +364,10 @@ export const Frequency = () => {
             {!loading && lessons.length === 0 && !hasActiveFilters && (
               <div className="text-center py-12">
                 <ClipboardCheck className="w-12 h-12 md:w-16 md:h-16 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-slate-600 mb-2">
+                <h3 className="text-lg font-medium text-slate-800 dark:text-white">
                   Nenhuma aula encontrada
                 </h3>
-                <p className="text-slate-500 text-sm">
+                <p className="text-slate-600 dark:text-slate-300 text-sm">
                   Não há aulas cadastradas no sistema
                 </p>
               </div>
@@ -376,7 +376,7 @@ export const Frequency = () => {
             {/* Tabela de Aulas */}
             {!loading && lessons.length > 0 && (
               <div className="relative">
-                <div className="md:bg-white md:rounded-xl md:border md:border-slate-200 md:shadow-md md:overflow-hidden">
+                <div className="md:bg-white md:rounded-xl md:border md:border-slate-200 dark:border-slate-700 md:shadow-md md:overflow-hidden">
                   {/* Header da tabela - Desktop */}
                   <div className="hidden md:grid md:grid-cols-12 gap-4 bg-slate-50 px-6 py-4 text-sm font-semibold text-slate-700 uppercase tracking-wide">
                     <div className="col-span-1 text-center">Status</div>
@@ -400,7 +400,7 @@ export const Frequency = () => {
                           className="hover:bg-blue-50/40 transition-all duration-200 group cursor-pointer"
                         >
                           {/* Layout Mobile */}
-                          <div className="md:hidden bg-white rounded-xl shadow-sm border border-slate-200 p-4 hover:shadow-md hover:border-slate-300 transition-all duration-200 mb-3">
+                          <div className="md:hidden bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 hover:shadow-md hover:border-slate-300 transition-all duration-200 mb-3">
                             <div className="flex items-start justify-between mb-4">
                               <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center shrink-0">
@@ -410,7 +410,7 @@ export const Frequency = () => {
                                   <h3 className="font-semibold text-slate-800 text-sm">
                                     {lesson.class.name}
                                   </h3>
-                                  <p className="text-xs text-slate-600">
+                                  <p className="text-xs text-slate-600 dark:text-slate-300">
                                     {lesson.class.level} -{" "}
                                     {lesson.class.language.name}
                                   </p>
@@ -419,8 +419,8 @@ export const Frequency = () => {
                             </div>
 
                             <div className="space-y-2 mb-4">
-                              <div className="flex items-center gap-2 text-slate-600">
-                                <Calendar className="w-4 h-4 text-slate-400" />
+                              <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                                <Calendar className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                                 <span className="text-sm">
                                   {lessonDate.toLocaleDateString("pt-BR")} às{" "}
                                   {lessonDate.toLocaleTimeString("pt-BR", {
@@ -429,27 +429,27 @@ export const Frequency = () => {
                                   })}
                                 </span>
                               </div>
-                              <div className="flex items-center gap-2 text-slate-600">
-                                <Users className="w-4 h-4 text-slate-400" />
+                              <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                                <Users className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                                 <span className="text-sm">
                                   {lesson.teacher.name}
                                 </span>
                               </div>
                               <div className="flex items-center gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-slate-600" />
-                                <span className="text-sm text-slate-600">
+                                <CheckCircle2 className="w-4 h-4 text-slate-600 dark:text-slate-300" />
+                                <span className="text-sm text-slate-600 dark:text-slate-300">
                                   {enrollments.length} aluno(s)
                                 </span>
                               </div>
                             </div>
 
-                            <div className="flex gap-2 pt-2 border-t border-slate-100">
+                            <div className="flex gap-2 pt-2 border-t border-slate-100 dark:border-slate-800-100">
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   handleLessonClick(lesson);
                                 }}
-                                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 border border-slate-200 rounded-lg transition-colors text-sm font-medium"
+                                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 border border-slate-200 dark:border-slate-700 rounded-lg transition-colors text-sm font-medium"
                               >
                                 {lesson.attendanceTaken
                                   ? "Ver chamada"
@@ -463,7 +463,7 @@ export const Frequency = () => {
                             {/* Status */}
                             <div className="col-span-1 flex items-center justify-center">
                               {lesson.attendanceTaken ? (
-                                <CheckCircle2 className="w-5 h-5 text-green-600" />
+                                <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400" />
                               ) : (
                                 <ClipboardCheck className="w-5 h-5 text-amber-600" />
                               )}
@@ -475,7 +475,7 @@ export const Frequency = () => {
                                 <h3 className="font-semibold text-slate-800 text-base group-hover:text-blue-700 transition-colors">
                                   {lesson.class.name}
                                 </h3>
-                                <p className="text-sm text-slate-600">
+                                <p className="text-sm text-slate-600 dark:text-slate-300">
                                   {lesson.class.level} -{" "}
                                   {lesson.class.language.name}
                                 </p>
@@ -484,12 +484,12 @@ export const Frequency = () => {
 
                             {/* Data/Hora */}
                             <div className="col-span-2 flex flex-col justify-center">
-                              <div className="flex items-center gap-2 text-sm text-slate-700">
-                                <Calendar className="w-4 h-4 text-slate-400" />
+                              <div className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-200">
+                                <Calendar className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                                 {lessonDate.toLocaleDateString("pt-BR")}
                               </div>
                               <div className="flex items-center gap-2 text-sm text-slate-600 mt-1">
-                                <Clock className="w-4 h-4 text-slate-400" />
+                                <Clock className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                                 {lessonDate.toLocaleTimeString("pt-BR", {
                                   hour: "2-digit",
                                   minute: "2-digit",
@@ -499,8 +499,8 @@ export const Frequency = () => {
 
                             {/* Professor */}
                             <div className="col-span-3 flex items-center">
-                              <div className="flex items-center gap-2 text-sm text-slate-700">
-                                <Users className="w-4 h-4 text-slate-400" />
+                              <div className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-200">
+                                <Users className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                                 <span className="truncate font-medium">
                                   {lesson.teacher.name}
                                 </span>
@@ -509,7 +509,7 @@ export const Frequency = () => {
 
                             {/* Alunos */}
                             <div className="col-span-2 flex items-center justify-center">
-                              <span className="text-sm font-medium text-slate-700">
+                              <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
                                 {enrollments.length} aluno(s)
                               </span>
                             </div>

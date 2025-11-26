@@ -96,13 +96,13 @@ const priorityConfig = {
   },
   low: {
     label: "Baixa",
-    color: "bg-slate-100 text-slate-700",
+    color: "bg-slate-100 text-slate-700 dark:text-slate-200",
   },
 };
 
 export const FutureFeatures = () => {
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex">
       <Menu />
       <div
         className="hidden lg:block lg:w-64 xl:w-72 shrink-0"
@@ -114,10 +114,10 @@ export const FutureFeatures = () => {
             {/* Header */}
             <div className="flex flex-row justify-between gap-4 pt-5 md:pt-0">
               <div>
-                <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase">
+                <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white uppercase">
                   Features Futuras
                 </h1>
-                <p className="text-slate-600 text-sm md:text-base">
+                <p className="text-slate-600 dark:text-slate-300 text-sm md:text-base">
                   Melhorias e funcionalidades planejadas para o sistema
                 </p>
               </div>
@@ -153,23 +153,23 @@ export const FutureFeatures = () => {
                 return (
                   <div
                     key={feature.id}
-                    className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md hover:border-slate-300 transition-all duration-200"
+                    className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 hover:shadow-md hover:border-slate-300 transition-all duration-200"
                   >
                     <div className="flex items-start gap-4 mb-4">
                       <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center shrink-0">
-                        <Icon className="w-6 h-6 text-blue-600" />
+                        <Icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                       </div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-slate-800 text-base md:text-lg mb-2">
                           {feature.title}
                         </h3>
-                        <p className="text-slate-600 text-sm leading-relaxed">
+                        <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
                           {feature.description}
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-100">
+                    <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-100 dark:border-slate-800-100">
                       <div
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-medium ${statusInfo.color}`}
                       >

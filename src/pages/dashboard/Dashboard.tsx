@@ -86,7 +86,7 @@ const languageDistributionData = [
 
 export const Dashboard = () => {
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex">
       <Menu />
       <div
         className="hidden lg:block lg:w-64 xl:w-72 shrink-0"
@@ -98,10 +98,10 @@ export const Dashboard = () => {
             {/* Header */}
             <div className="flex flex-row justify-between gap-4 pt-5 md:pt-0">
               <div>
-                <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase">
+                <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white uppercase">
                   Dashboard
                 </h1>
-                <p className="text-slate-600 text-sm md:text-base">
+                <p className="text-slate-600 dark:text-slate-300 text-sm md:text-base">
                   Visão geral do sistema
                 </p>
               </div>
@@ -110,13 +110,13 @@ export const Dashboard = () => {
             {/* Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Total de Alunos */}
-              <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-950/50 hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-slate-600 mb-1">
+                    <p className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-1">
                       Total de Alunos
                     </p>
-                    <p className="text-3xl font-bold text-slate-800">
+                    <p className="text-3xl font-bold text-slate-800 dark:text-white">
                       {stats.totalStudents}
                     </p>
                     <div className="flex items-center gap-1 mt-2">
@@ -133,13 +133,13 @@ export const Dashboard = () => {
               </div>
 
               {/* Total de Professores */}
-              <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-950/50 hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-slate-600 mb-1">
+                    <p className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-1">
                       Professores
                     </p>
-                    <p className="text-3xl font-bold text-slate-800">
+                    <p className="text-3xl font-bold text-slate-800 dark:text-white">
                       {stats.totalTeachers}
                     </p>
                     <div className="flex items-center gap-1 mt-2">
@@ -156,13 +156,13 @@ export const Dashboard = () => {
               </div>
 
               {/* Turmas em Andamento */}
-              <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-950/50 hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-slate-600 mb-1">
+                    <p className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-1">
                       Turmas Ativas
                     </p>
-                    <p className="text-3xl font-bold text-slate-800">
+                    <p className="text-3xl font-bold text-slate-800 dark:text-white">
                       {stats.activeClasses}
                     </p>
                     <div className="flex items-center gap-1 mt-2">
@@ -179,13 +179,13 @@ export const Dashboard = () => {
               </div>
 
               {/* Aulas Agendadas */}
-              <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-950/50 hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-slate-600 mb-1">
+                    <p className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-1">
                       Aulas Agendadas
                     </p>
-                    <p className="text-3xl font-bold text-slate-800">
+                    <p className="text-3xl font-bold text-slate-800 dark:text-white">
                       {stats.upcomingLessons}
                     </p>
                     <div className="flex items-center gap-1 mt-2">
@@ -205,10 +205,10 @@ export const Dashboard = () => {
             {/* Charts Row 1 */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Aulas por Dia da Semana */}
-              <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-950/50">
                 <div className="flex items-center gap-2 mb-4">
-                  <BarChart3 className="w-5 h-5 text-blue-600" />
-                  <h3 className="text-lg font-semibold text-slate-800">
+                  <BarChart3 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
                     Aulas por Dia da Semana
                   </h3>
                 </div>
@@ -230,10 +230,10 @@ export const Dashboard = () => {
               </div>
 
               {/* Distribuição de Alunos por Nível */}
-              <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-950/50">
                 <div className="flex items-center gap-2 mb-4">
-                  <Award className="w-5 h-5 text-purple-600" />
-                  <h3 className="text-lg font-semibold text-slate-800">
+                  <Award className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                  <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
                     Alunos por Nível
                   </h3>
                 </div>
@@ -270,10 +270,10 @@ export const Dashboard = () => {
             {/* Charts Row 2 */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Evolução da Presença Média */}
-              <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-950/50">
                 <div className="flex items-center gap-2 mb-4">
-                  <TrendingUp className="w-5 h-5 text-green-600" />
-                  <h3 className="text-lg font-semibold text-slate-800">
+                  <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400" />
+                  <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
                     Evolução da Presença Média
                   </h3>
                 </div>
@@ -302,10 +302,10 @@ export const Dashboard = () => {
               </div>
 
               {/* Professores com Mais Aulas */}
-              <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-950/50">
                 <div className="flex items-center gap-2 mb-4">
-                  <GraduationCap className="w-5 h-5 text-purple-600" />
-                  <h3 className="text-lg font-semibold text-slate-800">
+                  <GraduationCap className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                  <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
                     Professores com Mais Aulas
                   </h3>
                 </div>
@@ -336,10 +336,10 @@ export const Dashboard = () => {
             {/* Charts Row 3 */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Rendimento por Nível */}
-              <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-950/50">
                 <div className="flex items-center gap-2 mb-4">
-                  <Award className="w-5 h-5 text-amber-600" />
-                  <h3 className="text-lg font-semibold text-slate-800">
+                  <Award className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                  <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
                     Rendimento Médio por Nível
                   </h3>
                 </div>
@@ -361,10 +361,10 @@ export const Dashboard = () => {
               </div>
 
               {/* Distribuição por Idioma */}
-              <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-950/50">
                 <div className="flex items-center gap-2 mb-4">
-                  <BookOpen className="w-5 h-5 text-blue-600" />
-                  <h3 className="text-lg font-semibold text-slate-800">
+                  <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
                     Alunos por Idioma
                   </h3>
                 </div>
