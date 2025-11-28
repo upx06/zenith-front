@@ -1,0 +1,28 @@
+{
+  "title": "Salas de Aula",
+  "subtitle": "Gerencie as salas de aula da instituição",
+  "new": "Nova Sala",
+  "add": "Adicionar Sala",
+  "capacity": "Capacidade: <strong>{{capacity}}</strong> alunos",
+  "delete": {
+    "title": "Deleção de Sala",
+    "message": "Tem certeza que deseja excluir a sala {{name}}?",
+    "processing": "Excluindo sala...",
+    "success": "Sala excluída com sucesso!",
+    "confirming": "Excluindo..."
+  },
+  "filters": {
+    "byName": "Filtrar por nome...",
+    "byCapacity": "Filtrar por capacidade..."
+  },
+  "empty": {
+    "withFilters": {
+      "title": "Nenhuma sala encontrada",
+      "message": "Tente ajustar os filtros para encontrar o que procura"
+    },
+    "noData": {
+      "title": "Nenhuma sala encontrada",
+      "message": "Cadastre uma sala para começar"
+    }
+  }
+}

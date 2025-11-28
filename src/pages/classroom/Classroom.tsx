@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client/react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import {
   Loader2,
   Plus,
@@ -28,6 +29,7 @@ import type { IClassroom } from "../../interfaces/IClassroom";
 import type { IListClassrooms } from "../../interfaces/IListClassrooms";
 
 export const Classroom = () => {
+  const { t } = useTranslation();
   const [createClassroomModal, setCreateClassroomModal] = useState(false);
   const [updateClassroomModal, setUpdateClassroomModal] = useState(false);
   const [detailClassroomModal, setDetailClassroomModal] = useState(false);
@@ -94,10 +96,12 @@ export const Classroom = () => {
 
       setConfirmationModal(false);
       setSelectedClassroom(null);
-      toast.success("Sala excluída com sucesso!");
+      toast.success(t("classroom.delete.success"));
     } catch (err) {
       console.error("Erro ao excluir sala:", err);
-      toast.error(errorDeleteClassroom?.message || "Erro ao excluir sala");
+      toast.error(
+        errorDeleteClassroom?.message || t("errors.classroom.deleteError")
+      );
     } finally {
       setDeletingClassroomId(null);
     }
@@ -162,14 +166,14 @@ export const Classroom = () => {
           <div className="text-center max-w-md">
             <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
             <h2 className="text-xl font-bold text-red-600 mb-2">
-              Erro ao carregar dados
+              {t("errors.general.title")}
             </h2>
             <p className="text-slate-600 mb-6">{error.message}</p>
             <button
               onClick={() => refetch()}
               className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg transition-colors"
             >
-              Tentar novamente
+              {t("common.actions.tryAgain")}
             </button>
           </div>
         </div>
@@ -185,23 +189,25 @@ export const Classroom = () => {
         aria-hidden="true"
       />
       <div className="flex-1 flex flex-col min-w-0 relative">
-        {/* Overlay de loading durante deleção */}
         {isProcessing && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="bg-white dark:bg-slate-900 rounded-lg p-6 flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-              <p className="text-slate-600 font-medium">Excluindo sala...</p>
+              <p className="text-slate-600 font-medium">
+                {t("classroom.delete.processing")}
+              </p>
             </div>
           </div>
         )}
 
         <div className="flex-1 p-4 md:p-6 lg:p-8 mt-16 lg:mt-0">
-          {/* Mensagem de erro da mutation de deleção */}
           {errorDeleteClassroom && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
               <div className="flex items-center gap-2 text-red-800 mb-2">
                 <AlertCircle className="w-4 h-4" />
-                <span className="font-medium">Erro ao excluir sala:</span>
+                <span className="font-medium">
+                  {t("errors.classroom.deleteError")}:
+                </span>
               </div>
               <p className="text-red-700 text-sm mb-3">
                 {errorDeleteClassroom.message}
@@ -210,7 +216,7 @@ export const Classroom = () => {
                 onClick={() => window.location.reload()}
                 className="px-4 py-2 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition-colors"
               >
-                Recarregar página
+                {t("common.actions.reload")}
               </button>
             </div>
           )}
@@ -219,10 +225,10 @@ export const Classroom = () => {
             <div className="flex flex-row justify-between items-center gap-4 pt-5 md:pt-0">
               <div className="flex-1 min-w-0">
                 <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white uppercase">
-                  Salas de Aula
+                  {t("classroom.title")}
                 </h1>{" "}
                 <p className="hidden sm:block text-slate-600 dark:text-slate-300 text-sm md:text-base">
-                  Gerencie as salas de aula da instituição
+                  {t("classroom.subtitle")}
                 </p>
               </div>
 
@@ -241,10 +247,12 @@ export const Classroom = () => {
                     text-sm md:text-base relative
                     w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2
                   `}
-                  title="Filtros"
+                  title={t("common.actions.filters")}
                 >
                   <Filter className="w-4 h-4 md:w-5 md:h-5" />
-                  <span className="hidden sm:inline">Filtros</span>
+                  <span className="hidden sm:inline">
+                    {t("common.actions.filters")}
+                  </span>
                   {hasActiveFilters && (
                     <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
                   )}
@@ -254,14 +262,14 @@ export const Classroom = () => {
                   onClick={() => setCreateClassroomModal(true)}
                   disabled={isProcessing}
                   className="
-                    bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-slate-400 disabled:cursor-not-allowed 
-                    text-white rounded-lg flex items-center justify-center gap-2 
+                    bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-slate-400 disabled:cursor-not-allowed
+                    text-white rounded-lg flex items-center justify-center gap-2
                     transition-colors text-sm md:text-base
                     w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2
                   "
                 >
                   <Plus className="w-4 h-4 md:w-5 md:h-5" />
-                  <span className="hidden sm:inline">Nova Sala</span>
+                  <span className="hidden sm:inline">{t("classroom.new")}</span>
                 </button>
               </div>
             </div>
@@ -279,7 +287,7 @@ export const Classroom = () => {
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder="Filtrar por nome..."
+                      placeholder={t("classroom.filters.byName")}
                       value={filters.name}
                       onChange={(e) =>
                         handleFilterChange("name", e.target.value)
@@ -300,7 +308,7 @@ export const Classroom = () => {
                   <div className="relative">
                     <input
                       type="number"
-                      placeholder="Filtrar por capacidade..."
+                      placeholder={t("classroom.filters.byCapacity")}
                       value={filters.capacity}
                       onChange={(e) =>
                         handleFilterChange("capacity", e.target.value)
@@ -326,7 +334,7 @@ export const Classroom = () => {
                       className="w-full px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
                     >
                       <X className="w-4 h-4" />
-                      Limpar Filtros
+                      {t("common.actions.clearFilters")}
                     </button>
                   </div>
                 </div>
@@ -338,7 +346,7 @@ export const Classroom = () => {
                 <div className="flex flex-col items-center gap-4">
                   <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
                   <p className="text-slate-600 font-medium">
-                    Carregando dados...
+                    {t("common.status.loadingData")}
                   </p>
                 </div>
               </div>
@@ -370,11 +378,11 @@ export const Classroom = () => {
                       <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
                         <Users className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                         <span className="text-sm">
-                          Capacidade:{" "}
+                          {t("common.common.capacity")}:{" "}
                           <span className="font-semibold">
                             {classroom.capacity}
                           </span>{" "}
-                          alunos
+                          {t("common.common.students")}
                         </span>
                       </div>
                     </div>
@@ -385,13 +393,13 @@ export const Classroom = () => {
                         disabled={isProcessing}
                         className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
                       >
-                        Ver detalhes
+                        {t("common.actions.viewDetails")}
                       </button>
                       <button
                         onClick={() => handleOpenUpdateModal(classroom)}
                         disabled={isProcessing}
                         className="flex items-center justify-center px-3 py-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                        title="Editar"
+                        title={t("common.actions.edit")}
                       >
                         <Pencil className="w-4 h-4" />
                       </button>
@@ -399,7 +407,7 @@ export const Classroom = () => {
                         onClick={() => handleOpenConfirmationModal(classroom)}
                         disabled={isProcessing}
                         className="flex items-center justify-center px-3 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                        title="Excluir"
+                        title={t("common.actions.delete")}
                       >
                         {deletingClassroomId === classroom.id ? (
                           <Loader2 className="w-4 h-4 animate-spin" />
@@ -425,11 +433,13 @@ export const Classroom = () => {
                   className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
                 >
                   <ChevronLeft className="w-4 h-4" />
-                  <span className="hidden sm:inline">Anterior</span>
+                  <span className="hidden sm:inline">
+                    {t("common.pagination.previous")}
+                  </span>
                 </button>
 
                 <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-semibold min-w-[60px] text-center">
-                  Pág. {currentPage}
+                  {t("common.pagination.page")} {currentPage}
                 </div>
 
                 <button
@@ -442,7 +452,9 @@ export const Classroom = () => {
                   disabled={currentPage >= getTotalPages() || isLoadingData}
                   className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
                 >
-                  <span className="hidden sm:inline">Próxima</span>
+                  <span className="hidden sm:inline">
+                    {t("common.pagination.next")}
+                  </span>
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
@@ -452,16 +464,16 @@ export const Classroom = () => {
               <div className="text-center py-12">
                 <Filter className="w-12 h-12 md:w-16 md:h-16 text-slate-300 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-slate-600 dark:text-white mb-2">
-                  Nenhuma sala encontrada
+                  {t("classroom.empty.withFilters.title")}
                 </h3>
                 <p className="text-slate-600 dark:text-white text-sm mb-4">
-                  Tente ajustar os filtros para encontrar o que procura
+                  {t("classroom.empty.withFilters.message")}
                 </p>
                 <button
                   onClick={handleClearFilters}
                   className="border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
                 >
-                  Limpar Filtros
+                  {t("common.actions.clearFilters")}
                 </button>
               </div>
             )}
@@ -470,10 +482,10 @@ export const Classroom = () => {
               <div className="text-center py-12">
                 <School className="w-12 h-12 md:w-16 md:h-16 text-slate-300 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-slate-600 dark:text-white mb-2">
-                  Nenhuma sala encontrada
+                  {t("classroom.empty.noData.title")}
                 </h3>
                 <p className="text-slate-600 dark:text-slate-300 text-sm mb-4">
-                  Cadastre uma sala para começar
+                  {t("classroom.empty.noData.message")}
                 </p>
                 <button
                   onClick={() => setCreateClassroomModal(true)}
@@ -481,7 +493,7 @@ export const Classroom = () => {
                   className="border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
                 >
                   <Plus className="w-4 h-4" />
-                  Adicionar Sala
+                  {t("classroom.add")}
                 </button>
               </div>
             )}
@@ -519,12 +531,16 @@ export const Classroom = () => {
                   }
                 }}
                 onConfirm={() => handleDeleteClassroom(selectedClassroom.id)}
-                title="Deleção de Sala"
-                message={`Tem certeza que deseja excluir a sala ${selectedClassroom.name}?`}
+                title={t("classroom.delete.title")}
+                message={t("classroom.delete.message", {
+                  name: selectedClassroom.name,
+                })}
                 confirmText={
-                  loadingDeleteClassroom ? "Excluindo..." : "Confirmar"
+                  loadingDeleteClassroom
+                    ? t("classroom.delete.confirming")
+                    : t("common.actions.confirm")
                 }
-                cancelText="Cancelar"
+                cancelText={t("common.actions.cancel")}
                 isLoading={loadingDeleteClassroom}
                 isDisabled={isProcessing}
               />

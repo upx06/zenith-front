@@ -14,6 +14,7 @@ import {
 import { useState } from "react";
 import { NavLink } from "react-router";
 import { ThemeToggle } from "./ThemeToggle";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export const Menu = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -110,7 +111,8 @@ export const Menu = () => {
         </div>
 
         <div className="p-3 xl:p-4 border-t border-slate-200 dark:border-slate-700">
-          <div className="flex justify-end items-end gap-2">
+          <div className="flex justify-end items-center gap-2">
+            <LanguageSwitcher />
             <ThemeToggle />
             <NavLink
               to="/"
@@ -169,7 +171,8 @@ export const Menu = () => {
         </div>
 
         <div className="p-4 border-t border-slate-200 dark:border-slate-700">
-          <div className="flex items-end gap-2">
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
             <ThemeToggle />
             <NavLink
               to="/"

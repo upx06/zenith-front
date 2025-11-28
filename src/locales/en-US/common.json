@@ -1,0 +1,37 @@
+{
+  "actions": {
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "filter": "Filter",
+    "filters": "Filters",
+    "clearFilters": "Clear Filters",
+    "viewDetails": "View details",
+    "tryAgain": "Try again",
+    "reload": "Reload page"
+  },
+  "status": {
+    "loading": "Loading...",
+    "loadingData": "Loading data...",
+    "processing": "Processing...",
+    "saving": "Saving...",
+    "deleting": "Deleting..."
+  },
+  "pagination": {
+    "page": "Page",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "common": {
+    "capacity": "Capacity",
+    "students": "students",
+    "name": "Name"
+  }
+}

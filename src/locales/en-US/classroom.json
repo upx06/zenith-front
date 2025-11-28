@@ -1,0 +1,28 @@
+{
+  "title": "Classrooms",
+  "subtitle": "Manage the institution's classrooms",
+  "new": "New Classroom",
+  "add": "Add Classroom",
+  "capacity": "Capacity: <strong>{{capacity}}</strong> students",
+  "delete": {
+    "title": "Delete Classroom",
+    "message": "Are you sure you want to delete the classroom {{name}}?",
+    "processing": "Deleting classroom...",
+    "success": "Classroom deleted successfully!",
+    "confirming": "Deleting..."
+  },
+  "filters": {
+    "byName": "Filter by name...",
+    "byCapacity": "Filter by capacity..."
+  },
+  "empty": {
+    "withFilters": {
+      "title": "No classrooms found",
+      "message": "Try adjusting the filters to find what you're looking for"
+    },
+    "noData": {
+      "title": "No classrooms found",
+      "message": "Register a classroom to get started"
+    }
+  }
+}

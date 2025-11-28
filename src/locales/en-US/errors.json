@@ -1,0 +1,10 @@
+{
+  "general": {
+    "title": "Error loading data",
+    "unknown": "An unknown error occurred"
+  },
+  "classroom": {
+    "deleteError": "Error deleting classroom",
+    "loadError": "Error loading classrooms"
+  }
+}

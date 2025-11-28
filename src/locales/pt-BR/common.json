@@ -1,0 +1,37 @@
+{
+  "actions": {
+    "add": "Adicionar",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Salvar",
+    "back": "Voltar",
+    "next": "Próxima",
+    "previous": "Anterior",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "filters": "Filtros",
+    "clearFilters": "Limpar Filtros",
+    "viewDetails": "Ver detalhes",
+    "tryAgain": "Tentar novamente",
+    "reload": "Recarregar página"
+  },
+  "status": {
+    "loading": "Carregando...",
+    "loadingData": "Carregando dados...",
+    "processing": "Processando...",
+    "saving": "Salvando...",
+    "deleting": "Excluindo..."
+  },
+  "pagination": {
+    "page": "Pág.",
+    "previous": "Anterior",
+    "next": "Próxima"
+  },
+  "common": {
+    "capacity": "Capacidade",
+    "students": "alunos",
+    "name": "Nome"
+  }
+}

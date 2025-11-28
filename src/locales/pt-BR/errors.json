@@ -1,0 +1,10 @@
+{
+  "general": {
+    "title": "Erro ao carregar dados",
+    "unknown": "Ocorreu um erro desconhecido"
+  },
+  "classroom": {
+    "deleteError": "Erro ao excluir sala",
+    "loadError": "Erro ao carregar salas"
+  }
+}
