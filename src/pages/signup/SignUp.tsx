@@ -110,22 +110,26 @@ export default function SignUp() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800 flex items-center justify-center p-4">
+      <div className="fixed top-4 right-4 sm:hidden z-50">
+        <ThemeToggle />
+      </div>
+
       <div className="w-full max-w-5xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl dark:shadow-slate-950/50 overflow-hidden flex flex-col lg:flex-row">
-        <div className="lg:w-1/2 bg-white dark:bg-slate-800 p-8 lg:p-12 flex flex-col items-center justify-between">
-          <div className="flex-shrink-0 mb-6">
+        <div className="lg:w-1/2 bg-white dark:bg-slate-800 lg:p-12 flex flex-col items-center justify-between">
+          <div className="flex-shrink-0 lg:mb-6">
             <img
               src="/logo-light.png"
               alt="Logo"
-              className="h-48 w-auto object-contain dark:hidden"
+              className="h-38 lg:h-50 w-auto object-contain dark:hidden"
             />
             <img
               src="/logo-dark.png"
               alt="Logo"
-              className="h-48 w-auto object-contain hidden dark:block"
+              className="h-38 lg:h-50 w-auto object-contain hidden dark:block"
             />
           </div>
 
-          <div className="flex-grow flex items-center justify-center w-full">
+          <div className="flex-grow items-center justify-center w-full hidden sm:block">
             <img
               src="/signup-light.png"
               alt="Instituição"
@@ -140,12 +144,13 @@ export default function SignUp() {
         </div>
 
         <div className="lg:w-1/2 bg-white dark:bg-slate-900 p-8 lg:p-12 flex items-center justify-center relative">
-          <div className="absolute top-4 right-4">
+          {/* Theme toggle for desktop - top right */}
+          <div className="absolute top-4 right-4 hidden sm:block">
             <ThemeToggle />
           </div>
 
           <div className="w-full max-w-md">
-            <div className="mb-8">
+            <div className="mb-8 hidden sm:block">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
                 Criar Conta
               </h2>
@@ -271,7 +276,7 @@ export default function SignUp() {
               <button
                 type="submit"
                 disabled={loadingSignUp}
-                className="w-full border border-red-600 dark:border-red-500 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30  py-2.5 px-4 rounded-md cursor-pointer flex items-center justify-center gap-2 transition-colors font-medium text-sm shadow-sm dark:shadow-red-900/20"
+                className="w-full border border-red-600 dark:border-red-500 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 py-2.5 px-4 rounded-md cursor-pointer flex items-center justify-center gap-2 transition-colors font-medium text-sm shadow-sm dark:shadow-red-900/20"
               >
                 {loadingSignUp ? (
                   <>

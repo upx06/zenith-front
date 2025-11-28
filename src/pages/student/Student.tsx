@@ -287,7 +287,6 @@ export const Student = () => {
             <div className="bg-white dark:bg-slate-900 rounded-lg p-6 flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
               <p className="text-slate-600 font-medium">
-                {/* 👇 MENSAGEM ATUALIZADA */}
                 {deletingStudentId
                   ? "Excluindo aluno..."
                   : "Gerando relatório..."}
@@ -384,7 +383,7 @@ export const Student = () => {
                         handleFilterChange("name", e.target.value)
                       }
                       disabled={isProcessing}
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     />
                     {filters.name && (
                       <button
@@ -405,7 +404,7 @@ export const Student = () => {
                         handleFilterChange("email", e.target.value)
                       }
                       disabled={isProcessing}
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     />
                     {filters.email && (
                       <button
@@ -426,7 +425,7 @@ export const Student = () => {
                         handleFilterChange("phone", e.target.value)
                       }
                       disabled={isProcessing}
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     />
                     {filters.phone && (
                       <button
@@ -495,7 +494,7 @@ export const Student = () => {
                             </div>
                           )}
                           <div>
-                            <h3 className="font-semibold text-slate-800 text-sm md:text-base">
+                            <h3 className="font-semibold text-slate-800 dark:text-white text-sm md:text-base">
                               {student.name}
                             </h3>
                           </div>
@@ -519,13 +518,13 @@ export const Student = () => {
                       </div>
 
                       {/* 👇 BOTÕES ATUALIZADOS */}
-                      <div className="flex gap-2 pt-2 border-t border-slate-100 dark:border-slate-800-100">
+                      <div className="flex gap-2 pt-2 border-t border-slate-100 dark:border-slate-700">
                         <button
                           onClick={() =>
                             handleOpenDetailsModal(student, photoUrl)
                           }
                           disabled={isProcessing}
-                          className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 border border-slate-200 dark:border-slate-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                          className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
                         >
                           Ver detalhes
                         </button>
@@ -533,7 +532,7 @@ export const Student = () => {
                         <button
                           onClick={() => handleGenerateReport(student)}
                           disabled={isProcessing}
-                          className="flex items-center justify-center px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                          className="flex items-center justify-center px-3 py-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                           title="Gerar Relatório"
                         >
                           {generatingReportId === student.id ? (
@@ -548,7 +547,7 @@ export const Student = () => {
                             handleOpenUpdateModal(student, photoUrl)
                           }
                           disabled={isProcessing}
-                          className="flex items-center justify-center px-3 py-2 text-red-600 hover:bg-red-50 border border-red-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                          className="flex items-center justify-center px-3 py-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                           title="Editar"
                         >
                           <Pencil className="w-4 h-4" />
@@ -556,7 +555,7 @@ export const Student = () => {
                         <button
                           onClick={() => handleOpenConfirmationModal(student)}
                           disabled={isProcessing}
-                          className="flex items-center justify-center px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                          className="flex items-center justify-center px-3 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                           title="Excluir"
                         >
                           {deletingStudentId === student.id ? (
@@ -581,13 +580,13 @@ export const Student = () => {
                     setAfter(null);
                   }}
                   disabled={currentPage <= 1 || isLoadingData}
-                  className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white border-2 border-slate-300 text-slate-700 rounded-lg hover:border-blue-500 hover:text-blue-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
+                  className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
                 >
                   <ChevronLeft className="w-4 h-4" />
                   <span className="hidden sm:inline">Anterior</span>
                 </button>
 
-                <div className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-semibold min-w-[60px] text-center">
+                <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-semibold min-w-[60px] text-center">
                   Pág. {currentPage}
                 </div>
 
@@ -599,7 +598,7 @@ export const Student = () => {
                     setBefore(null);
                   }}
                   disabled={currentPage >= getTotalPages() || isLoadingData}
-                  className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white border-2 border-slate-300 text-slate-700 rounded-lg hover:border-blue-500 hover:text-blue-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
+                  className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
                 >
                   <span className="hidden sm:inline">Próxima</span>
                   <ChevronRight className="w-4 h-4" />
@@ -610,15 +609,15 @@ export const Student = () => {
             {alunos.length === 0 && hasActiveFilters && !isLoadingData && (
               <div className="text-center py-12">
                 <Filter className="w-12 h-12 md:w-16 md:h-16 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-slate-600 mb-2">
+                <h3 className="text-lg font-medium text-slate-600 dark:text-white mb-2">
                   Nenhum aluno encontrado
                 </h3>
-                <p className="text-slate-500 text-sm mb-4">
+                <p className="text-slate-600 dark:text-white text-sm mb-4">
                   Tente ajustar os filtros para encontrar o que procura
                 </p>
                 <button
                   onClick={handleClearFilters}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                  className="border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
                 >
                   Limpar Filtros
                 </button>
@@ -628,13 +627,16 @@ export const Student = () => {
             {alunos.length === 0 && !hasActiveFilters && !isLoadingData && (
               <div className="text-center py-12">
                 <Users className="w-12 h-12 md:w-16 md:h-16 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-slate-600 mb-2">
+                <h3 className="text-lg font-medium text-slate-600 dark:text-white mb-2">
                   Nenhum aluno encontrado
                 </h3>
+                <p className="text-slate-600 dark:text-slate-300 text-sm mb-4">
+                  Cadastre um aluno para começar
+                </p>
                 <button
                   onClick={() => setCreateStudentModal(true)}
                   disabled={isProcessing}
-                  className="bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-slate-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
+                  className="border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
                 >
                   <Plus className="w-4 h-4" />
                   Adicionar Aluno

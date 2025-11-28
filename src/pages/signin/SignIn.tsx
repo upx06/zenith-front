@@ -104,22 +104,26 @@ export default function SignIn() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-red-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800 flex items-center justify-center p-4">
+      <div className="fixed top-4 right-4 sm:hidden z-50">
+        <ThemeToggle />
+      </div>
+
       <div className="w-full max-w-5xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl dark:shadow-slate-950/50 overflow-hidden flex flex-col lg:flex-row">
-        <div className="lg:w-1/2 bg-slate-50 dark:bg-slate-800 p-8 lg:p-12 flex flex-col items-center justify-between">
-          <div className="flex-shrink-0 mb-6">
+        <div className="lg:w-1/2 bg-slate-50 dark:bg-slate-800 lg:p-12 flex flex-col items-center justify-between">
+          <div className="flex-shrink-0 lg:mb-6">
             <img
               src="/logo-light.png"
               alt="Logo"
-              className="h-48 w-auto object-contain dark:hidden"
+              className="h-38 lg:h-50 w-auto object-contain dark:hidden"
             />
             <img
               src="/logo-dark.png"
               alt="Logo"
-              className="h-48 w-auto object-contain hidden dark:block"
+              className="h-38 lg:h-50 w-auto object-contain hidden dark:block"
             />
           </div>
 
-          <div className="flex-grow flex items-center justify-center w-full">
+          <div className="flex-grow items-center justify-center w-full hidden sm:block">
             <img
               src="/signin-light-1.png"
               alt="Instituição"
@@ -134,12 +138,12 @@ export default function SignIn() {
         </div>
 
         <div className="lg:w-1/2 bg-white dark:bg-slate-900 p-8 lg:p-12 flex items-center justify-center relative">
-          <div className="absolute top-4 right-4">
+          <div className="absolute top-4 right-4 hidden sm:block">
             <ThemeToggle />
           </div>
 
           <div className="w-full max-w-md">
-            <div className="mb-8">
+            <div className="mb-8 hidden sm:block">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
                 Entrar
               </h2>

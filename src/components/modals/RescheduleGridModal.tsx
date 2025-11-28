@@ -302,17 +302,17 @@ export const RescheduleGridModal = ({
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg p-6 w-full max-w-md"
+        className="bg-white dark:bg-slate-900 rounded-lg p-6 w-full max-w-md"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-slate-800">
+          <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
             Reagendar Grade
           </h3>
           <button
             onClick={onClose}
             disabled={isProcessing}
-            className="text-slate-400 hover:text-slate-600 transition-colors disabled:opacity-50"
+            className="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors disabled:opacity-50"
           >
             <X className="w-5 h-5" />
           </button>
@@ -320,21 +320,21 @@ export const RescheduleGridModal = ({
 
         {step === "type" && (
           <div className="space-y-4">
-            <p className="text-slate-600 text-sm mb-4">
+            <p className="text-slate-600 dark:text-slate-300 text-sm mb-4">
               Selecione o tipo de reagendamento:
             </p>
 
             <button
               onClick={() => handleTypeSelect("daily")}
-              className="w-full p-4 border-2 border-slate-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-left"
+              className="w-full p-4 border-2 border-slate-200 dark:border-slate-700 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-all text-left"
             >
               <div className="flex items-start gap-3">
-                <Calendar className="w-5 h-5 text-blue-600 mt-0.5" />
+                <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
                 <div>
-                  <h4 className="font-semibold text-slate-800 mb-1">
+                  <h4 className="font-semibold text-slate-800 dark:text-white mb-1">
                     Reagendar Dia
                   </h4>
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm text-slate-600 dark:text-slate-300">
                     Duplicar todas as aulas de um dia específico para outra data
                   </p>
                 </div>
@@ -343,15 +343,15 @@ export const RescheduleGridModal = ({
 
             <button
               onClick={() => handleTypeSelect("weekly")}
-              className="w-full p-4 border-2 border-slate-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-left"
+              className="w-full p-4 border-2 border-slate-200 dark:border-slate-700 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-all text-left"
             >
               <div className="flex items-start gap-3">
-                <CalendarDays className="w-5 h-5 text-blue-600 mt-0.5" />
+                <CalendarDays className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
                 <div>
-                  <h4 className="font-semibold text-slate-800 mb-1">
+                  <h4 className="font-semibold text-slate-800 dark:text-white mb-1">
                     Reagendar Semana
                   </h4>
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm text-slate-600 dark:text-slate-300">
                     Duplicar todas as aulas de uma semana (domingo a domingo)
                     para outra semana
                   </p>
@@ -366,13 +366,13 @@ export const RescheduleGridModal = ({
             <button
               onClick={() => setStep("type")}
               disabled={isProcessing}
-              className="text-blue-600 hover:text-blue-700 text-sm font-medium mb-2 disabled:opacity-50"
+              className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium mb-2 disabled:opacity-50"
             >
               ← Voltar
             </button>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
                 {rescheduleType === "daily"
                   ? "Data de Origem"
                   : "Semana de Origem (qualquer dia da semana)"}
@@ -382,10 +382,10 @@ export const RescheduleGridModal = ({
                 value={sourceDate}
                 onChange={(e) => setSourceDate(e.target.value)}
                 disabled={isProcessing}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-slate-800 text-gray-900 dark:text-white"
               />
               {rescheduleType === "weekly" && sourceDate && (
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                   Semana:{" "}
                   {getSunday(
                     new Date(sourceDate + "T00:00:00")
@@ -400,7 +400,7 @@ export const RescheduleGridModal = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
                 {rescheduleType === "daily"
                   ? "Data de Destino"
                   : "Semana de Destino (qualquer dia da semana)"}
@@ -410,10 +410,10 @@ export const RescheduleGridModal = ({
                 value={targetDate}
                 onChange={(e) => setTargetDate(e.target.value)}
                 disabled={isProcessing}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-slate-800 text-gray-900 dark:text-white"
               />
               {rescheduleType === "weekly" && targetDate && (
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                   Semana:{" "}
                   {getSunday(
                     new Date(targetDate + "T00:00:00")
@@ -428,9 +428,9 @@ export const RescheduleGridModal = ({
             </div>
 
             {sourceDate && targetDate && sourceDate === targetDate && (
-              <div className="flex items-start gap-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                <AlertCircle className="w-4 h-4 text-yellow-600 mt-0.5 shrink-0" />
-                <p className="text-sm text-yellow-800">
+              <div className="flex items-start gap-2 p-3 bg-yellow-50 dark:bg-yellow-950/30 border border-yellow-200 dark:border-yellow-900 rounded-lg">
+                <AlertCircle className="w-4 h-4 text-yellow-600 dark:text-yellow-500 mt-0.5 shrink-0" />
+                <p className="text-sm text-yellow-800 dark:text-yellow-200">
                   As datas de origem e destino são iguais. As aulas serão
                   duplicadas na mesma data.
                 </p>
@@ -441,14 +441,14 @@ export const RescheduleGridModal = ({
               <button
                 onClick={onClose}
                 disabled={isProcessing}
-                className="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleCheckTargetLessons}
                 disabled={!sourceDate || !targetDate || isProcessing}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+                className="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-slate-400 dark:disabled:bg-slate-600 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
               >
                 {isProcessing && <Loader2 className="w-4 h-4 animate-spin" />}
                 {isProcessing ? "Verificando..." : "Próximo"}
@@ -462,18 +462,18 @@ export const RescheduleGridModal = ({
             <button
               onClick={() => setStep("dates")}
               disabled={isProcessing}
-              className="text-blue-600 hover:text-blue-700 text-sm font-medium mb-2 disabled:opacity-50"
+              className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium mb-2 disabled:opacity-50"
             >
               ← Voltar
             </button>
 
-            <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 shrink-0" />
+            <div className="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 rounded-lg">
+              <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-500 mt-0.5 shrink-0" />
               <div className="flex-1">
-                <h4 className="font-semibold text-red-900 mb-1">
+                <h4 className="font-semibold text-red-900 dark:text-red-200 mb-1">
                   Atenção: Esta ação não pode ser desfeita
                 </h4>
-                <p className="text-sm text-red-800">
+                <p className="text-sm text-red-800 dark:text-red-300">
                   {targetLessonsCount > 0 ? (
                     <>
                       {rescheduleType === "daily" ? (
@@ -541,13 +541,13 @@ export const RescheduleGridModal = ({
               </div>
             </div>
 
-            <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-              <h4 className="font-semibold text-slate-900 mb-2">
+            <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
+              <h4 className="font-semibold text-slate-900 dark:text-white mb-2">
                 Resumo da operação:
               </h4>
-              <div className="space-y-2 text-sm text-slate-700">
+              <div className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
                 <div className="flex items-start gap-2">
-                  <Copy className="w-4 h-4 text-slate-500 mt-0.5 shrink-0" />
+                  <Copy className="w-4 h-4 text-slate-500 dark:text-slate-400 mt-0.5 shrink-0" />
                   <div>
                     <strong>Origem:</strong>{" "}
                     {rescheduleType === "daily" ? (
@@ -574,7 +574,7 @@ export const RescheduleGridModal = ({
                   </div>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Trash2 className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
+                  <Trash2 className="w-4 h-4 text-red-500 dark:text-red-400 mt-0.5 shrink-0" />
                   <div>
                     <strong>Destino:</strong>{" "}
                     {rescheduleType === "daily" ? (
@@ -599,7 +599,7 @@ export const RescheduleGridModal = ({
                       </>
                     )}
                     {targetLessonsCount > 0 && (
-                      <span className="text-red-600 font-medium">
+                      <span className="text-red-600 dark:text-red-400 font-medium">
                         {" "}
                         ({targetLessonsCount}{" "}
                         {targetLessonsCount === 1 ? "aula" : "aulas"} serão
@@ -615,14 +615,14 @@ export const RescheduleGridModal = ({
               <button
                 onClick={onClose}
                 disabled={isProcessing}
-                className="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleReschedule}
                 disabled={isProcessing}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+                className="px-4 py-2 bg-red-600 dark:bg-red-500 text-white rounded-lg hover:bg-red-700 dark:hover:bg-red-600 disabled:bg-slate-400 dark:disabled:bg-slate-600 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
               >
                 {isProcessing && <Loader2 className="w-4 h-4 animate-spin" />}
                 {isProcessing ? "Reagendando..." : "Confirmar Reagendamento"}

@@ -237,7 +237,7 @@ export const Exam = () => {
                       onChange={(e) =>
                         handleFilterChange("name", e.target.value)
                       }
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     />
                     {filters.name && (
                       <button
@@ -257,7 +257,7 @@ export const Exam = () => {
                       onChange={(e) =>
                         handleFilterChange("startDate", e.target.value)
                       }
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     />
                     {filters.startDate && (
                       <button
@@ -277,7 +277,7 @@ export const Exam = () => {
                       onChange={(e) =>
                         handleFilterChange("endDate", e.target.value)
                       }
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     />
                     {filters.endDate && (
                       <button
@@ -295,7 +295,7 @@ export const Exam = () => {
                       onChange={(e) =>
                         handleFilterChange("teacherId", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     >
                       <option value="">Todos os professores</option>
                       {/* {teachers.map((teacher: any) => (
@@ -312,7 +312,7 @@ export const Exam = () => {
                       onChange={(e) =>
                         handleFilterChange("type", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     >
                       <option value="all">Todos os tipos</option>
                       <option value="class">Turma Completa</option>
@@ -348,15 +348,15 @@ export const Exam = () => {
             {!loading && exams.length === 0 && hasActiveFilters && (
               <div className="text-center py-12">
                 <Filter className="w-12 h-12 md:w-16 md:h-16 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-slate-600 mb-2">
+                <h3 className="text-lg font-medium text-slate-800 dark:text-white mb-2">
                   Nenhuma avaliação encontrada
                 </h3>
-                <p className="text-slate-500 text-sm mb-4">
+                <p className="text-slate-600 dark:text-slate-300 text-sm mb-4">
                   Tente ajustar os filtros para encontrar o que procura
                 </p>
                 <button
                   onClick={handleClearFilters}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                  className="border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
                 >
                   Limpar Filtros
                 </button>
@@ -366,15 +366,15 @@ export const Exam = () => {
             {!loading && exams.length === 0 && !hasActiveFilters && (
               <div className="text-center py-12">
                 <ClipboardList className="w-12 h-12 md:w-16 md:h-16 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-slate-600 mb-2">
+                <h3 className="text-lg font-medium text-slate-800 dark:text-white mb-2">
                   Nenhuma avaliação encontrada
                 </h3>
-                <p className="text-slate-500 text-sm mb-4">
-                  Crie sua primeira avaliação para começar
+                <p className="text-slate-600 dark:text-slate-300 text-sm mb-4">
+                  Crie uma avaliação para começar
                 </p>
                 <button
                   onClick={() => setCreateExamModal(true)}
-                  className="bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
+                  className="border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
                 >
                   <Plus className="w-4 h-4" />
                   Nova Avaliação
@@ -382,12 +382,11 @@ export const Exam = () => {
               </div>
             )}
 
-            {/* Tabela de Avaliações */}
             {!loading && exams.length > 0 && (
               <div className="relative">
-                <div className="md:bg-white md:rounded-xl md:border md:border-slate-200 dark:border-slate-700 md:shadow-md md:overflow-hidden">
+                <div className="md:bg-white dark:md:bg-slate-900 md:rounded-xl md:border md:border-slate-200 dark:border-slate-700 md:shadow-md md:overflow-hidden">
                   {/* Header da tabela - Desktop */}
-                  <div className="hidden md:grid md:grid-cols-12 gap-4 bg-slate-50 px-6 py-4 text-sm font-semibold text-slate-700 uppercase tracking-wide">
+                  <div className="hidden md:grid md:grid-cols-12 gap-4 bg-slate-50 dark:bg-slate-800 px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide">
                     <div className="col-span-3">Nome</div>
                     <div className="col-span-2">Professor</div>
                     <div className="col-span-2">Tipo</div>
@@ -396,14 +395,14 @@ export const Exam = () => {
                   </div>
 
                   {/* Linhas da tabela */}
-                  <div className="flex flex-col gap-3 md:gap-0 md:divide-y md:divide-slate-100">
+                  <div className="flex flex-col gap-3 md:gap-0 md:divide-y md:divide-slate-100 dark:md:divide-slate-700">
                     {exams.map((exam: IExam) => {
                       const isClassEvaluation = !!exam.class;
 
                       return (
                         <div
                           key={exam.id}
-                          className="hover:bg-blue-50/40 transition-all duration-200 group"
+                          className="hover:bg-blue-50/40 dark:hover:bg-slate-800/50 transition-all duration-200 group"
                         >
                           {/* Layout Mobile */}
                           <div className="md:hidden bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 hover:shadow-md hover:border-slate-300 transition-all duration-200">
@@ -414,15 +413,15 @@ export const Exam = () => {
                                   <ClipboardList className="w-5 h-5 text-white" />
                                 </div>
                                 <div>
-                                  <h3 className="font-semibold text-slate-800 text-sm">
+                                  <h3 className="font-semibold text-slate-800 dark:text-white text-sm">
                                     {exam.name}
                                   </h3>
                                   {isClassEvaluation ? (
-                                    <span className="text-xs text-blue-600 font-medium">
+                                    <span className="text-xs text-blue-600 dark:text-blue-400 font-medium">
                                       Turma
                                     </span>
                                   ) : (
-                                    <span className="text-xs text-red-600 font-medium">
+                                    <span className="text-xs text-red-600 dark:text-red-400 font-medium">
                                       Aluno
                                     </span>
                                   )}
@@ -453,13 +452,13 @@ export const Exam = () => {
                             </div>
 
                             {/* Ações */}
-                            <div className="flex gap-2 pt-2 border-t border-slate-100 dark:border-slate-800-100">
+                            <div className="flex gap-2 pt-2 border-t border-slate-100 dark:border-slate-700">
                               <button
                                 onClick={() => {
                                   setSelectedExam(exam);
                                   setGradesControlModal(true);
                                 }}
-                                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 border border-slate-200 dark:border-slate-700 rounded-lg transition-colors text-sm font-medium"
+                                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg transition-colors text-sm font-medium"
                                 title="Controle de Notas"
                               >
                                 Notas
@@ -469,7 +468,7 @@ export const Exam = () => {
                                   setSelectedExam(exam);
                                   setDetailsExamModal(true);
                                 }}
-                                className="flex items-center justify-center px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg transition-colors"
+                                className="flex items-center justify-center px-3 py-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg transition-colors"
                                 title="Ver detalhes"
                               >
                                 <Eye className="w-4 h-4" />
@@ -479,13 +478,13 @@ export const Exam = () => {
                                   setSelectedExam(exam);
                                   setUpdateExamModal(true);
                                 }}
-                                className="flex items-center justify-center px-3 py-2 text-red-600 hover:bg-red-50 border border-red-200 rounded-lg transition-colors"
+                                className="flex items-center justify-center px-3 py-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg transition-colors"
                                 title="Editar"
                               >
                                 <Pencil className="w-4 h-4" />
                               </button>
                               <button
-                                className="flex items-center justify-center px-3 py-2 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg transition-colors"
+                                className="flex items-center justify-center px-3 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg transition-colors"
                                 title="Excluir"
                               >
                                 <Trash2 className="w-4 h-4" />
@@ -501,7 +500,7 @@ export const Exam = () => {
                                 <ClipboardList className="w-5 h-5 text-white" />
                               </div> */}
                               <div>
-                                <h3 className="font-semibold text-slate-800 text-base group-hover:text-blue-700 transition-colors">
+                                <h3 className="font-semibold text-slate-800 dark:text-white text-base group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
                                   {exam.name}
                                 </h3>
                                 {/* <p className="text-xs text-slate-500 mt-0.5">
@@ -524,14 +523,14 @@ export const Exam = () => {
                             <div className="col-span-2 flex items-center">
                               <div className="flex items-center gap-2">
                                 {isClassEvaluation ? (
-                                  <div className="flex items-center gap-1.5 text-blue-700 px-3 py-1.5 rounded-lg shadow-sm border border-blue-200">
+                                  <div className="flex items-center gap-1.5 text-blue-700 dark:text-blue-400 px-3 py-1.5 rounded-lg shadow-sm border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/30">
                                     <Users className="w-3.5 h-3.5" />
                                     <span className="text-xs font-semibold">
                                       Turma
                                     </span>
                                   </div>
                                 ) : (
-                                  <div className="flex items-center gap-1.5 text-red-700 px-3 py-1.5 rounded-lg shadow-sm border border-red-200">
+                                  <div className="flex items-center gap-1.5 text-red-700 dark:text-red-400 px-3 py-1.5 rounded-lg shadow-sm border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/30">
                                     <User className="w-3.5 h-3.5" />
                                     <span className="text-xs font-semibold">
                                       Aluno
@@ -543,7 +542,7 @@ export const Exam = () => {
 
                             {/* Alvo */}
                             <div className="col-span-2 flex items-center">
-                              <span className="text-sm text-slate-700 truncate font-medium">
+                              <span className="text-sm text-slate-700 dark:text-slate-200 truncate font-medium">
                                 {isClassEvaluation
                                   ? exam.class?.name
                                   : exam.enrollment?.student.name}
@@ -557,7 +556,7 @@ export const Exam = () => {
                                   setSelectedExam(exam);
                                   setGradesControlModal(true);
                                 }}
-                                className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-blue-200"
+                                className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-blue-200 dark:hover:border-blue-800"
                                 title="Controle de Notas"
                               >
                                 <Award className="w-4 h-4" />
@@ -567,7 +566,7 @@ export const Exam = () => {
                                   setSelectedExam(exam);
                                   setDetailsExamModal(true);
                                 }}
-                                className="p-2 text-red-600 hover:bg-blue-50 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-red-200"
+                                className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-blue-200 dark:hover:border-blue-800"
                                 title="Ver detalhes"
                               >
                                 <Eye className="w-4 h-4" />
@@ -577,13 +576,13 @@ export const Exam = () => {
                                   setSelectedExam(exam);
                                   setUpdateExamModal(true);
                                 }}
-                                className="p-2 text-blue-600 hover:bg-slate-50 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-blue-200"
+                                className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-blue-200 dark:hover:border-blue-800"
                                 title="Editar"
                               >
                                 <Pencil className="w-4 h-4" />
                               </button>
                               <button
-                                className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-red-200"
+                                className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-red-200 dark:hover:border-red-800"
                                 title="Excluir"
                               >
                                 <Trash2 className="w-4 h-4" />
@@ -608,13 +607,13 @@ export const Exam = () => {
                         }
                       }}
                       disabled={currentPage <= 1 || loading}
-                      className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white border-2 border-slate-300 text-slate-700 rounded-lg hover:border-blue-500 hover:text-blue-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
+                      className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
                     >
                       <ChevronLeft className="w-4 h-4" />
                       <span className="hidden sm:inline">Anterior</span>
                     </button>
 
-                    <div className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-semibold min-w-[60px] text-center">
+                    <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-semibold min-w-[60px] text-center">
                       Pág. {currentPage}
                     </div>
 
@@ -627,7 +626,7 @@ export const Exam = () => {
                         }
                       }}
                       disabled={currentPage >= getTotalPages() || loading}
-                      className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white border-2 border-slate-300 text-slate-700 rounded-lg hover:border-blue-500 hover:text-blue-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
+                      className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
                     >
                       <span className="hidden sm:inline">Próxima</span>
                       <ChevronRight className="w-4 h-4" />

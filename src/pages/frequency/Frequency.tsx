@@ -255,7 +255,7 @@ export const Frequency = () => {
                       onChange={(e) =>
                         handleFilterChange("startDate", e.target.value)
                       }
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     />
                     {filters.startDate && (
                       <button
@@ -275,7 +275,7 @@ export const Frequency = () => {
                       onChange={(e) =>
                         handleFilterChange("endDate", e.target.value)
                       }
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     />
                     {filters.endDate && (
                       <button
@@ -293,7 +293,7 @@ export const Frequency = () => {
                       onChange={(e) =>
                         handleFilterChange("teacherId", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     >
                       <option value="">Todos os professores</option>
                       {teachers.map((teacher) => (
@@ -310,7 +310,7 @@ export const Frequency = () => {
                       onChange={(e) =>
                         handleFilterChange("status", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     >
                       <option value="all">Todos os status</option>
                       <option value="pending">Pendentes</option>
@@ -346,10 +346,10 @@ export const Frequency = () => {
             {!loading && lessons.length === 0 && hasActiveFilters && (
               <div className="text-center py-12">
                 <Filter className="w-12 h-12 md:w-16 md:h-16 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-slate-600 mb-2">
+                <h3 className="text-lg font-medium text-slate-600 dark:text-white mb-2">
                   Nenhuma aula encontrada
                 </h3>
-                <p className="text-slate-500 text-sm mb-4">
+                <p className="text-slate-500 dark:text-slate-300 text-sm mb-4">
                   Tente ajustar os filtros para encontrar o que procura
                 </p>
                 <button
@@ -376,9 +376,9 @@ export const Frequency = () => {
             {/* Tabela de Aulas */}
             {!loading && lessons.length > 0 && (
               <div className="relative">
-                <div className="md:bg-white md:rounded-xl md:border md:border-slate-200 dark:border-slate-700 md:shadow-md md:overflow-hidden">
+                <div className="md:bg-white dark:md:bg-slate-900 md:rounded-xl md:border md:border-slate-200 dark:border-slate-700 md:shadow-md md:overflow-hidden">
                   {/* Header da tabela - Desktop */}
-                  <div className="hidden md:grid md:grid-cols-12 gap-4 bg-slate-50 px-6 py-4 text-sm font-semibold text-slate-700 uppercase tracking-wide">
+                  <div className="hidden md:grid md:grid-cols-12 gap-4 bg-slate-50 dark:bg-slate-800 px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide">
                     <div className="col-span-1 text-center">Status</div>
                     <div className="col-span-3">Turma</div>
                     <div className="col-span-2">Data/Hora</div>
@@ -388,7 +388,7 @@ export const Frequency = () => {
                   </div>
 
                   {/* Linhas da tabela */}
-                  <div className="flex flex-col gap-3 md:gap-0 md:divide-y md:divide-slate-100">
+                  <div className="flex flex-col gap-3 md:gap-0 md:divide-y md:divide-slate-100 dark:md:divide-slate-700">
                     {lessons.map((lesson) => {
                       const lessonDate = new Date(lesson.datetime);
                       const enrollments = lesson.class.enrollments || [];
@@ -397,7 +397,7 @@ export const Frequency = () => {
                         <div
                           key={lesson.id}
                           onClick={() => handleLessonClick(lesson)}
-                          className="hover:bg-blue-50/40 transition-all duration-200 group cursor-pointer"
+                          className="hover:bg-blue-50/40 dark:hover:bg-slate-800/50 transition-all duration-200 group cursor-pointer"
                         >
                           {/* Layout Mobile */}
                           <div className="md:hidden bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 hover:shadow-md hover:border-slate-300 transition-all duration-200 mb-3">
@@ -407,7 +407,7 @@ export const Frequency = () => {
                                   <BookOpen className="w-5 h-5 text-white" />
                                 </div>
                                 <div>
-                                  <h3 className="font-semibold text-slate-800 text-sm">
+                                  <h3 className="font-semibold text-slate-800 dark:text-white text-sm">
                                     {lesson.class.name}
                                   </h3>
                                   <p className="text-xs text-slate-600 dark:text-slate-300">
@@ -443,13 +443,13 @@ export const Frequency = () => {
                               </div>
                             </div>
 
-                            <div className="flex gap-2 pt-2 border-t border-slate-100 dark:border-slate-800-100">
+                            <div className="flex gap-2 pt-2 border-t border-slate-100 dark:border-slate-700">
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   handleLessonClick(lesson);
                                 }}
-                                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 hover:bg-slate-50 border border-slate-200 dark:border-slate-700 rounded-lg transition-colors text-sm font-medium"
+                                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg transition-colors text-sm font-medium"
                               >
                                 {lesson.attendanceTaken
                                   ? "Ver chamada"
@@ -465,14 +465,14 @@ export const Frequency = () => {
                               {lesson.attendanceTaken ? (
                                 <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400" />
                               ) : (
-                                <ClipboardCheck className="w-5 h-5 text-amber-600" />
+                                <ClipboardCheck className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                               )}
                             </div>
 
                             {/* Turma */}
                             <div className="col-span-3 flex items-center">
                               <div>
-                                <h3 className="font-semibold text-slate-800 text-base group-hover:text-blue-700 transition-colors">
+                                <h3 className="font-semibold text-slate-800 dark:text-white text-base group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
                                   {lesson.class.name}
                                 </h3>
                                 <p className="text-sm text-slate-600 dark:text-slate-300">
@@ -488,7 +488,7 @@ export const Frequency = () => {
                                 <Calendar className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                                 {lessonDate.toLocaleDateString("pt-BR")}
                               </div>
-                              <div className="flex items-center gap-2 text-sm text-slate-600 mt-1">
+                              <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300 mt-1">
                                 <Clock className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                                 {lessonDate.toLocaleTimeString("pt-BR", {
                                   hour: "2-digit",
@@ -521,7 +521,7 @@ export const Frequency = () => {
                                   e.stopPropagation();
                                   handleLessonClick(lesson);
                                 }}
-                                className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-blue-200"
+                                className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-blue-200 dark:hover:border-blue-800"
                                 title={
                                   lesson.attendanceTaken
                                     ? "Editar"
@@ -554,13 +554,13 @@ export const Frequency = () => {
                         }
                       }}
                       disabled={currentPage <= 1 || loading}
-                      className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white border-2 border-slate-300 text-slate-700 rounded-lg hover:border-blue-500 hover:text-blue-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
+                      className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
                     >
                       <ChevronLeft className="w-4 h-4" />
                       <span className="hidden sm:inline">Anterior</span>
                     </button>
 
-                    <div className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-semibold min-w-[60px] text-center">
+                    <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-semibold min-w-[60px] text-center">
                       Pág. {currentPage}
                     </div>
 
@@ -573,7 +573,7 @@ export const Frequency = () => {
                         }
                       }}
                       disabled={currentPage >= getTotalPages() || loading}
-                      className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white border-2 border-slate-300 text-slate-700 rounded-lg hover:border-blue-500 hover:text-blue-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
+                      className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
                     >
                       <span className="hidden sm:inline">Próxima</span>
                       <ChevronRight className="w-4 h-4" />

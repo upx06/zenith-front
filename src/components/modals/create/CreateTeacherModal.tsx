@@ -200,26 +200,26 @@ export const CreateTeacherModal = ({
       onClick={handleCloseModal}
     >
       <div
-        className="bg-white rounded-lg p-4 md:p-6 w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto relative"
+        className="bg-white dark:bg-slate-900 rounded-lg p-4 md:p-6 w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto relative"
         onClick={(e) => e.stopPropagation()}
       >
         {loading && (
-          <div className="absolute inset-0 bg-white/70 flex items-center justify-center rounded-lg z-10">
+          <div className="absolute inset-0 bg-white/70 dark:bg-slate-900/70 flex items-center justify-center rounded-lg z-10">
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-              <p className="text-slate-600 font-medium">Criando professor...</p>
+              <p className="text-slate-600 dark:text-slate-300 font-medium">Criando professor...</p>
             </div>
           </div>
         )}
 
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-semibold text-slate-800">
+          <h2 className="text-lg font-semibold text-slate-800 dark:text-white">
             Novo Professor
           </h2>
           <button
             onClick={handleCloseModal}
             disabled={loading}
-            className="p-1 text-slate-400 hover:text-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="p-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -229,14 +229,14 @@ export const CreateTeacherModal = ({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Seção de Foto */}
             <div className="md:col-span-1">
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
                 Foto do Professor
               </label>
               <div className="space-y-3">
                 {/* Preview da foto */}
                 <div className="relative aspect-square w-full max-w-[200px] mx-auto">
                   {photoPreview ? (
-                    <div className="relative w-full h-full rounded-lg overflow-hidden border-2 border-slate-200 group">
+                    <div className="relative w-full h-full rounded-lg overflow-hidden border-2 border-slate-200 dark:border-slate-700 group">
                       <img
                         src={photoPreview}
                         alt="Preview"
@@ -254,10 +254,10 @@ export const CreateTeacherModal = ({
                   ) : (
                     <div
                       onClick={() => fileInputRef.current?.click()}
-                      className="w-full h-full rounded-lg border-2 border-dashed border-slate-300 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 transition-colors"
+                      className="w-full h-full rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-700 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-slate-800/50 transition-colors"
                     >
-                      <Camera className="w-12 h-12 text-slate-400" />
-                      <p className="text-xs text-slate-500 text-center px-2">
+                      <Camera className="w-12 h-12 text-slate-400 dark:text-slate-500" />
+                      <p className="text-xs text-slate-500 dark:text-slate-400 text-center px-2">
                         Clique para adicionar foto
                       </p>
                     </div>
@@ -280,7 +280,7 @@ export const CreateTeacherModal = ({
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={loading}
-                    className="w-full px-3 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm flex items-center justify-center gap-2"
+                    className="w-full px-3 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm flex items-center justify-center gap-2"
                   >
                     <Upload className="w-4 h-4" />
                     Escolher Foto
@@ -298,7 +298,7 @@ export const CreateTeacherModal = ({
             {/* Seção de Dados */}
             <div className="md:col-span-2 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
                   Nome
                 </label>
                 <input
@@ -307,8 +307,8 @@ export const CreateTeacherModal = ({
                   value={formData.name}
                   onChange={handleChange}
                   disabled={loading}
-                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
-                    errors.name ? "border-red-500" : "border-slate-300"
+                  className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
+                    errors.name ? "border-red-500" : "border-slate-300 dark:border-slate-700"
                   }`}
                   placeholder="Nome completo do professor"
                 />
@@ -318,7 +318,7 @@ export const CreateTeacherModal = ({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
                   Email
                 </label>
                 <input
@@ -327,8 +327,8 @@ export const CreateTeacherModal = ({
                   value={formData.email}
                   onChange={handleChange}
                   disabled={loading}
-                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
-                    errors.email ? "border-red-500" : "border-slate-300"
+                  className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
+                    errors.email ? "border-red-500" : "border-slate-300 dark:border-slate-700"
                   }`}
                   placeholder="email@exemplo.com"
                 />
@@ -338,7 +338,7 @@ export const CreateTeacherModal = ({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
                   Telefone
                 </label>
                 <IMaskInput
@@ -353,8 +353,8 @@ export const CreateTeacherModal = ({
                   value={formData.phone}
                   onAccept={handlePhoneChange}
                   disabled={loading}
-                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
-                    errors.phone ? "border-red-500" : "border-slate-300"
+                  className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
+                    errors.phone ? "border-red-500" : "border-slate-300 dark:border-slate-700"
                   }`}
                   placeholder="(11) 99999-9999"
                   unmask={true}
@@ -378,19 +378,19 @@ export const CreateTeacherModal = ({
             </div>
           )}
 
-          <div className="flex gap-3 pt-4 border-t border-slate-200">
+          <div className="flex gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
             <button
               type="button"
               onClick={handleCloseModal}
               disabled={loading}
-              className="flex-1 px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base"
+              className="flex-1 px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors text-sm md:text-base flex items-center justify-center gap-2"
+              className="flex-1 px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors text-sm md:text-base flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>

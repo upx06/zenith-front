@@ -25,9 +25,9 @@ export const StudentDetailsModal = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+      <div className="bg-white dark:bg-slate-900 rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="bg-blue-600 p-6 text-white">
+        <div className="bg-blue-600 dark:bg-blue-500 p-6 text-white">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
               {photo ? (
@@ -61,32 +61,32 @@ export const StudentDetailsModal = ({
         <div className="flex-1 overflow-y-auto p-6">
           {/* Informações Básicas */}
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-slate-800 mb-3 flex items-center gap-2">
-              <GraduationCap className="w-5 h-5 text-blue-600" />
+            <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-3 flex items-center gap-2">
+              <GraduationCap className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               Informações do Aluno
             </h3>
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 space-y-3">
-              <div className="flex items-center gap-3 text-slate-700">
-                <Mail className="w-5 h-5 text-blue-600 shrink-0" />
+            <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700 space-y-3">
+              <div className="flex items-center gap-3 text-slate-700 dark:text-slate-200">
+                <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" />
                 <div>
-                  <span className="text-sm text-slate-500 block">E-mail</span>
+                  <span className="text-sm text-slate-500 dark:text-slate-400 block">E-mail</span>
                   <span className="font-medium break-all">{student.email}</span>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 text-slate-700">
-                <Phone className="w-5 h-5 text-blue-600 shrink-0" />
+              <div className="flex items-center gap-3 text-slate-700 dark:text-slate-200">
+                <Phone className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" />
                 <div>
-                  <span className="text-sm text-slate-500 block">Telefone</span>
+                  <span className="text-sm text-slate-500 dark:text-slate-400 block">Telefone</span>
                   <span className="font-medium">{student.phone}</span>
                 </div>
               </div>
 
               {student.goal && (
-                <div className="flex items-center gap-3 text-slate-700">
-                  <Target className="w-5 h-5 text-blue-600 shrink-0" />
+                <div className="flex items-center gap-3 text-slate-700 dark:text-slate-200">
+                  <Target className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" />
                   <div>
-                    <span className="text-sm text-slate-500 block">
+                    <span className="text-sm text-slate-500 dark:text-slate-400 block">
                       Objetivo Atual
                     </span>
                     <span className="font-medium">{student.goal}</span>
@@ -98,21 +98,21 @@ export const StudentDetailsModal = ({
 
           {/* Matrículas */}
           <div>
-            <h3 className="text-lg font-semibold text-slate-800 mb-3 flex items-center gap-2">
-              <BookOpen className="w-5 h-5 text-blue-600" />
+            <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-3 flex items-center gap-2">
+              <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               Matrículas
-              <span className="text-sm font-normal text-slate-500 ml-1">
+              <span className="text-sm font-normal text-slate-500 dark:text-slate-400 ml-1">
                 ({enrollments.length})
               </span>
             </h3>
 
             {enrollments.length === 0 ? (
-              <div className="bg-slate-50 rounded-lg p-8 text-center border border-slate-200">
-                <BookOpen className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                <p className="text-slate-600 font-medium">
+              <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-8 text-center border border-slate-200 dark:border-slate-700">
+                <BookOpen className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+                <p className="text-slate-600 dark:text-slate-300 font-medium">
                   Nenhuma matrícula ativa
                 </p>
-                <p className="text-slate-500 text-sm mt-1">
+                <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
                   Este aluno ainda não está matriculado em nenhuma turma
                 </p>
               </div>
@@ -121,14 +121,14 @@ export const StudentDetailsModal = ({
                 {enrollments.map((enrollment, index) => (
                   <div
                     key={index}
-                    className="bg-white border border-slate-200 rounded-lg p-4 hover:shadow-md hover:border-blue-200 transition-all"
+                    className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 hover:shadow-md hover:border-blue-200 dark:hover:border-blue-400 transition-all"
                   >
                     <div className="space-y-3">
                       {/* Nome da Turma */}
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <BookOpen className="w-4 h-4 text-blue-600" />
-                          <span className="font-semibold text-slate-800">
+                          <BookOpen className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                          <span className="font-semibold text-slate-800 dark:text-white">
                             {enrollment.class.name}
                           </span>
                         </div>
@@ -136,18 +136,18 @@ export const StudentDetailsModal = ({
 
                       {/* Nível */}
                       <div className="flex items-center gap-2">
-                        <Award className="w-4 h-4 text-slate-400" />
-                        <span className="text-sm text-slate-600">Nível:</span>
-                        <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs font-medium">
+                        <Award className="w-4 h-4 text-slate-400 dark:text-slate-500" />
+                        <span className="text-sm text-slate-600 dark:text-slate-300">Nível:</span>
+                        <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs font-medium">
                           {enrollment.class.level}
                         </span>
                       </div>
 
                       {/* Idioma */}
                       <div className="flex items-center gap-2">
-                        <Languages className="w-4 h-4 text-slate-400" />
-                        <span className="text-sm text-slate-600">Idioma:</span>
-                        <span className="text-sm font-medium text-slate-700">
+                        <Languages className="w-4 h-4 text-slate-400 dark:text-slate-500" />
+                        <span className="text-sm text-slate-600 dark:text-slate-300">Idioma:</span>
+                        <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
                           {enrollment.class.language.name}
                         </span>
                       </div>

@@ -134,15 +134,15 @@ export const CreateClassModal = ({
       onClick={handleCloseModal}
     >
       <div
-        className="bg-white rounded-lg p-4 md:p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto relative"
+        className="bg-white dark:bg-slate-900 rounded-lg p-4 md:p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto relative"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Overlay de loading */}
         {isLoading && (
-          <div className="absolute inset-0 bg-white/70 flex items-center justify-center rounded-lg z-10">
+          <div className="absolute inset-0 bg-white/70 dark:bg-slate-900/70 flex items-center justify-center rounded-lg z-10">
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-              <p className="text-slate-600 font-medium">
+              <p className="text-slate-600 dark:text-slate-300 font-medium">
                 {loading ? "Criando turma..." : "Carregando linguagens..."}
               </p>
             </div>
@@ -150,11 +150,11 @@ export const CreateClassModal = ({
         )}
 
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-slate-800">Nova Turma</h2>
+          <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Nova Turma</h2>
           <button
             onClick={handleCloseModal}
             disabled={isLoading}
-            className="p-1 text-slate-400 hover:text-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="p-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -162,7 +162,7 @@ export const CreateClassModal = ({
 
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
               Nome
             </label>
             <input
@@ -171,8 +171,8 @@ export const CreateClassModal = ({
               value={formData.name}
               onChange={handleChange}
               disabled={isLoading}
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
-                errors.name ? "border-red-500" : "border-slate-300"
+              className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
+                errors.name ? "border-red-500" : "border-slate-300 dark:border-slate-700"
               }`}
               placeholder="Nome da turma"
             />
@@ -182,7 +182,7 @@ export const CreateClassModal = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
               Linguagem
             </label>
             <select
@@ -190,8 +190,8 @@ export const CreateClassModal = ({
               value={formData.languageId}
               onChange={handleChange}
               disabled={isLoading}
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
-                errors.languageId ? "border-red-500" : "border-slate-300"
+              className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
+                errors.languageId ? "border-red-500" : "border-slate-300 dark:border-slate-700"
               }`}
             >
               <option value="">Selecione a linguagem</option>
@@ -221,7 +221,7 @@ export const CreateClassModal = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
               Nível
             </label>
             <select
@@ -229,8 +229,8 @@ export const CreateClassModal = ({
               value={formData.level}
               onChange={handleChange}
               disabled={isLoading}
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
-                errors.level ? "border-red-500" : "border-slate-300"
+              className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
+                errors.level ? "border-red-500" : "border-slate-300 dark:border-slate-700"
               }`}
             >
               <option value="">Selecione o nível</option>
@@ -262,14 +262,14 @@ export const CreateClassModal = ({
               type="button"
               onClick={handleCloseModal}
               disabled={isLoading}
-              className="flex-1 px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base"
+              className="flex-1 px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors text-sm md:text-base flex items-center justify-center gap-2"
+              className="flex-1 px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors text-sm md:text-base flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>

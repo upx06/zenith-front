@@ -201,20 +201,20 @@ export const CreateExamModal = ({
       onClick={handleCloseModal}
     >
       <div
-        className="bg-white rounded-xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl"
+        className="bg-white dark:bg-slate-900 rounded-xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {loadingCreateExam && (
-          <div className="absolute inset-0 bg-white/70 flex items-center justify-center rounded-xl z-10">
+          <div className="absolute inset-0 bg-white/70 dark:bg-slate-900/70 flex items-center justify-center rounded-xl z-10">
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-              <p className="text-slate-600 font-medium">Criando avaliação...</p>
+              <p className="text-slate-600 dark:text-slate-300 font-medium">Criando avaliação...</p>
             </div>
           </div>
         )}
 
         {/* Header */}
-        <div className="bg-blue-600 p-6 text-white">
+        <div className="bg-blue-600 dark:bg-blue-500 p-6 text-white">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center shrink-0">
@@ -222,7 +222,7 @@ export const CreateExamModal = ({
               </div>
               <div>
                 <h2 className="text-2xl font-bold">Nova Avaliação</h2>
-                <p className="text-blue-100 text-sm mt-1">
+                <p className="text-blue-100 dark:text-blue-50 text-sm mt-1">
                   Preencha os dados para criar uma nova avaliação
                 </p>
               </div>
@@ -242,13 +242,13 @@ export const CreateExamModal = ({
           <div className="p-6 space-y-6">
             {/* Informações Básicas */}
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wide border-b pb-2">
+              <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide border-b border-slate-200 dark:border-slate-700 pb-2">
                 Informações Básicas
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1.5">
                     Nome da Avaliação *
                   </label>
                   <input
@@ -257,8 +257,8 @@ export const CreateExamModal = ({
                     value={formData.name}
                     onChange={handleChange}
                     disabled={loadingCreateExam}
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm disabled:opacity-50 disabled:cursor-not-allowed ${
-                      errors.name ? "border-red-500" : "border-slate-300"
+                    className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm disabled:opacity-50 disabled:cursor-not-allowed ${
+                      errors.name ? "border-red-500" : "border-slate-300 dark:border-slate-700"
                     }`}
                     placeholder="Ex: Prova Final - Módulo 3"
                   />
@@ -268,7 +268,7 @@ export const CreateExamModal = ({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1.5">
                     Professor Responsável *
                   </label>
                   <select
@@ -276,8 +276,8 @@ export const CreateExamModal = ({
                     value={formData.teacherId}
                     onChange={handleChange}
                     disabled={loadingCreateExam || loadingTeachers}
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm disabled:opacity-50 disabled:cursor-not-allowed ${
-                      errors.teacherId ? "border-red-500" : "border-slate-300"
+                    className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm disabled:opacity-50 disabled:cursor-not-allowed ${
+                      errors.teacherId ? "border-red-500" : "border-slate-300 dark:border-slate-700"
                     }`}
                   >
                     <option value="">Selecione um professor</option>
@@ -298,7 +298,7 @@ export const CreateExamModal = ({
 
             {/* Tipo de Avaliação e Seleção */}
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wide border-b pb-2">
+              <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide border-b border-slate-200 dark:border-slate-700 pb-2">
                 Tipo de Avaliação
               </h3>
 
@@ -308,8 +308,8 @@ export const CreateExamModal = ({
                   <label
                     className={`flex items-center gap-2 px-4 py-2.5 border-2 rounded-lg cursor-pointer transition-all whitespace-nowrap ${
                       formData.evaluationType === "class"
-                        ? "border-blue-500 bg-blue-50"
-                        : "border-slate-300 hover:border-slate-400"
+                        ? "border-blue-500 bg-blue-50 dark:bg-blue-950/30"
+                        : "border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600"
                     } ${
                       loadingCreateExam ? "opacity-50 cursor-not-allowed" : ""
                     }`}
@@ -326,8 +326,8 @@ export const CreateExamModal = ({
                     <span
                       className={`font-medium text-sm ${
                         formData.evaluationType === "class"
-                          ? "text-blue-700"
-                          : "text-slate-700"
+                          ? "text-blue-700 dark:text-blue-400"
+                          : "text-slate-700 dark:text-slate-200"
                       }`}
                     >
                       Turma
@@ -337,8 +337,8 @@ export const CreateExamModal = ({
                   <label
                     className={`flex items-center gap-2 px-4 py-2.5 border-2 rounded-lg cursor-pointer transition-all whitespace-nowrap ${
                       formData.evaluationType === "student"
-                        ? "border-red-500 bg-red-50"
-                        : "border-slate-300 hover:border-slate-400"
+                        ? "border-red-500 bg-red-50 dark:bg-red-950/30"
+                        : "border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600"
                     } ${
                       loadingCreateExam ? "opacity-50 cursor-not-allowed" : ""
                     }`}
@@ -355,8 +355,8 @@ export const CreateExamModal = ({
                     <span
                       className={`font-medium text-sm ${
                         formData.evaluationType === "student"
-                          ? "text-red-700"
-                          : "text-slate-700"
+                          ? "text-red-700 dark:text-red-400"
+                          : "text-slate-700 dark:text-slate-200"
                       }`}
                     >
                       Aluno
@@ -368,7 +368,7 @@ export const CreateExamModal = ({
                 <div className="flex-1 w-full">
                   {formData.evaluationType === "class" ? (
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1.5">
                         Selecione a Turma *
                       </label>
                       <select
@@ -376,8 +376,8 @@ export const CreateExamModal = ({
                         value={formData.classId}
                         onChange={handleChange}
                         disabled={loadingCreateExam || loadingClasses}
-                        className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm disabled:opacity-50 disabled:cursor-not-allowed ${
-                          errors.classId ? "border-red-500" : "border-slate-300"
+                        className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm disabled:opacity-50 disabled:cursor-not-allowed ${
+                          errors.classId ? "border-red-500" : "border-slate-300 dark:border-slate-700"
                         }`}
                       >
                         <option value="">Selecione uma turma</option>
@@ -396,7 +396,7 @@ export const CreateExamModal = ({
                     </div>
                   ) : (
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1.5">
                         Selecione a Matrícula *
                       </label>
                       <select
@@ -404,10 +404,10 @@ export const CreateExamModal = ({
                         value={formData.enrollmentId}
                         onChange={handleChange}
                         disabled={loadingCreateExam || loadingEnrollments}
-                        className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm disabled:opacity-50 disabled:cursor-not-allowed ${
+                        className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm disabled:opacity-50 disabled:cursor-not-allowed ${
                           errors.enrollmentId
                             ? "border-red-500"
-                            : "border-slate-300"
+                            : "border-slate-300 dark:border-slate-700"
                         }`}
                       >
                         <option value="">Selecione uma matrícula</option>
@@ -432,14 +432,14 @@ export const CreateExamModal = ({
             {/* Tópicos */}
             <div>
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wide">
+                <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide">
                   Critérios de Avaliação *
                 </h3>
                 <button
                   type="button"
                   onClick={addTopic}
                   disabled={loadingCreateExam}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-xs font-medium"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-xs font-medium"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   Adicionar Tópico
@@ -450,13 +450,13 @@ export const CreateExamModal = ({
                 {topics.map((topic, index) => (
                   <div
                     key={topic.id}
-                    className="bg-slate-50 rounded-lg border border-slate-200 p-3"
+                    className="bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-3"
                   >
                     <div className="flex items-start gap-2">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
-                          <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
-                            <span className="text-blue-700 font-semibold text-xs">
+                          <div className="w-6 h-6 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center shrink-0">
+                            <span className="text-blue-700 dark:text-blue-400 font-semibold text-xs">
                               {index + 1}
                             </span>
                           </div>
@@ -467,7 +467,7 @@ export const CreateExamModal = ({
                               updateTopic(topic.id, "name", e.target.value)
                             }
                             disabled={loadingCreateExam}
-                            className="flex-1 px-2 py-1.5 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex-1 px-2 py-1.5 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                             placeholder={`Tópico ${index + 1}`}
                           />
                         </div>
@@ -476,7 +476,7 @@ export const CreateExamModal = ({
                         type="button"
                         onClick={() => removeTopic(topic.id)}
                         disabled={loadingCreateExam || topics.length === 1}
-                        className="p-1.5 text-red-600 hover:bg-red-50 rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        className="p-1.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         title="Remover tópico"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -493,19 +493,19 @@ export const CreateExamModal = ({
           </div>
 
           {/* Footer */}
-          <div className="border-t border-slate-200 p-4 bg-slate-50 flex gap-3">
+          <div className="border-t border-slate-200 dark:border-slate-700 p-4 bg-slate-50 dark:bg-slate-800 flex gap-3">
             <button
               type="button"
               onClick={handleCloseModal}
               disabled={loadingCreateExam}
-              className="flex-1 px-4 py-2.5 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+              className="flex-1 px-4 py-2.5 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={loadingCreateExam}
-              className="flex-1 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
+              className="flex-1 px-4 py-2.5 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
             >
               {loadingCreateExam ? (
                 <>

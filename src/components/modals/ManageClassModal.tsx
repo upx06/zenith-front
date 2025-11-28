@@ -172,15 +172,15 @@ export const ManageClassModal = ({
       onClick={isProcessing ? undefined : closeManageClassModal}
     >
       <div
-        className="bg-white rounded-lg w-full max-w-5xl mx-4 max-h-[90vh] overflow-hidden flex flex-col"
+        className="bg-white dark:bg-slate-900 rounded-lg w-full max-w-5xl mx-4 max-h-[90vh] overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Overlay de loading durante processamento */}
         {isProcessing && (
-          <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-10">
+          <div className="absolute inset-0 bg-white/70 dark:bg-slate-900/70 flex items-center justify-center z-10">
             <div className="flex flex-col items-center gap-3">
-              <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-              <p className="text-slate-600 font-medium">
+              <Loader2 className="w-8 h-8 text-blue-600 dark:text-blue-400 animate-spin" />
+              <p className="text-slate-600 dark:text-slate-300 font-medium">
                 {loadingCreateEnrollment
                   ? "Matriculando alunos..."
                   : "Removendo matrícula..."}
@@ -190,18 +190,18 @@ export const ManageClassModal = ({
         )}
 
         {/* Header */}
-        <div className="flex items-center justify-between p-4 md:p-6 border-b border-slate-200 relative">
+        <div className="flex items-center justify-between p-4 md:p-6 border-b border-slate-200 dark:border-slate-700 relative">
           <div>
-            <h2 className="text-lg md:text-xl font-semibold text-slate-800">
+            <h2 className="text-lg md:text-xl font-semibold text-slate-800 dark:text-white">
               {clas.name}
             </h2>
-            <div className="flex items-center gap-4 mt-2 text-sm text-slate-600">
+            <div className="flex items-center gap-4 mt-2 text-sm text-slate-600 dark:text-slate-300">
               <div className="flex items-center gap-1">
-                <Languages className="w-4 h-4 text-slate-400" />
+                <Languages className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                 <span>{clas.language?.name}</span>
               </div>
               <div className="flex items-center gap-1">
-                <Star className="w-4 h-4 text-slate-400" />
+                <Star className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                 <span>{clas.level}</span>
               </div>
             </div>
@@ -209,7 +209,7 @@ export const ManageClassModal = ({
           <button
             onClick={isProcessing ? undefined : closeManageClassModal}
             disabled={isProcessing}
-            className="p-1 text-slate-400 hover:text-slate-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <X className="w-5 h-5" />
           </button>
@@ -219,8 +219,8 @@ export const ManageClassModal = ({
         <div className="flex-1 overflow-y-auto p-4 md:p-6">
           {/* Mensagem de erro da mutation */}
           {(errorCreateEnrollment || errorDestroyEnrollment) && (
-            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <div className="flex items-center gap-2 text-red-800">
+            <div className="mb-4 p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 rounded-lg">
+              <div className="flex items-center gap-2 text-red-800 dark:text-red-300">
                 <X className="w-4 h-4" />
                 <span className="font-medium">Erro:</span>
                 <span className="text-sm">
@@ -236,7 +236,7 @@ export const ManageClassModal = ({
                     refetchSpecificNoClassEnrollments();
                   }
                 }}
-                className="mt-2 px-3 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+                className="mt-2 px-3 py-1 text-xs bg-red-600 dark:bg-red-500 text-white rounded hover:bg-red-700 dark:hover:bg-red-600 transition-colors"
               >
                 Tentar novamente
               </button>
@@ -247,12 +247,12 @@ export const ManageClassModal = ({
             {/* Seção de Alunos Matriculados */}
             <div className="flex-1">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="font-semibold text-slate-800 flex items-center gap-2">
-                  <Users className="w-5 h-5 text-blue-600" />
+                <h3 className="font-semibold text-slate-800 dark:text-white flex items-center gap-2">
+                  <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   {loadingSpecificClassEnrollments ? (
                     "Carregando alunos..."
                   ) : errorSpecificClassEnrollments ? (
-                    <span className="text-red-600">Erro ao carregar</span>
+                    <span className="text-red-600 dark:text-red-400">Erro ao carregar</span>
                   ) : (
                     `Alunos Matriculados (${classEnrollments.length})`
                   )}
@@ -263,7 +263,7 @@ export const ManageClassModal = ({
                     <button
                       onClick={() => setIsAddingStudents(true)}
                       disabled={isProcessing}
-                      className="flex items-center gap-2 px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors"
+                      className="flex items-center gap-2 px-3 py-1.5 text-sm bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors"
                     >
                       <UserPlus className="w-4 h-4" />
                       Adicionar Aluno
@@ -273,25 +273,25 @@ export const ManageClassModal = ({
 
               {/* Estados de Loading e Error para alunos matriculados */}
               {loadingSpecificClassEnrollments && (
-                <div className="text-center py-8 bg-slate-50 rounded-lg">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
-                  <p className="text-slate-500 text-sm">
+                <div className="text-center py-8 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-2"></div>
+                  <p className="text-slate-500 dark:text-slate-400 text-sm">
                     Carregando alunos matriculados...
                   </p>
                 </div>
               )}
 
               {errorSpecificClassEnrollments && (
-                <div className="text-center py-8 bg-red-50 rounded-lg">
-                  <Users className="w-12 h-12 text-red-300 mx-auto mb-2" />
-                  <p className="text-red-600 text-sm">
+                <div className="text-center py-8 bg-red-50 dark:bg-red-950/30 rounded-lg">
+                  <Users className="w-12 h-12 text-red-300 dark:text-red-700 mx-auto mb-2" />
+                  <p className="text-red-600 dark:text-red-400 text-sm">
                     Erro ao carregar alunos matriculados
                   </p>
                   <button
                     onClick={() =>
                       getSpecificClassEnrollments({ variables: { classId } })
                     }
-                    className="mt-2 px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                    className="mt-2 px-4 py-2 text-sm bg-red-600 dark:bg-red-500 text-white rounded-lg hover:bg-red-700 dark:hover:bg-red-600 transition-colors"
                   >
                     Tentar novamente
                   </button>
@@ -307,24 +307,24 @@ export const ManageClassModal = ({
                         {classEnrollments.map((enrollment: IEnrollment) => (
                           <div
                             key={enrollment.id}
-                            className="flex items-center justify-between p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors"
+                            className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
                           >
                             <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                                <Users className="w-4 h-4 text-blue-600" />
+                              <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+                                <Users className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                               </div>
                               <div>
-                                <p className="font-medium text-slate-800 text-sm">
+                                <p className="font-medium text-slate-800 dark:text-white text-sm">
                                   {enrollment.student?.name || "Nome do aluno"}
                                 </p>
-                                <p className="text-xs text-slate-500">
+                                <p className="text-xs text-slate-500 dark:text-slate-400">
                                   {enrollment.student?.email ||
                                     "email@exemplo.com"}
                                 </p>
                               </div>
                             </div>
                             <button
-                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                               title="Remover aluno"
                               disabled={
                                 isProcessing ||
@@ -344,9 +344,9 @@ export const ManageClassModal = ({
                         ))}
                       </div>
                     ) : (
-                      <div className="text-center py-8 bg-slate-50 rounded-lg">
-                        <Users className="w-12 h-12 text-slate-300 mx-auto mb-2" />
-                        <p className="text-slate-500 text-sm">
+                      <div className="text-center py-8 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                        <Users className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
+                        <p className="text-slate-500 dark:text-slate-400 text-sm">
                           Nenhum aluno matriculado nesta turma
                         </p>
                       </div>
@@ -357,14 +357,14 @@ export const ManageClassModal = ({
 
             {/* Seção de Seleção de Alunos */}
             {isAddingStudents && (
-              <div className="flex-1 border-t lg:border-t-0 lg:border-l lg:pl-6 pt-6 lg:pt-0">
+              <div className="flex-1 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 lg:pl-6 pt-6 lg:pt-0">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-slate-800 flex items-center gap-2">
-                    <UserPlus className="w-5 h-5 text-blue-600" />
+                  <h3 className="font-semibold text-slate-800 dark:text-white flex items-center gap-2">
+                    <UserPlus className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                     {loadingSpecificNoClassEnrollments ? (
                       "Carregando alunos disponíveis..."
                     ) : errorSpecificNoClassEnrollments ? (
-                      <span className="text-red-600">Erro ao carregar</span>
+                      <span className="text-red-600 dark:text-red-400">Erro ao carregar</span>
                     ) : (
                       `Selecionar Alunos (${selectedStudents.length} selecionados)`
                     )}
@@ -373,7 +373,7 @@ export const ManageClassModal = ({
                     <button
                       onClick={handleCancelAddStudents}
                       disabled={loadingCreateEnrollment}
-                      className="px-3 py-1.5 text-sm border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                       Cancelar
                     </button>
@@ -384,7 +384,7 @@ export const ManageClassModal = ({
                         loadingSpecificNoClassEnrollments ||
                         loadingCreateEnrollment
                       }
-                      className="flex items-center gap-2 px-3 py-1.5 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors"
+                      className="flex items-center gap-2 px-3 py-1.5 text-sm bg-green-600 dark:bg-green-500 text-white rounded-lg hover:bg-green-700 dark:hover:bg-green-600 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors"
                     >
                       {loadingCreateEnrollment ? (
                         <>
@@ -403,18 +403,18 @@ export const ManageClassModal = ({
 
                 {/* Estados de Loading e Error para alunos disponíveis */}
                 {loadingSpecificNoClassEnrollments && (
-                  <div className="text-center py-8 bg-slate-50 rounded-lg">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
-                    <p className="text-slate-500 text-sm">
+                  <div className="text-center py-8 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-2"></div>
+                    <p className="text-slate-500 dark:text-slate-400 text-sm">
                       Carregando alunos disponíveis...
                     </p>
                   </div>
                 )}
 
                 {errorSpecificNoClassEnrollments && (
-                  <div className="text-center py-8 bg-red-50 rounded-lg">
-                    <UserPlus className="w-12 h-12 text-red-300 mx-auto mb-2" />
-                    <p className="text-red-600 text-sm">
+                  <div className="text-center py-8 bg-red-50 dark:bg-red-950/30 rounded-lg">
+                    <UserPlus className="w-12 h-12 text-red-300 dark:text-red-700 mx-auto mb-2" />
+                    <p className="text-red-600 dark:text-red-400 text-sm">
                       Erro ao carregar alunos disponíveis
                     </p>
                     <button
@@ -423,7 +423,7 @@ export const ManageClassModal = ({
                           variables: { classId },
                         })
                       }
-                      className="mt-2 px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                      className="mt-2 px-4 py-2 text-sm bg-red-600 dark:bg-red-500 text-white rounded-lg hover:bg-red-700 dark:hover:bg-red-600 transition-colors"
                     >
                       Tentar novamente
                     </button>
@@ -439,8 +439,8 @@ export const ManageClassModal = ({
                             key={student.id}
                             className={`flex items-center justify-between p-3 rounded-lg border transition-colors ${
                               selectedStudents.includes(student.id)
-                                ? "bg-blue-50 border-blue-200"
-                                : "bg-white border-slate-200 hover:bg-slate-50"
+                                ? "bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-900"
+                                : "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700"
                             } ${
                               loadingCreateEnrollment
                                 ? "opacity-50 cursor-not-allowed"
@@ -456,35 +456,35 @@ export const ManageClassModal = ({
                               <div
                                 className={`w-8 h-8 rounded-full flex items-center justify-center ${
                                   selectedStudents.includes(student.id)
-                                    ? "bg-blue-100"
-                                    : "bg-slate-100"
+                                    ? "bg-blue-100 dark:bg-blue-900"
+                                    : "bg-slate-100 dark:bg-slate-700"
                                 }`}
                               >
                                 {selectedStudents.includes(student.id) ? (
-                                  <Check className="w-4 h-4 text-blue-600" />
+                                  <Check className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                                 ) : (
-                                  <Users className="w-4 h-4 text-slate-400" />
+                                  <Users className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                                 )}
                               </div>
                               <div>
-                                <p className="font-medium text-slate-800 text-sm">
+                                <p className="font-medium text-slate-800 dark:text-white text-sm">
                                   {student.name}
                                 </p>
-                                <p className="text-xs text-slate-500">
+                                <p className="text-xs text-slate-500 dark:text-slate-400">
                                   {student.email}
                                 </p>
                               </div>
                             </div>
                             <PhoneDisplay
                               phone={student.phone}
-                              className="text-xs text-slate-400"
+                              className="text-xs text-slate-400 dark:text-slate-500"
                             />
                           </div>
                         ))
                       ) : (
-                        <div className="text-center py-8 bg-slate-50 rounded-lg">
-                          <UserPlus className="w-12 h-12 text-slate-300 mx-auto mb-2" />
-                          <p className="text-slate-500 text-sm">
+                        <div className="text-center py-8 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                          <UserPlus className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
+                          <p className="text-slate-500 dark:text-slate-400 text-sm">
                             Nenhum aluno disponível para matrícula
                           </p>
                         </div>
@@ -496,11 +496,11 @@ export const ManageClassModal = ({
           </div>
         </div>
 
-        <div className="p-4 md:p-6 border-t border-slate-200 bg-slate-50">
+        <div className="p-4 md:p-6 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
           <button
             onClick={isProcessing ? undefined : closeManageClassModal}
             disabled={isProcessing}
-            className="w-full px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base font-medium"
+            className="w-full px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base font-medium"
           >
             Fechar
           </button>

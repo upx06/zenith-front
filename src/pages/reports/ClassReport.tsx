@@ -119,13 +119,15 @@ export const ClassReport = () => {
               <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                 <div className="flex items-center gap-2 text-slate-700 min-w-fit">
                   <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                  <span className="text-sm font-medium">Turma:</span>
+                  <span className="text-sm font-medium text-slate-600 dark:text-white">
+                    Turma:
+                  </span>
                 </div>
                 <select
                   value={selectedClassId}
                   onChange={(e) => setSelectedClassId(e.target.value)}
                   disabled={classesLoading}
-                  className="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 text-sm bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                 >
                   <option value="">Selecione uma turma</option>
                   {classes
@@ -146,7 +148,7 @@ export const ClassReport = () => {
                 <div className="flex flex-col items-center justify-center space-y-4">
                   <Loader2 className="w-12 h-12 text-blue-600 animate-spin" />
                   <div>
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                       Carregando dados...
                     </h3>
                     <p className="text-sm text-slate-600 dark:text-slate-300">
@@ -159,9 +161,9 @@ export const ClassReport = () => {
 
             {!loading && selectedClassId && selectedClass && (
               <div className="relative">
-                <div className="md:bg-white md:rounded-xl md:border md:border-slate-200 dark:border-slate-700 md:shadow-md md:overflow-hidden">
+                <div className="md:bg-white dark:md:bg-slate-900 md:rounded-xl md:border md:border-slate-200 dark:border-slate-700 md:shadow-md md:overflow-hidden">
                   {/* Header da turma */}
-                  <div className="hidden md:block bg-slate-100 px-4 md:px-6 py-3 border-b border-slate-200 dark:border-slate-700">
+                  <div className="hidden md:block bg-slate-100 dark:bg-slate-800 px-4 md:px-6 py-3 border-b border-slate-200 dark:border-slate-700">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <BookOpen className="h-5 w-5 text-blue-600 dark:text-blue-400" />
@@ -185,7 +187,7 @@ export const ClassReport = () => {
                   ) : (
                     <>
                       {/* Header da tabela - Desktop */}
-                      <div className="hidden md:grid md:grid-cols-12 gap-4 bg-slate-50 px-6 py-4 text-sm font-semibold text-slate-700 uppercase tracking-wide">
+                      <div className="hidden md:grid md:grid-cols-12 gap-4 bg-slate-50 dark:bg-slate-800 px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide">
                         <div className="col-span-5">Aluno</div>
                         <div className="col-span-2 text-center">
                           Total de Aulas
@@ -195,14 +197,14 @@ export const ClassReport = () => {
                       </div>
 
                       {/* Linhas da tabela */}
-                      <div className="flex flex-col gap-3 md:gap-0 md:divide-y md:divide-slate-100">
+                      <div className="flex flex-col gap-3 md:gap-0 md:divide-y md:divide-slate-100 dark:md:divide-slate-700">
                         {studentsReport.map((student) => (
                           <div
                             key={student.studentId}
-                            className="hover:bg-blue-50/40 transition-all duration-200 group"
+                            className="hover:bg-blue-50/40 dark:hover:bg-slate-800/50 transition-all duration-200 group"
                           >
                             {/* Layout Mobile */}
-                            <div className="md:hidden px-4 py-4 space-y-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-950/50">
+                            <div className="md:hidden px-4 py-4 space-y-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-950/50 bg-white dark:bg-slate-900">
                               {/* Header do Card */}
                               <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shrink-0 shadow-sm dark:shadow-slate-950/50">
@@ -213,38 +215,38 @@ export const ClassReport = () => {
                                   </span>
                                 </div>
                                 <div className="flex-1">
-                                  <h3 className="font-semibold text-slate-800 text-sm">
+                                  <h3 className="font-semibold text-slate-800 dark:text-white text-sm">
                                     {student.studentName}
                                   </h3>
                                 </div>
                               </div>
 
                               {/* Métricas */}
-                              <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100 dark:border-slate-800-100">
-                                <div className="flex flex-col items-center p-2 bg-slate-50 rounded-lg">
-                                  <BookOpen className="w-4 h-4 text-slate-400 mb-1" />
-                                  <span className="text-xs text-slate-500 mb-1">
+                              <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100 dark:border-slate-700">
+                                <div className="flex flex-col items-center p-2 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                                  <BookOpen className="w-4 h-4 text-slate-400 dark:text-slate-500 mb-1" />
+                                  <span className="text-xs text-slate-500 dark:text-slate-400 mb-1">
                                     Aulas
                                   </span>
                                   <span className="text-sm font-bold text-slate-700 dark:text-slate-200">
                                     {student.totalLessons}
                                   </span>
                                 </div>
-                                <div className="flex flex-col items-center p-2 bg-blue-50 rounded-lg">
-                                  <CheckCircle className="w-4 h-4 text-blue-500 mb-1" />
-                                  <span className="text-xs text-blue-600 mb-1">
+                                <div className="flex flex-col items-center p-2 bg-blue-50 dark:bg-blue-950/30 rounded-lg">
+                                  <CheckCircle className="w-4 h-4 text-blue-500 dark:text-blue-400 mb-1" />
+                                  <span className="text-xs text-blue-600 dark:text-blue-400 mb-1">
                                     Presenças
                                   </span>
-                                  <span className="text-sm font-bold text-blue-700">
+                                  <span className="text-sm font-bold text-blue-700 dark:text-blue-400">
                                     {student.presences}
                                   </span>
                                 </div>
-                                <div className="flex flex-col items-center p-2 bg-red-50 rounded-lg">
-                                  <XCircle className="w-4 h-4 text-red-500 mb-1" />
-                                  <span className="text-xs text-red-600 mb-1">
+                                <div className="flex flex-col items-center p-2 bg-red-50 dark:bg-red-950/30 rounded-lg">
+                                  <XCircle className="w-4 h-4 text-red-500 dark:text-red-400 mb-1" />
+                                  <span className="text-xs text-red-600 dark:text-red-400 mb-1">
                                     Faltas
                                   </span>
-                                  <span className="text-sm font-bold text-red-700">
+                                  <span className="text-sm font-bold text-red-700 dark:text-red-400">
                                     {student.absences}
                                   </span>
                                 </div>
@@ -255,7 +257,7 @@ export const ClassReport = () => {
                             <div className="hidden md:grid md:grid-cols-12 gap-4 px-6 py-5">
                               {/* Nome do Aluno */}
                               <div className="col-span-5 flex items-center">
-                                <h3 className="font-semibold text-slate-800 text-base group-hover:text-blue-700 transition-colors">
+                                <h3 className="font-semibold text-slate-800 dark:text-white text-base group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
                                   {student.studentName}
                                 </h3>
                               </div>
@@ -306,7 +308,7 @@ export const ClassReport = () => {
                     <Users className="h-8 w-8 text-slate-400 dark:text-slate-500" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                       Selecione uma turma
                     </h3>
                     <p className="text-sm text-slate-600 dark:text-slate-300">

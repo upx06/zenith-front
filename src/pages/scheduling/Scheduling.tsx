@@ -209,7 +209,9 @@ export const Scheduling = () => {
 
               <div className="flex gap-2 flex-shrink-0">
                 <button
-                  onClick={() => setViewMode(viewMode === "grid" ? "cards" : "grid")}
+                  onClick={() =>
+                    setViewMode(viewMode === "grid" ? "cards" : "grid")
+                  }
                   className="bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:opacity-90 rounded-lg flex items-center justify-center gap-2 transition-all
                     text-sm md:text-base
                     w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2"
@@ -291,12 +293,12 @@ export const Scheduling = () => {
                       onChange={(e) =>
                         handleFilterChange("teacherName", e.target.value)
                       }
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     />
                     {filters.teacherName && (
                       <button
                         onClick={() => handleFilterChange("teacherName", "")}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -311,12 +313,12 @@ export const Scheduling = () => {
                       onChange={(e) =>
                         handleFilterChange("classroomName", e.target.value)
                       }
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     />
                     {filters.classroomName && (
                       <button
                         onClick={() => handleFilterChange("classroomName", "")}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -357,18 +359,18 @@ export const Scheduling = () => {
                   <div className="flex items-center gap-2 order-2 md:order-1">
                     <button
                       onClick={() => navigateDate(-1)}
-                      className="p-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 hover:border-slate-300 transition-all duration-200 group"
+                      className="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-200 group"
                       title="Dia anterior"
                     >
-                      <ChevronLeft className="h-5 w-5 text-slate-600 group-hover:text-slate-900" />
+                      <ChevronLeft className="h-5 w-5 text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white" />
                     </button>
 
                     <button
                       onClick={() => navigateDate(1)}
-                      className="p-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 hover:border-slate-300 transition-all duration-200 group"
+                      className="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-200 group"
                       title="Próximo dia"
                     >
-                      <ChevronRight className="h-5 w-5 text-slate-600 group-hover:text-slate-900" />
+                      <ChevronRight className="h-5 w-5 text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white" />
                     </button>
                   </div>
 
@@ -398,9 +400,9 @@ export const Scheduling = () => {
                           );
                           setSelectedDate(newDate);
                         }}
-                        className="pl-10 pr-3 py-2.5 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-slate-400 transition-colors cursor-pointer"
+                        className="pl-10 pr-3 py-2.5 border border-slate-300 dark:border-slate-700 rounded-lg text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent hover:border-slate-400 dark:hover:border-slate-600 transition-colors cursor-pointer"
                       />
-                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-500 pointer-events-none" />
                     </div>
                     <button
                       onClick={() => setSelectedDate(new Date())}
@@ -447,28 +449,32 @@ export const Scheduling = () => {
             ) : viewMode === "grid" ? (
               <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 overflow-hidden">
                 {/* Hint de scroll */}
-                <div className="bg-blue-50 border-b border-blue-200 px-4 py-2">
-                  <p className="text-xs text-blue-700 text-center flex items-center justify-center gap-2">
+                <div className="bg-blue-50 dark:bg-blue-950/30 border-b border-blue-200 dark:border-blue-800 px-4 py-2">
+                  <p className="text-xs text-blue-700 dark:text-blue-400 text-center flex items-center justify-center gap-2">
                     <ChevronLeft className="w-3 h-3" />
-                    <span className="hidden sm:inline">Use o scroll horizontal para ver todos os horários</span>
-                    <span className="sm:hidden">Deslize para ver todos os horários</span>
+                    <span className="hidden sm:inline">
+                      Use o scroll horizontal para ver todos os horários
+                    </span>
+                    <span className="sm:hidden">
+                      Deslize para ver todos os horários
+                    </span>
                     <ChevronRight className="w-3 h-3" />
                   </p>
                 </div>
 
                 <div className="overflow-x-auto">
                   <div className="min-w-max">
-                    <div className="bg-linear-to-r from-slate-50 to-slate-100 border-b border-slate-200">
+                    <div className="bg-linear-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-800 border-b border-slate-200 dark:border-slate-700">
                       <div
                         className="grid gap-px"
                         style={{
                           gridTemplateColumns: `200px repeat(${timeSlots.length}, minmax(120px, 1fr))`,
                         }}
                       >
-                        <div className="p-3 md:p-4 bg-white sticky left-0 z-10">
+                        <div className="p-3 md:p-4 bg-white dark:bg-slate-900 sticky left-0 z-10">
                           <div className="flex items-center space-x-2">
-                            <BookOpen className="h-4 w-4 text-slate-500" />
-                            <span className="font-semibold text-slate-900 text-sm md:text-base">
+                            <BookOpen className="h-4 w-4 text-slate-500 dark:text-slate-400" />
+                            <span className="font-semibold text-slate-900 dark:text-white text-sm md:text-base">
                               Salas
                             </span>
                           </div>
@@ -476,11 +482,11 @@ export const Scheduling = () => {
                         {timeSlots.map((timeSlot) => (
                           <div
                             key={timeSlot}
-                            className="p-3 md:p-4 bg-white text-center"
+                            className="p-3 md:p-4 bg-white dark:bg-slate-900 text-center"
                           >
                             <div className="flex items-center justify-center space-x-1">
-                              <Clock className="h-3 w-3 text-slate-500" />
-                              <span className="text-sm font-semibold text-slate-900">
+                              <Clock className="h-3 w-3 text-slate-500 dark:text-slate-400" />
+                              <span className="text-sm font-semibold text-slate-900 dark:text-white">
                                 {timeSlot}
                               </span>
                             </div>
@@ -489,12 +495,12 @@ export const Scheduling = () => {
                       </div>
                     </div>
 
-                    <div className="divide-y divide-slate-200 relative">
+                    <div className="divide-y divide-slate-200 dark:divide-slate-700 relative">
                       {lessonsLoading && (
-                        <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-10">
+                        <div className="absolute inset-0 bg-white dark:bg-slate-900 bg-opacity-70 dark:bg-opacity-70 flex items-center justify-center z-10">
                           <div className="flex flex-col items-center space-y-3">
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                            <span className="text-sm text-slate-600">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400"></div>
+                            <span className="text-sm text-slate-600 dark:text-slate-300">
                               Atualizando agendamentos...
                             </span>
                           </div>
@@ -504,16 +510,16 @@ export const Scheduling = () => {
                       {classrooms.map((classroom) => (
                         <div
                           key={classroom.id}
-                          className="grid gap-px bg-slate-200"
+                          className="grid gap-px bg-slate-200 dark:bg-slate-700"
                           style={{
                             gridTemplateColumns: `200px repeat(${timeSlots.length}, minmax(120px, 1fr))`,
                           }}
                         >
-                          <div className="p-3 md:p-4 bg-white flex flex-col justify-center border-r border-slate-100 sticky left-0 z-10">
-                            <div className="text-sm font-semibold text-slate-900">
+                          <div className="p-3 md:p-4 bg-white dark:bg-slate-900 flex flex-col justify-center border-r border-slate-100 dark:border-slate-700 sticky left-0 z-10">
+                            <div className="text-sm font-semibold text-slate-900 dark:text-white">
                               {classroom.name}
                             </div>
-                            <div className="text-xs text-slate-500 mt-1 flex items-center space-x-1">
+                            <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center space-x-1">
                               <Users className="h-3 w-3" />
                               <span>{classroom.capacity} lugares</span>
                             </div>
@@ -529,10 +535,10 @@ export const Scheduling = () => {
                             return (
                               <div
                                 key={timeSlot}
-                                className={`p-2 md:p-3 bg-white cursor-pointer transition-all duration-200 min-h-16 md:min-h-20 flex items-center hover:shadow-sm ${
+                                className={`p-2 md:p-3 cursor-pointer transition-all duration-200 min-h-16 md:min-h-20 flex items-center hover:shadow-sm ${
                                   scheduling
-                                    ? "bg-linear-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 border-l-4 border-blue-500"
-                                    : "hover:bg-slate-50 border border-transparent hover:border-slate-300 rounded-sm"
+                                    ? "bg-linear-to-r from-blue-50 to-blue-100 dark:from-blue-950/30 dark:to-blue-900/30 hover:from-blue-100 hover:to-blue-200 dark:hover:from-blue-900/40 dark:hover:to-blue-800/40 border-l-4 border-blue-500 dark:border-blue-400"
+                                    : "bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-transparent hover:border-slate-300 dark:hover:border-slate-700 rounded-sm"
                                 }`}
                                 onClick={() =>
                                   handleSlotClick(
@@ -545,18 +551,18 @@ export const Scheduling = () => {
                                 {scheduling ? (
                                   <div className="w-full">
                                     <div className="flex items-center space-x-1 mb-1">
-                                      <BookOpen className="h-3 w-3 text-blue-600 shrink-0" />
-                                      <span className="text-xs font-semibold text-blue-900 truncate">
+                                      <BookOpen className="h-3 w-3 text-blue-600 dark:text-blue-400 shrink-0" />
+                                      <span className="text-xs font-semibold text-blue-900 dark:text-blue-300 truncate">
                                         {scheduling.lesson.class.name}
                                       </span>
                                     </div>
-                                    <div className="text-xs text-slate-600 truncate">
+                                    <div className="text-xs text-slate-600 dark:text-slate-300 truncate">
                                       {scheduling.lesson.teacher.name}
                                     </div>
                                   </div>
                                 ) : (
                                   <div className="w-full h-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                                    <Plus className="h-4 w-4 text-slate-400" />
+                                    <Plus className="h-4 w-4 text-slate-400 dark:text-slate-500" />
                                   </div>
                                 )}
                               </div>
@@ -572,10 +578,10 @@ export const Scheduling = () => {
               // Visualização em Cards para mobile
               <div className="space-y-4">
                 {lessonsLoading && (
-                  <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 text-center">
+                  <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center">
                     <div className="flex flex-col items-center space-y-3">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                      <span className="text-sm text-slate-600">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400"></div>
+                      <span className="text-sm text-slate-600 dark:text-slate-300">
                         Atualizando agendamentos...
                       </span>
                     </div>
@@ -585,21 +591,21 @@ export const Scheduling = () => {
                 {classrooms.map((classroom) => (
                   <div
                     key={classroom.id}
-                    className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"
+                    className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden"
                   >
                     {/* Header da Sala */}
-                    <div className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200 p-4">
+                    <div className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-800 border-b border-slate-200 dark:border-slate-700 p-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h3 className="font-semibold text-slate-900">
+                          <h3 className="font-semibold text-slate-900 dark:text-white">
                             {classroom.name}
                           </h3>
-                          <div className="text-xs text-slate-500 mt-1 flex items-center space-x-1">
+                          <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center space-x-1">
                             <Users className="h-3 w-3" />
                             <span>{classroom.capacity} lugares</span>
                           </div>
                         </div>
-                        <BookOpen className="h-5 w-5 text-slate-400" />
+                        <BookOpen className="h-5 w-5 text-slate-400 dark:text-slate-500" />
                       </div>
                     </div>
 
@@ -617,8 +623,8 @@ export const Scheduling = () => {
                             key={timeSlot}
                             className={`p-3 rounded-lg cursor-pointer transition-all duration-200 border-2 ${
                               scheduling
-                                ? "bg-gradient-to-br from-blue-50 to-blue-100 border-blue-300 hover:border-blue-400"
-                                : "bg-slate-50 border-slate-200 hover:border-slate-300 hover:bg-slate-100"
+                                ? "bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/30 dark:to-blue-900/30 border-blue-300 dark:border-blue-700 hover:border-blue-400 dark:hover:border-blue-600"
+                                : "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700"
                             }`}
                             onClick={() =>
                               handleSlotClick(
@@ -629,26 +635,26 @@ export const Scheduling = () => {
                             }
                           >
                             <div className="flex items-center gap-1 mb-2">
-                              <Clock className="h-3 w-3 text-slate-500" />
-                              <span className="text-xs font-semibold text-slate-700">
+                              <Clock className="h-3 w-3 text-slate-500 dark:text-slate-400" />
+                              <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">
                                 {timeSlot}
                               </span>
                             </div>
                             {scheduling ? (
                               <div>
                                 <div className="flex items-center gap-1 mb-1">
-                                  <BookOpen className="h-3 w-3 text-blue-600 shrink-0" />
-                                  <span className="text-xs font-semibold text-blue-900 truncate">
+                                  <BookOpen className="h-3 w-3 text-blue-600 dark:text-blue-400 shrink-0" />
+                                  <span className="text-xs font-semibold text-blue-900 dark:text-blue-300 truncate">
                                     {scheduling.lesson.class.name}
                                   </span>
                                 </div>
-                                <div className="text-xs text-slate-600 truncate">
+                                <div className="text-xs text-slate-600 dark:text-slate-300 truncate">
                                   {scheduling.lesson.teacher.name}
                                 </div>
                               </div>
                             ) : (
                               <div className="flex items-center justify-center py-2">
-                                <Plus className="h-4 w-4 text-slate-400" />
+                                <Plus className="h-4 w-4 text-slate-400 dark:text-slate-500" />
                               </div>
                             )}
                           </div>
@@ -668,11 +674,15 @@ export const Scheduling = () => {
                 <div className="flex flex-wrap gap-4 md:gap-6">
                   <div className="flex items-center space-x-2">
                     <div className="w-4 h-4 bg-linear-to-r from-blue-50 to-blue-100 border-l-4 border-blue-500 rounded-sm"></div>
-                    <span className="text-sm text-slate-600 dark:text-slate-400">Ocupado</span>
+                    <span className="text-sm text-slate-600 dark:text-slate-400">
+                      Ocupado
+                    </span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-4 h-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-sm"></div>
-                    <span className="text-sm text-slate-600 dark:text-slate-400">Disponível</span>
+                    <span className="text-sm text-slate-600 dark:text-slate-400">
+                      Disponível
+                    </span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Plus className="w-4 h-4 text-slate-400 dark:text-slate-500" />
