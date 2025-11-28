@@ -188,565 +188,617 @@ export const Scheduling = () => {
     filters.className || filters.teacherName || filters.classroomName;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex">
-      <Menu />
-      <div
-        className="hidden lg:block lg:w-64 xl:w-72 shrink-0"
-        aria-hidden="true"
-      />
-      <div className="flex-1 flex flex-col min-w-0">
-        <div className="flex-1 p-4 md:p-6 lg:p-8 mt-16 lg:mt-0">
-          <div className="space-y-4 md:space-y-6">
-            <div className="flex flex-row justify-between items-center gap-4 pt-5 md:pt-0">
-              <div className="flex-1 min-w-0">
-                <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white uppercase">
-                  Agendamentos
-                </h1>
-                <p className="hidden sm:block text-slate-600 dark:text-slate-300 text-sm md:text-base">
-                  Gerencie a ocupação das salas por horário
-                </p>
-              </div>
+    <>
+      <style>{`
+        /* Estilo da scrollbar para tema claro */
+        .custom-scrollbar {
+          padding-bottom: 8px;
+        }
 
-              <div className="flex gap-2 flex-shrink-0">
-                <button
-                  onClick={() =>
-                    setViewMode(viewMode === "grid" ? "cards" : "grid")
-                  }
-                  className="bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:opacity-90 rounded-lg flex items-center justify-center gap-2 transition-all
-                    text-sm md:text-base
-                    w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2"
-                  title={viewMode === "grid" ? "Ver em Cards" : "Ver em Grade"}
-                >
-                  {viewMode === "grid" ? (
-                    <LayoutGrid className="w-4 h-4 md:w-5 md:h-5" />
-                  ) : (
-                    <TableProperties className="w-4 h-4 md:w-5 md:h-5" />
-                  )}
-                  <span className="hidden sm:inline">
-                    {viewMode === "grid" ? "Cards" : "Grade"}
-                  </span>
-                </button>
-                <button
-                  onClick={() => setShowFilters(!showFilters)}
-                  className={`${
-                    showFilters || hasActiveFilters
-                      ? "bg-blue-600 dark:bg-blue-500 text-white"
-                      : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700"
-                  } hover:opacity-90 rounded-lg flex items-center justify-center gap-2 transition-all
-                    text-sm md:text-base relative
-                    w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2`}
-                  title="Filtros"
-                >
-                  <Filter className="w-4 h-4 md:w-5 md:h-5" />
-                  <span className="hidden sm:inline">Filtros</span>
-                  {hasActiveFilters && (
-                    <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
-                  )}
-                </button>
-                <button
-                  onClick={() => setShowRescheduleModal(true)}
-                  className="bg-slate-500 dark:bg-slate-600 hover:bg-slate-600 dark:hover:bg-slate-700 text-white rounded-lg flex items-center justify-center gap-2
-                    transition-colors text-sm md:text-base
-                    w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2"
-                  title="Reagendar Grade"
-                >
-                  <Copy className="w-4 h-4 md:w-5 md:h-5" />
-                  <span className="hidden sm:inline">Reagendar Grade</span>
-                </button>
-              </div>
-            </div>
+        .custom-scrollbar::-webkit-scrollbar {
+          height: 10px;
+        }
 
-            <div
-              className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                showFilters
-                  ? "opacity-100 mb-4"
-                  : "max-h-0 opacity-0 pointer-events-none mb-0"
-              }`}
-            >
-              <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-4 shadow-sm dark:shadow-slate-950/50">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      placeholder="Filtrar por turma..."
-                      value={filters.className}
-                      onChange={(e) =>
-                        handleFilterChange("className", e.target.value)
-                      }
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
-                    />
-                    {filters.className && (
-                      <button
-                        onClick={() => handleFilterChange("className", "")}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+          margin: 0 16px;
+        }
 
-                  <div className="relative">
-                    <input
-                      type="text"
-                      placeholder="Filtrar por professor..."
-                      value={filters.teacherName}
-                      onChange={(e) =>
-                        handleFilterChange("teacherName", e.target.value)
-                      }
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
-                    />
-                    {filters.teacherName && (
-                      <button
-                        onClick={() => handleFilterChange("teacherName", "")}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #cbd5e1;
+          border-radius: 10px;
+          border: 2px solid #f8fafc;
+        }
 
-                  <div className="relative">
-                    <input
-                      type="text"
-                      placeholder="Filtrar por sala..."
-                      value={filters.classroomName}
-                      onChange={(e) =>
-                        handleFilterChange("classroomName", e.target.value)
-                      }
-                      className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
-                    />
-                    {filters.classroomName && (
-                      <button
-                        onClick={() => handleFilterChange("classroomName", "")}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #94a3b8;
+        }
 
-                  <button
-                    onClick={handleClearFilters}
-                    disabled={!hasActiveFilters}
-                    className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
-                  >
-                    <X className="w-4 h-4" />
-                    Limpar Filtros
-                  </button>
-                </div>
-              </div>
-            </div>
+        /* Estilo da scrollbar para tema escuro */
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #475569;
+          border-radius: 10px;
+          border: 2px solid #0f172a;
+        }
 
-            <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 overflow-hidden">
-              <div className="bg-linear-to-r from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-800 px-4 md:px-6 py-3 border-b border-slate-200 dark:border-slate-700">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-                      Selecione a Data
-                    </span>
-                  </div>
-                  {isToday(selectedDate) && (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-600 text-white">
-                      Hoje
-                    </span>
-                  )}
-                </div>
-              </div>
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #64748b;
+        }
 
-              <div className="p-4 md:p-6">
-                <div className="flex flex-col md:flex-row items-center gap-4">
-                  <div className="flex items-center gap-2 order-2 md:order-1">
-                    <button
-                      onClick={() => navigateDate(-1)}
-                      className="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-200 group"
-                      title="Dia anterior"
-                    >
-                      <ChevronLeft className="h-5 w-5 text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white" />
-                    </button>
+        /* Firefox */
+        .custom-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: #cbd5e1 transparent;
+        }
 
-                    <button
-                      onClick={() => navigateDate(1)}
-                      className="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-200 group"
-                      title="Próximo dia"
-                    >
-                      <ChevronRight className="h-5 w-5 text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white" />
-                    </button>
-                  </div>
+        .dark .custom-scrollbar {
+          scrollbar-color: #475569 transparent;
+        }
+      `}</style>
 
-                  <div className="flex-1 text-center order-1 md:order-2">
-                    <div className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white capitalize mb-1">
-                      {selectedDate.toLocaleDateString("pt-BR", {
-                        weekday: "long",
-                      })}
-                    </div>
-                    <div className="text-base md:text-lg text-slate-600 dark:text-slate-300 font-medium">
-                      {selectedDate.toLocaleDateString("pt-BR", {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </div>
-                  </div>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex">
+        <Menu />
 
-                  <div className="flex items-center gap-2 order-3">
-                    <div className="relative">
-                      <input
-                        type="date"
-                        value={formatDateInput(selectedDate)}
-                        onChange={(e) => {
-                          const newDate = new Date(
-                            e.target.value + "T12:00:00"
-                          );
-                          setSelectedDate(newDate);
-                        }}
-                        className="pl-10 pr-3 py-2.5 border border-slate-300 dark:border-slate-700 rounded-lg text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent hover:border-slate-400 dark:hover:border-slate-600 transition-colors cursor-pointer"
-                      />
-                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-500 pointer-events-none" />
-                    </div>
-                    <button
-                      onClick={() => setSelectedDate(new Date())}
-                      className="px-4 py-2.5 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-lg transition-colors flex items-center gap-2 text-sm font-semibold shadow-sm hover:shadow-md"
-                    >
-                      <Clock className="h-4 w-4" />
-                      Hoje
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {classroomsLoading ? (
-              <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 p-8 text-center">
-                <div className="flex flex-col items-center justify-center space-y-4">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400"></div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
-                      Carregando salas...
-                    </h3>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">
-                      Buscando informações das salas de aula
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ) : classrooms.length === 0 ? (
-              <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 p-12 text-center">
-                <div className="flex flex-col items-center justify-center space-y-4">
-                  <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center">
-                    <BookOpen className="h-8 w-8 text-slate-400 dark:text-slate-500" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
-                      Nenhuma sala cadastrada
-                    </h3>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">
-                      Cadastre salas para começar a fazer agendamentos
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ) : viewMode === "grid" ? (
-              <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 overflow-hidden">
-                {/* Hint de scroll */}
-                <div className="bg-blue-50 dark:bg-blue-950/30 border-b border-blue-200 dark:border-blue-800 px-4 py-2">
-                  <p className="text-xs text-blue-700 dark:text-blue-400 text-center flex items-center justify-center gap-2">
-                    <ChevronLeft className="w-3 h-3" />
-                    <span className="hidden sm:inline">
-                      Use o scroll horizontal para ver todos os horários
-                    </span>
-                    <span className="sm:hidden">
-                      Deslize para ver todos os horários
-                    </span>
-                    <ChevronRight className="w-3 h-3" />
+        <div
+          className="hidden lg:block lg:w-64 xl:w-72 shrink-0"
+          aria-hidden="true"
+        />
+        <div className="flex-1 flex flex-col min-w-0">
+          <div className="flex-1 p-4 md:p-6 lg:p-8 mt-16 lg:mt-0">
+            <div className="space-y-4 md:space-y-6">
+              <div className="flex flex-row justify-between items-center gap-4 pt-5 md:pt-0">
+                <div className="flex-1 min-w-0">
+                  <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white uppercase">
+                    Agendamentos
+                  </h1>
+                  <p className="hidden sm:block text-slate-600 dark:text-slate-300 text-sm md:text-base">
+                    Gerencie a ocupação das salas por horário
                   </p>
                 </div>
 
-                <div className="overflow-x-auto">
-                  <div className="min-w-max">
-                    <div className="bg-linear-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-800 border-b border-slate-200 dark:border-slate-700">
-                      <div
-                        className="grid gap-px"
-                        style={{
-                          gridTemplateColumns: `200px repeat(${timeSlots.length}, minmax(120px, 1fr))`,
-                        }}
+                <div className="flex gap-2 flex-shrink-0">
+                  <button
+                    onClick={() =>
+                      setViewMode(viewMode === "grid" ? "cards" : "grid")
+                    }
+                    className="bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:opacity-90 rounded-lg flex items-center justify-center gap-2 transition-all
+                    text-sm md:text-base
+                    w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2"
+                    title={
+                      viewMode === "grid" ? "Ver em Cards" : "Ver em Grade"
+                    }
+                  >
+                    {viewMode === "grid" ? (
+                      <LayoutGrid className="w-4 h-4 md:w-5 md:h-5" />
+                    ) : (
+                      <TableProperties className="w-4 h-4 md:w-5 md:h-5" />
+                    )}
+                    <span className="hidden sm:inline">
+                      {viewMode === "grid" ? "Cards" : "Grade"}
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => setShowFilters(!showFilters)}
+                    className={`${
+                      showFilters || hasActiveFilters
+                        ? "bg-blue-600 dark:bg-blue-500 text-white"
+                        : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700"
+                    } hover:opacity-90 rounded-lg flex items-center justify-center gap-2 transition-all
+                    text-sm md:text-base relative
+                    w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2`}
+                    title="Filtros"
+                  >
+                    <Filter className="w-4 h-4 md:w-5 md:h-5" />
+                    <span className="hidden sm:inline">Filtros</span>
+                    {hasActiveFilters && (
+                      <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
+                    )}
+                  </button>
+                  <button
+                    onClick={() => setShowRescheduleModal(true)}
+                    className="bg-slate-500 dark:bg-slate-600 hover:bg-slate-600 dark:hover:bg-slate-700 text-white rounded-lg flex items-center justify-center gap-2
+                    transition-colors text-sm md:text-base
+                    w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2"
+                    title="Reagendar Grade"
+                  >
+                    <Copy className="w-4 h-4 md:w-5 md:h-5" />
+                    <span className="hidden sm:inline">Reagendar Grade</span>
+                  </button>
+                </div>
+              </div>
+
+              <div
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                  showFilters
+                    ? "opacity-100 mb-4"
+                    : "max-h-0 opacity-0 pointer-events-none mb-0"
+                }`}
+              >
+                <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-4 shadow-sm dark:shadow-slate-950/50">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <div className="relative">
+                      <input
+                        type="text"
+                        placeholder="Filtrar por turma..."
+                        value={filters.className}
+                        onChange={(e) =>
+                          handleFilterChange("className", e.target.value)
+                        }
+                        className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
+                      />
+                      {filters.className && (
+                        <button
+                          onClick={() => handleFilterChange("className", "")}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="relative">
+                      <input
+                        type="text"
+                        placeholder="Filtrar por professor..."
+                        value={filters.teacherName}
+                        onChange={(e) =>
+                          handleFilterChange("teacherName", e.target.value)
+                        }
+                        className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
+                      />
+                      {filters.teacherName && (
+                        <button
+                          onClick={() => handleFilterChange("teacherName", "")}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="relative">
+                      <input
+                        type="text"
+                        placeholder="Filtrar por sala..."
+                        value={filters.classroomName}
+                        onChange={(e) =>
+                          handleFilterChange("classroomName", e.target.value)
+                        }
+                        className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
+                      />
+                      {filters.classroomName && (
+                        <button
+                          onClick={() =>
+                            handleFilterChange("classroomName", "")
+                          }
+                          className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+
+                    <button
+                      onClick={handleClearFilters}
+                      disabled={!hasActiveFilters}
+                      className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
+                    >
+                      <X className="w-4 h-4" />
+                      Limpar Filtros
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div className="bg-linear-to-r from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-800 px-4 md:px-6 py-3 border-b border-slate-200 dark:border-slate-700">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+                        Selecione a Data
+                      </span>
+                    </div>
+                    {isToday(selectedDate) && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-600 text-white">
+                        Hoje
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="p-4 md:p-6">
+                  <div className="flex flex-col md:flex-row items-center gap-4">
+                    <div className="flex items-center gap-2 order-2 md:order-1">
+                      <button
+                        onClick={() => navigateDate(-1)}
+                        className="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-200 group"
+                        title="Dia anterior"
                       >
-                        <div className="p-3 md:p-4 bg-white dark:bg-slate-900 sticky left-0 z-10">
-                          <div className="flex items-center space-x-2">
-                            <BookOpen className="h-4 w-4 text-slate-500 dark:text-slate-400" />
-                            <span className="font-semibold text-slate-900 dark:text-white text-sm md:text-base">
-                              Salas
-                            </span>
-                          </div>
-                        </div>
-                        {timeSlots.map((timeSlot) => (
-                          <div
-                            key={timeSlot}
-                            className="p-3 md:p-4 bg-white dark:bg-slate-900 text-center"
-                          >
-                            <div className="flex items-center justify-center space-x-1">
-                              <Clock className="h-3 w-3 text-slate-500 dark:text-slate-400" />
-                              <span className="text-sm font-semibold text-slate-900 dark:text-white">
-                                {timeSlot}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
+                        <ChevronLeft className="h-5 w-5 text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white" />
+                      </button>
+
+                      <button
+                        onClick={() => navigateDate(1)}
+                        className="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-200 group"
+                        title="Próximo dia"
+                      >
+                        <ChevronRight className="h-5 w-5 text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white" />
+                      </button>
+                    </div>
+
+                    <div className="flex-1 text-center order-1 md:order-2">
+                      <div className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white capitalize mb-1">
+                        {selectedDate.toLocaleDateString("pt-BR", {
+                          weekday: "long",
+                        })}
+                      </div>
+                      <div className="text-base md:text-lg text-slate-600 dark:text-slate-300 font-medium">
+                        {selectedDate.toLocaleDateString("pt-BR", {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                        })}
                       </div>
                     </div>
 
-                    <div className="divide-y divide-slate-200 dark:divide-slate-700 relative">
-                      {lessonsLoading && (
-                        <div className="absolute inset-0 bg-white dark:bg-slate-900 bg-opacity-70 dark:bg-opacity-70 flex items-center justify-center z-10">
-                          <div className="flex flex-col items-center space-y-3">
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400"></div>
-                            <span className="text-sm text-slate-600 dark:text-slate-300">
-                              Atualizando agendamentos...
-                            </span>
-                          </div>
-                        </div>
-                      )}
+                    <div className="flex items-center gap-2 order-3">
+                      <div className="relative">
+                        <input
+                          type="date"
+                          value={formatDateInput(selectedDate)}
+                          onChange={(e) => {
+                            const newDate = new Date(
+                              e.target.value + "T12:00:00"
+                            );
+                            setSelectedDate(newDate);
+                          }}
+                          className="pl-10 pr-3 py-2.5 border border-slate-300 dark:border-slate-700 rounded-lg text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent hover:border-slate-400 dark:hover:border-slate-600 transition-colors cursor-pointer"
+                        />
+                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-500 pointer-events-none" />
+                      </div>
+                      <button
+                        onClick={() => setSelectedDate(new Date())}
+                        className="px-4 py-2.5 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-lg transition-colors flex items-center gap-2 text-sm font-semibold shadow-sm hover:shadow-md"
+                      >
+                        <Clock className="h-4 w-4" />
+                        Hoje
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                      {classrooms.map((classroom) => (
+              {classroomsLoading ? (
+                <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 p-8 text-center">
+                  <div className="flex flex-col items-center justify-center space-y-4">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400"></div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+                        Carregando salas...
+                      </h3>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        Buscando informações das salas de aula
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ) : classrooms.length === 0 ? (
+                <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 p-12 text-center">
+                  <div className="flex flex-col items-center justify-center space-y-4">
+                    <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center">
+                      <BookOpen className="h-8 w-8 text-slate-400 dark:text-slate-500" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+                        Nenhuma sala cadastrada
+                      </h3>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        Cadastre salas para começar a fazer agendamentos
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ) : viewMode === "grid" ? (
+                <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 overflow-hidden">
+                  {/* Hint de scroll */}
+                  <div className="bg-blue-50 dark:bg-blue-950/30 border-b border-blue-200 dark:border-blue-800 px-4 py-2">
+                    <p className="text-xs text-blue-700 dark:text-blue-400 text-center flex items-center justify-center gap-2">
+                      <ChevronLeft className="w-3 h-3" />
+                      <span className="hidden sm:inline">
+                        Use o scroll horizontal para ver todos os horários
+                      </span>
+                      <span className="sm:hidden">
+                        Deslize para ver todos os horários
+                      </span>
+                      <ChevronRight className="w-3 h-3" />
+                    </p>
+                  </div>
+
+                  <div className="overflow-x-auto custom-scrollbar">
+                    <div className="min-w-max">
+                      <div className="bg-linear-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-800 border-b border-slate-200 dark:border-slate-700">
                         <div
-                          key={classroom.id}
-                          className="grid gap-px bg-slate-200 dark:bg-slate-700"
+                          className="grid gap-px"
                           style={{
                             gridTemplateColumns: `200px repeat(${timeSlots.length}, minmax(120px, 1fr))`,
                           }}
                         >
-                          <div className="p-3 md:p-4 bg-white dark:bg-slate-900 flex flex-col justify-center border-r border-slate-100 dark:border-slate-700 sticky left-0 z-10">
-                            <div className="text-sm font-semibold text-slate-900 dark:text-white">
-                              {classroom.name}
+                          <div className="p-3 md:p-4 bg-white dark:bg-slate-900 sticky left-0 z-10">
+                            <div className="flex items-center space-x-2">
+                              <BookOpen className="h-4 w-4 text-slate-500 dark:text-slate-400" />
+                              <span className="font-semibold text-slate-900 dark:text-white text-sm md:text-base">
+                                Salas
+                              </span>
                             </div>
+                          </div>
+                          {timeSlots.map((timeSlot) => (
+                            <div
+                              key={timeSlot}
+                              className="p-3 md:p-4 bg-white dark:bg-slate-900 text-center"
+                            >
+                              <div className="flex items-center justify-center space-x-1">
+                                <Clock className="h-3 w-3 text-slate-500 dark:text-slate-400" />
+                                <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                                  {timeSlot}
+                                </span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="divide-y divide-slate-200 dark:divide-slate-700 relative">
+                        {lessonsLoading && (
+                          <div className="absolute inset-0 bg-white dark:bg-slate-900 bg-opacity-70 dark:bg-opacity-70 flex items-center justify-center z-10">
+                            <div className="flex flex-col items-center space-y-3">
+                              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400"></div>
+                              <span className="text-sm text-slate-600 dark:text-slate-300">
+                                Atualizando agendamentos...
+                              </span>
+                            </div>
+                          </div>
+                        )}
+
+                        {classrooms.map((classroom) => (
+                          <div
+                            key={classroom.id}
+                            className="grid gap-px bg-slate-200 dark:bg-slate-700"
+                            style={{
+                              gridTemplateColumns: `200px repeat(${timeSlots.length}, minmax(120px, 1fr))`,
+                            }}
+                          >
+                            <div className="p-3 md:p-4 bg-white dark:bg-slate-900 flex flex-col justify-center border-r border-slate-100 dark:border-slate-700 sticky left-0 z-10">
+                              <div className="text-sm font-semibold text-slate-900 dark:text-white">
+                                {classroom.name}
+                              </div>
+                              <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center space-x-1">
+                                <Users className="h-3 w-3" />
+                                <span>{classroom.capacity} lugares</span>
+                              </div>
+                            </div>
+
+                            {timeSlots.map((timeSlot) => {
+                              const schedulingKey = getSchedulingKey(
+                                classroom.id,
+                                timeSlot
+                              );
+                              const scheduling = schedulings[schedulingKey];
+
+                              return (
+                                <div
+                                  key={timeSlot}
+                                  className={`p-2 md:p-3 cursor-pointer transition-all duration-200 min-h-16 md:min-h-20 flex items-center hover:shadow-sm ${
+                                    scheduling
+                                      ? "bg-linear-to-r from-blue-50 to-blue-100 dark:from-blue-950/30 dark:to-blue-900/30 hover:from-blue-100 hover:to-blue-200 dark:hover:from-blue-900/40 dark:hover:to-blue-800/40 border-l-4 border-blue-500 dark:border-blue-400"
+                                      : "bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-transparent hover:border-slate-300 dark:hover:border-slate-700 rounded-sm"
+                                  }`}
+                                  onClick={() =>
+                                    handleSlotClick(
+                                      classroom.id,
+                                      classroom.name,
+                                      timeSlot
+                                    )
+                                  }
+                                >
+                                  {scheduling ? (
+                                    <div className="w-full">
+                                      <div className="flex items-center space-x-1 mb-1">
+                                        <BookOpen className="h-3 w-3 text-blue-600 dark:text-blue-400 shrink-0" />
+                                        <span className="text-xs font-semibold text-blue-900 dark:text-blue-300 truncate">
+                                          {scheduling.lesson.class.name}
+                                        </span>
+                                      </div>
+                                      <div className="text-xs text-slate-600 dark:text-slate-300 truncate">
+                                        {scheduling.lesson.teacher.name}
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div className="w-full h-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                                      <Plus className="h-4 w-4 text-slate-400 dark:text-slate-500" />
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                // Visualização em Cards para mobile
+                <div className="space-y-4">
+                  {lessonsLoading && (
+                    <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center">
+                      <div className="flex flex-col items-center space-y-3">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400"></div>
+                        <span className="text-sm text-slate-600 dark:text-slate-300">
+                          Atualizando agendamentos...
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {classrooms.map((classroom) => (
+                    <div
+                      key={classroom.id}
+                      className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden"
+                    >
+                      {/* Header da Sala */}
+                      <div className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-800 border-b border-slate-200 dark:border-slate-700 p-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h3 className="font-semibold text-slate-900 dark:text-white">
+                              {classroom.name}
+                            </h3>
                             <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center space-x-1">
                               <Users className="h-3 w-3" />
                               <span>{classroom.capacity} lugares</span>
                             </div>
                           </div>
-
-                          {timeSlots.map((timeSlot) => {
-                            const schedulingKey = getSchedulingKey(
-                              classroom.id,
-                              timeSlot
-                            );
-                            const scheduling = schedulings[schedulingKey];
-
-                            return (
-                              <div
-                                key={timeSlot}
-                                className={`p-2 md:p-3 cursor-pointer transition-all duration-200 min-h-16 md:min-h-20 flex items-center hover:shadow-sm ${
-                                  scheduling
-                                    ? "bg-linear-to-r from-blue-50 to-blue-100 dark:from-blue-950/30 dark:to-blue-900/30 hover:from-blue-100 hover:to-blue-200 dark:hover:from-blue-900/40 dark:hover:to-blue-800/40 border-l-4 border-blue-500 dark:border-blue-400"
-                                    : "bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-transparent hover:border-slate-300 dark:hover:border-slate-700 rounded-sm"
-                                }`}
-                                onClick={() =>
-                                  handleSlotClick(
-                                    classroom.id,
-                                    classroom.name,
-                                    timeSlot
-                                  )
-                                }
-                              >
-                                {scheduling ? (
-                                  <div className="w-full">
-                                    <div className="flex items-center space-x-1 mb-1">
-                                      <BookOpen className="h-3 w-3 text-blue-600 dark:text-blue-400 shrink-0" />
-                                      <span className="text-xs font-semibold text-blue-900 dark:text-blue-300 truncate">
-                                        {scheduling.lesson.class.name}
-                                      </span>
-                                    </div>
-                                    <div className="text-xs text-slate-600 dark:text-slate-300 truncate">
-                                      {scheduling.lesson.teacher.name}
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <div className="w-full h-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                                    <Plus className="h-4 w-4 text-slate-400 dark:text-slate-500" />
-                                  </div>
-                                )}
-                              </div>
-                            );
-                          })}
+                          <BookOpen className="h-5 w-5 text-slate-400 dark:text-slate-500" />
                         </div>
-                      ))}
+                      </div>
+
+                      {/* Grid de horários */}
+                      <div className="p-3 grid grid-cols-2 gap-2">
+                        {timeSlots.map((timeSlot) => {
+                          const schedulingKey = getSchedulingKey(
+                            classroom.id,
+                            timeSlot
+                          );
+                          const scheduling = schedulings[schedulingKey];
+
+                          return (
+                            <div
+                              key={timeSlot}
+                              className={`p-3 rounded-lg cursor-pointer transition-all duration-200 border-2 ${
+                                scheduling
+                                  ? "bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/30 dark:to-blue-900/30 border-blue-300 dark:border-blue-700 hover:border-blue-400 dark:hover:border-blue-600"
+                                  : "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700"
+                              }`}
+                              onClick={() =>
+                                handleSlotClick(
+                                  classroom.id,
+                                  classroom.name,
+                                  timeSlot
+                                )
+                              }
+                            >
+                              <div className="flex items-center gap-1 mb-2">
+                                <Clock className="h-3 w-3 text-slate-500 dark:text-slate-400" />
+                                <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">
+                                  {timeSlot}
+                                </span>
+                              </div>
+                              {scheduling ? (
+                                <div>
+                                  <div className="flex items-center gap-1 mb-1">
+                                    <BookOpen className="h-3 w-3 text-blue-600 dark:text-blue-400 shrink-0" />
+                                    <span className="text-xs font-semibold text-blue-900 dark:text-blue-300 truncate">
+                                      {scheduling.lesson.class.name}
+                                    </span>
+                                  </div>
+                                  <div className="text-xs text-slate-600 dark:text-slate-300 truncate">
+                                    {scheduling.lesson.teacher.name}
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="flex items-center justify-center py-2">
+                                  <Plus className="h-4 w-4 text-slate-400 dark:text-slate-500" />
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              </div>
-            ) : (
-              // Visualização em Cards para mobile
-              <div className="space-y-4">
-                {lessonsLoading && (
-                  <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center">
-                    <div className="flex flex-col items-center space-y-3">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400"></div>
-                      <span className="text-sm text-slate-600 dark:text-slate-300">
-                        Atualizando agendamentos...
+              )}
+
+              {!classroomsLoading && classrooms.length > 0 && (
+                <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 p-4 md:p-6">
+                  <h3 className="font-semibold text-slate-900 dark:text-white mb-3 text-sm md:text-base">
+                    Legenda
+                  </h3>
+                  <div className="flex flex-wrap gap-4 md:gap-6">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-4 h-4 bg-linear-to-r from-blue-50 to-blue-100 border-l-4 border-blue-500 rounded-sm"></div>
+                      <span className="text-sm text-slate-600 dark:text-slate-400">
+                        Ocupado
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <div className="w-4 h-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-sm"></div>
+                      <span className="text-sm text-slate-600 dark:text-slate-400">
+                        Disponível
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Plus className="w-4 h-4 text-slate-400 dark:text-slate-500" />
+                      <span className="text-sm text-slate-600 dark:text-slate-400">
+                        Clique para agendar
                       </span>
                     </div>
                   </div>
-                )}
-
-                {classrooms.map((classroom) => (
-                  <div
-                    key={classroom.id}
-                    className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden"
-                  >
-                    {/* Header da Sala */}
-                    <div className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-800 border-b border-slate-200 dark:border-slate-700 p-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="font-semibold text-slate-900 dark:text-white">
-                            {classroom.name}
-                          </h3>
-                          <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center space-x-1">
-                            <Users className="h-3 w-3" />
-                            <span>{classroom.capacity} lugares</span>
-                          </div>
-                        </div>
-                        <BookOpen className="h-5 w-5 text-slate-400 dark:text-slate-500" />
-                      </div>
-                    </div>
-
-                    {/* Grid de horários */}
-                    <div className="p-3 grid grid-cols-2 gap-2">
-                      {timeSlots.map((timeSlot) => {
-                        const schedulingKey = getSchedulingKey(
-                          classroom.id,
-                          timeSlot
-                        );
-                        const scheduling = schedulings[schedulingKey];
-
-                        return (
-                          <div
-                            key={timeSlot}
-                            className={`p-3 rounded-lg cursor-pointer transition-all duration-200 border-2 ${
-                              scheduling
-                                ? "bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/30 dark:to-blue-900/30 border-blue-300 dark:border-blue-700 hover:border-blue-400 dark:hover:border-blue-600"
-                                : "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700"
-                            }`}
-                            onClick={() =>
-                              handleSlotClick(
-                                classroom.id,
-                                classroom.name,
-                                timeSlot
-                              )
-                            }
-                          >
-                            <div className="flex items-center gap-1 mb-2">
-                              <Clock className="h-3 w-3 text-slate-500 dark:text-slate-400" />
-                              <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">
-                                {timeSlot}
-                              </span>
-                            </div>
-                            {scheduling ? (
-                              <div>
-                                <div className="flex items-center gap-1 mb-1">
-                                  <BookOpen className="h-3 w-3 text-blue-600 dark:text-blue-400 shrink-0" />
-                                  <span className="text-xs font-semibold text-blue-900 dark:text-blue-300 truncate">
-                                    {scheduling.lesson.class.name}
-                                  </span>
-                                </div>
-                                <div className="text-xs text-slate-600 dark:text-slate-300 truncate">
-                                  {scheduling.lesson.teacher.name}
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="flex items-center justify-center py-2">
-                                <Plus className="h-4 w-4 text-slate-400 dark:text-slate-500" />
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {!classroomsLoading && classrooms.length > 0 && (
-              <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 p-4 md:p-6">
-                <h3 className="font-semibold text-slate-900 dark:text-white mb-3 text-sm md:text-base">
-                  Legenda
-                </h3>
-                <div className="flex flex-wrap gap-4 md:gap-6">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-linear-to-r from-blue-50 to-blue-100 border-l-4 border-blue-500 rounded-sm"></div>
-                    <span className="text-sm text-slate-600 dark:text-slate-400">
-                      Ocupado
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-sm"></div>
-                    <span className="text-sm text-slate-600 dark:text-slate-400">
-                      Disponível
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Plus className="w-4 h-4 text-slate-400 dark:text-slate-500" />
-                    <span className="text-sm text-slate-600 dark:text-slate-400">
-                      Clique para agendar
-                    </span>
-                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
+
+        {selectedSlot && (
+          <>
+            {showCreateSchedulingModal && (
+              <CreateSchedulingModal
+                onClose={() => {
+                  setShowCreateSchedulingModal(false);
+                  setSelectedSlot(null);
+                }}
+                refetchScheduling={refetchLessons}
+                classroomId={selectedSlot.classroomId}
+                classroomName={selectedSlot.classroomName}
+                timeSlot={selectedSlot.timeSlot}
+                date={selectedDate}
+              />
+            )}
+
+            {showDetailsModal && selectedScheduling && (
+              <DetailsSchedulingModal
+                onClose={() => {
+                  setShowDetailsModal(false);
+                  setSelectedSlot(null);
+                  setSelectedScheduling(null);
+                }}
+                scheduling={{
+                  id: selectedScheduling.id,
+                  subject: selectedScheduling.class.name,
+                  teacher: selectedScheduling.teacher.name,
+                  class: selectedScheduling.class.name,
+                  datetime: selectedScheduling.datetime,
+                }}
+                classData={selectedScheduling.class}
+                // teacherData={selectedScheduling.teacher}
+                // classroomData={selectedScheduling.classroom}
+                roomName={selectedSlot.classroomName}
+                timeSlot={selectedSlot.timeSlot}
+                date={formatDateDisplay(selectedDate)}
+                refetchScheduling={refetchLessons}
+              />
+            )}
+          </>
+        )}
+
+        {showRescheduleModal && (
+          <RescheduleGridModal
+            onClose={() => setShowRescheduleModal(false)}
+            refetchScheduling={refetchLessons}
+          />
+        )}
       </div>
-
-      {/* Modais */}
-      {selectedSlot && (
-        <>
-          {showCreateSchedulingModal && (
-            <CreateSchedulingModal
-              onClose={() => {
-                setShowCreateSchedulingModal(false);
-                setSelectedSlot(null);
-              }}
-              refetchScheduling={refetchLessons}
-              classroomId={selectedSlot.classroomId}
-              classroomName={selectedSlot.classroomName}
-              timeSlot={selectedSlot.timeSlot}
-              date={selectedDate}
-            />
-          )}
-
-          {showDetailsModal && selectedScheduling && (
-            <DetailsSchedulingModal
-              onClose={() => {
-                setShowDetailsModal(false);
-                setSelectedSlot(null);
-                setSelectedScheduling(null);
-              }}
-              scheduling={{
-                id: selectedScheduling.id,
-                subject: selectedScheduling.class.name,
-                teacher: selectedScheduling.teacher.name,
-                class: selectedScheduling.class.name,
-                datetime: selectedScheduling.datetime,
-              }}
-              classData={selectedScheduling.class}
-              // teacherData={selectedScheduling.teacher}
-              // classroomData={selectedScheduling.classroom}
-              roomName={selectedSlot.classroomName}
-              timeSlot={selectedSlot.timeSlot}
-              date={formatDateDisplay(selectedDate)}
-              refetchScheduling={refetchLessons}
-            />
-          )}
-        </>
-      )}
-
-      {/* Modal de Reagendamento */}
-      {showRescheduleModal && (
-        <RescheduleGridModal
-          onClose={() => setShowRescheduleModal(false)}
-          refetchScheduling={refetchLessons}
-        />
-      )}
-    </div>
+    </>
   );
 };
