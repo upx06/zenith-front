@@ -1,0 +1,28 @@
+{
+  "title": "Professores",
+  "subtitle": "Gerencie os professores da instituição",
+  "new": "Novo Professor",
+  "add": "Adicionar Professor",
+  "delete": {
+    "title": "Deleção de Professor",
+    "message": "Tem certeza que deseja excluir o professor(a) {{name}}?",
+    "processing": "Excluindo professor(a)...",
+    "success": "Professor(a) excluído com sucesso!",
+    "confirming": "Excluindo..."
+  },
+  "filters": {
+    "byName": "Filtrar por nome...",
+    "byEmail": "Filtrar por email...",
+    "byPhone": "Filtrar por telefone..."
+  },
+  "empty": {
+    "withFilters": {
+      "title": "Nenhum professor(a) encontrado",
+      "message": "Tente ajustar os filtros para encontrar o que procura"
+    },
+    "noData": {
+      "title": "Nenhum professor(a) encontrada",
+      "message": "Cadastre um professor(a) para começar"
+    }
+  }
+}

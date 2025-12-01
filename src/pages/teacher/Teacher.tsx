@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client/react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import {
   Loader2,
   Mail,
@@ -31,6 +32,7 @@ import { TeacherDetailsModal } from "../../components/modals/TeacherDetailsModal
 import { getPresignedUrlFromAwsS3 } from "../../utils/aws";
 
 export const Teacher = () => {
+  const { t } = useTranslation();
   const [createTeacherModal, setCreateTeacherModal] = useState(false);
   const [updateTeacherModal, setUpdateTeacherModal] = useState(false);
   const [detailTeacherModal, setDetailTeacherModal] = useState(false);
@@ -100,7 +102,7 @@ export const Teacher = () => {
 
       setConfirmationModal(false);
       setSelectedTeacher(null);
-      toast.success("Professor excluído com sucesso!");
+      toast.success("teacher.delete.success");
     } catch (err) {
       console.error("Erro ao excluir professor:", err);
       toast.error(errorDeleteTeacher?.message || "Erro ao excluir professor");
@@ -204,14 +206,14 @@ export const Teacher = () => {
           <div className="text-center max-w-md">
             <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
             <h2 className="text-xl font-bold text-red-600 mb-2">
-              Erro ao carregar dados
+              {t("errors.general.title")}
             </h2>
             <p className="text-slate-600 mb-6">{error.message}</p>
             <button
               onClick={() => refetch()}
               className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg transition-colors"
             >
-              Tentar novamente
+              {t("common.actions.tryAgain")}
             </button>
           </div>
         </div>
@@ -233,7 +235,7 @@ export const Teacher = () => {
             <div className="bg-white dark:bg-slate-900 rounded-lg p-6 flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
               <p className="text-slate-600 font-medium">
-                Excluindo professor...
+                {t("teacher.delete.processing")}
               </p>
             </div>
           </div>
@@ -245,7 +247,9 @@ export const Teacher = () => {
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
               <div className="flex items-center gap-2 text-red-800 mb-2">
                 <AlertCircle className="w-4 h-4" />
-                <span className="font-medium">Erro ao excluir professor:</span>
+                <span className="font-medium">
+                  {t("errors.teacher.deleteError")}:
+                </span>
               </div>
               <p className="text-red-700 text-sm mb-3">
                 {errorDeleteTeacher.message}
@@ -254,7 +258,7 @@ export const Teacher = () => {
                 onClick={() => window.location.reload()}
                 className="px-4 py-2 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition-colors"
               >
-                Recarregar página
+                {t("common.actions.reload")}
               </button>
             </div>
           )}
@@ -263,10 +267,10 @@ export const Teacher = () => {
             <div className="flex flex-row justify-between items-center gap-4 pt-5 md:pt-0">
               <div className="flex-1 min-w-0">
                 <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white uppercase">
-                  Professores
+                  {t("teacher.title")}
                 </h1>
                 <p className="hidden sm:block text-slate-600 dark:text-slate-300 text-sm md:text-base">
-                  Gerencie os professores da instituição
+                  {t("teacher.subtitle")}
                 </p>
               </div>
 
@@ -285,10 +289,12 @@ export const Teacher = () => {
                     text-sm md:text-base relative
                     w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2
                   `}
-                  title="Filtros"
+                  title={t("common.actions.filters")}
                 >
                   <Filter className="w-4 h-4 md:w-5 md:h-5" />
-                  <span className="hidden sm:inline">Filtros</span>
+                  <span className="hidden sm:inline">
+                    {t("common.actions.filters")}
+                  </span>
                   {hasActiveFilters && (
                     <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
                   )}
@@ -305,7 +311,7 @@ export const Teacher = () => {
                   "
                 >
                   <Plus className="w-4 h-4 md:w-5 md:h-5" />
-                  <span className="hidden sm:inline">Novo Professor</span>
+                  <span className="hidden sm:inline">{t("teacher.new")}</span>
                 </button>
               </div>
             </div>
@@ -323,7 +329,7 @@ export const Teacher = () => {
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder="Filtrar por nome..."
+                      placeholder={t("teacher.filters.byName")}
                       value={filters.name}
                       onChange={(e) =>
                         handleFilterChange("name", e.target.value)
@@ -344,7 +350,7 @@ export const Teacher = () => {
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder="Filtrar por email..."
+                      placeholder={t("teacher.filters.byEmail")}
                       value={filters.email}
                       onChange={(e) =>
                         handleFilterChange("email", e.target.value)
@@ -365,7 +371,7 @@ export const Teacher = () => {
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder="Filtrar por telefone..."
+                      placeholder={t("teacher.filters.byPhone")}
                       value={filters.phone}
                       onChange={(e) =>
                         handleFilterChange("phone", e.target.value)
@@ -389,7 +395,7 @@ export const Teacher = () => {
                     className="w-full px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
                   >
                     <X className="w-4 h-4" />
-                    Limpar Filtros
+                    {t("common.actions.clearFilters")}
                   </button>
                 </div>
               </div>
@@ -400,7 +406,7 @@ export const Teacher = () => {
                 <div className="flex flex-col items-center gap-4">
                   <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
                   <p className="text-slate-600 font-medium">
-                    Carregando dados...
+                    {t("common.status.loadingData")}
                   </p>
                 </div>
               </div>
@@ -467,7 +473,7 @@ export const Teacher = () => {
                           disabled={isProcessing}
                           className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
                         >
-                          Ver detalhes
+                          {t("common.actions.viewDetails")}
                         </button>
                         <button
                           onClick={() =>
@@ -475,7 +481,7 @@ export const Teacher = () => {
                           }
                           disabled={isProcessing}
                           className="flex items-center justify-center px-3 py-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                          title="Editar"
+                          title={t("common.actions.edit")}
                         >
                           <Pencil className="w-4 h-4" />
                         </button>
@@ -483,7 +489,7 @@ export const Teacher = () => {
                           onClick={() => handleOpenConfirmationModal(teacher)}
                           disabled={isProcessing}
                           className="flex items-center justify-center px-3 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                          title="Excluir"
+                          title={t("common.actions.delete")}
                         >
                           {deletingTeacherId === teacher.id ? (
                             <Loader2 className="w-4 h-4 animate-spin" />
@@ -510,11 +516,13 @@ export const Teacher = () => {
                   className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
                 >
                   <ChevronLeft className="w-4 h-4" />
-                  <span className="hidden sm:inline">Anterior</span>
+                  <span className="hidden sm:inline">
+                    {t("common.pagination.previous")}
+                  </span>
                 </button>
 
                 <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-semibold min-w-[60px] text-center">
-                  Pág. {currentPage}
+                  {t("common.pagination.page")} {currentPage}
                 </div>
 
                 <button
@@ -527,7 +535,9 @@ export const Teacher = () => {
                   disabled={currentPage >= getTotalPages() || isLoadingData}
                   className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
                 >
-                  <span className="hidden sm:inline">Próxima</span>
+                  <span className="hidden sm:inline">
+                    {t("common.pagination.next")}
+                  </span>
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
@@ -537,16 +547,16 @@ export const Teacher = () => {
               <div className="text-center py-12">
                 <Filter className="w-12 h-12 md:w-16 md:h-16 text-slate-300 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-slate-600 dark:text-white mb-2">
-                  Nenhum professor encontrado
+                  {t("teacher.empty.withFilters.title")}
                 </h3>
                 <p className="text-slate-600 dark:text-white text-sm mb-4">
-                  Tente ajustar os filtros para encontrar o que procura
+                  {t("teacher.empty.withFilters.title")}
                 </p>
                 <button
                   onClick={handleClearFilters}
                   className="border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
                 >
-                  Limpar Filtros
+                  {t("teacher.empty.withFilters.title")}
                 </button>
               </div>
             )}
@@ -557,10 +567,10 @@ export const Teacher = () => {
                 <div className="text-center py-12">
                   <Users className="w-12 h-12 md:w-16 md:h-16 text-slate-300 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-slate-600 dark:text-white mb-2">
-                    Nenhum professor encontrado
+                    {t("teacher.empty.noData.title")}
                   </h3>
                   <p className="text-slate-600 dark:text-slate-300 text-sm mb-4">
-                    Cadastre um professor para começar
+                    {t("teacher.empty.noData.message")}
                   </p>
                   <button
                     onClick={() => setCreateTeacherModal(true)}
@@ -568,7 +578,7 @@ export const Teacher = () => {
                     className="border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
                   >
                     <Plus className="w-4 h-4" />
-                    Adicionar Professor
+                    {t("teacher.add")}
                   </button>
                 </div>
               )}
@@ -606,12 +616,14 @@ export const Teacher = () => {
                   }
                 }}
                 onConfirm={() => handleDeleteTeacher(selectedTeacher.id)}
-                title="Deleção de Professor"
-                message={`Tem certeza que deseja excluir o(a) professor(a) ${selectedTeacher.name}?`}
+                title={t("classroom.delete.title")}
+                message={`teacher.delete.message ${selectedTeacher.name}?`}
                 confirmText={
-                  loadingDeleteTeacher ? "Excluindo..." : "Confirmar"
+                  loadingDeleteTeacher
+                    ? t("teacher.delete.confirming")
+                    : t("common.actions.confirm")
                 }
-                cancelText="Cancelar"
+                cancelText={t("common.actions.cancel")}
                 isLoading={loadingDeleteTeacher}
                 isDisabled={isProcessing}
               />

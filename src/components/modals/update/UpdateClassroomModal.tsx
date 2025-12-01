@@ -4,6 +4,7 @@ import { useState } from "react";
 import { UPDATE_CLASSROOM } from "../../../graphql/mutations/update/UpdateClassroom";
 import type { IClassroom } from "../../../interfaces/IClassroom";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 interface IUpdateClassroomModal {
   classroom: IClassroom;
@@ -16,6 +17,7 @@ export const UpdateClassroomModal = ({
   closeUpdateClassroomModal,
   refetchClassrooms,
 }: IUpdateClassroomModal) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: classroom.name,
     capacity: classroom.capacity.toString(),
@@ -37,17 +39,19 @@ export const UpdateClassroomModal = ({
     let isValid = true;
 
     if (!formData.name.trim()) {
-      newErrors.name = "Nome da sala é obrigatório";
+      newErrors.name = t("classroom.createClassroomModal.warning.name");
       isValid = false;
     }
 
     if (!formData.capacity.trim()) {
-      newErrors.capacity = "Capacidade é obrigatória";
+      newErrors.capacity = t("classroom.createClassroomModal.warning.capacity");
       isValid = false;
     } else {
       const capacityNumber = parseInt(formData.capacity);
       if (isNaN(capacityNumber) || capacityNumber <= 0) {
-        newErrors.capacity = "Capacidade deve ser um número maior que zero";
+        newErrors.capacity = t(
+          "classroom.createClassroomModal.warning.capacityNumber"
+        );
         isValid = false;
       }
     }
@@ -72,7 +76,7 @@ export const UpdateClassroomModal = ({
         },
       });
 
-      toast.success("Sala atualizada com sucesso!");
+      toast.success(t("classroom.editClassroomModal.toast.success"));
       await refetchClassrooms();
       closeUpdateClassroomModal();
     } catch (err: any) {
@@ -83,9 +87,9 @@ export const UpdateClassroomModal = ({
         errorMessage.includes("already exists") ||
         errorMessage.includes("já existe")
       ) {
-        toast.error("Esta sala já está cadastrada");
+        toast.error(t("classroom.createClassroomModal.toast.duplicateError"));
       } else if (errorMessage.includes("Duplicate")) {
-        toast.error("Já existe uma sala com este nome");
+        toast.error(t("classroom.createClassroomModal.toast.duplicateError"));
       } else {
         toast.error(errorMessage);
       }
@@ -128,13 +132,17 @@ export const UpdateClassroomModal = ({
           <div className="absolute inset-0 bg-white/70 dark:bg-slate-900/70 flex items-center justify-center rounded-lg z-10">
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-              <p className="text-slate-600 dark:text-slate-300 font-medium">Atualizando sala...</p>
+              <p className="text-slate-600 dark:text-slate-300 font-medium">
+                {t("classroom.editClassroomModal.editingClassroom")}
+              </p>
             </div>
           </div>
         )}
 
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Editar Sala</h2>
+          <h2 className="text-lg font-semibold text-slate-800 dark:text-white">
+            {t("classroom.editClassroomModal.title")}
+          </h2>
           <button
             onClick={handleCloseModal}
             disabled={loading}
@@ -147,7 +155,7 @@ export const UpdateClassroomModal = ({
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
-              Nome da Sala
+              {t("classroom.createClassroomModal.label.classroomName")}
             </label>
             <input
               type="text"
@@ -156,9 +164,13 @@ export const UpdateClassroomModal = ({
               onChange={handleChange}
               disabled={loading}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-slate-800 text-gray-900 dark:text-white ${
-                errors.name ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+                errors.name
+                  ? "border-red-500"
+                  : "border-slate-300 dark:border-slate-700"
               }`}
-              placeholder="Ex: Sala 101"
+              placeholder={t(
+                "classroom.createClassroomModal.placeholder.classroom"
+              )}
             />
             {errors.name && (
               <p className="text-red-500 text-xs mt-1">{errors.name}</p>
@@ -167,7 +179,7 @@ export const UpdateClassroomModal = ({
 
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
-              Capacidade
+              {t("classroom.createClassroomModal.label.capacity")}
             </label>
             <input
               type="number"
@@ -176,9 +188,13 @@ export const UpdateClassroomModal = ({
               onChange={handleChange}
               disabled={loading}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-slate-800 text-gray-900 dark:text-white ${
-                errors.capacity ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+                errors.capacity
+                  ? "border-red-500"
+                  : "border-slate-300 dark:border-slate-700"
               }`}
-              placeholder="Ex: 30"
+              placeholder={t(
+                "classroom.createClassroomModal.placeholder.capacity"
+              )}
               min="1"
             />
             {errors.capacity && (
@@ -192,10 +208,12 @@ export const UpdateClassroomModal = ({
               <div className="flex items-center gap-2 text-red-800 dark:text-red-400 mb-1">
                 <AlertCircle className="w-4 h-4" />
                 <span className="font-medium text-sm">
-                  Erro ao atualizar sala
+                  {t("classroom.editClassroomModal.error.editingClass")}
                 </span>
               </div>
-              <p className="text-red-700 dark:text-red-300 text-sm">{error.message}</p>
+              <p className="text-red-700 dark:text-red-300 text-sm">
+                {error.message}
+              </p>
             </div>
           )}
 
@@ -206,7 +224,7 @@ export const UpdateClassroomModal = ({
               disabled={loading}
               className="flex-1 px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base"
             >
-              Cancelar
+              {t("common.actions.cancel")}
             </button>
             <button
               type="submit"
@@ -216,10 +234,10 @@ export const UpdateClassroomModal = ({
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Salvando...
+                  {t("common.status.saving")}
                 </>
               ) : (
-                "Salvar"
+                t("common.actions.save")
               )}
             </button>
           </div>

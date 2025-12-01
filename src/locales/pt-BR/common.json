@@ -1,6 +1,7 @@
 {
   "actions": {
     "add": "Adicionar",
+    "register": "Cadastrar",
     "edit": "Editar",
     "delete": "Excluir",
     "cancel": "Cancelar",
@@ -18,6 +19,7 @@
     "reload": "Recarregar página"
   },
   "status": {
+    "creating": "Criando...",
     "loading": "Carregando...",
     "loadingData": "Carregando dados...",
     "processing": "Processando...",

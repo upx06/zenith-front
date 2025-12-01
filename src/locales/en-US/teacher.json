@@ -1,0 +1,28 @@
+{
+  "title": "Teachers",
+  "subtitle": "Manage the institution's teachers",
+  "new": "New Teacher",
+  "add": "Add Teacher",
+  "delete": {
+    "title": "Delete Teacher",
+    "message": "Are you sure you want to delete teacher {{name}}?",
+    "processing": "Deleting teacher...",
+    "success": "Teacher deleted successfully!",
+    "confirming": "Deleting..."
+  },
+  "filters": {
+    "byName": "Filter by name...",
+    "byEmail": "Filter by email...",
+    "byPhone": "Filter by phone..."
+  },
+  "empty": {
+    "withFilters": {
+      "title": "No teachers found",
+      "message": "Try adjusting the filters to find what you're looking for"
+    },
+    "noData": {
+      "title": "No teachers found",
+      "message": "Add a teacher to get started"
+    }
+  }
+}

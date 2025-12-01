@@ -10,6 +10,7 @@ import {
 import { format, isFuture, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import type { IClassroom } from "../../interfaces/IClassroom";
+import { useTranslation } from "react-i18next";
 
 interface IClassroomDetailsModal {
   classroom: IClassroom;
@@ -20,6 +21,7 @@ export const ClassroomDetailsModal = ({
   classroom,
   closeClassroomDetailsModal,
 }: IClassroomDetailsModal) => {
+  const { t } = useTranslation();
   const futureLessons =
     classroom.lesson
       ?.filter((lesson) => isFuture(parseISO(lesson.datetime)))
@@ -48,7 +50,9 @@ export const ClassroomDetailsModal = ({
               </div>
               <div>
                 <h2 className="text-2xl font-bold">{classroom.name}</h2>
-                <p className="text-blue-100 mt-1">Detalhes da sala de aula</p>
+                <p className="text-blue-100 mt-1">
+                  {t("classroom.detailClassroomModal.title")}
+                </p>
               </div>
             </div>
             <button
@@ -64,14 +68,17 @@ export const ClassroomDetailsModal = ({
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-3 flex items-center gap-2">
               <School className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              Informações da Sala
+              {t("classroom.detailClassroomModal.info")}
             </h3>
             <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
               <div className="flex items-center gap-2 text-slate-700 dark:text-slate-200">
                 <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <span className="font-medium">Capacidade:</span>
+                <span className="font-medium">
+                  {t("classroom.detailClassroomModal.capacity")}:
+                </span>
                 <span className="text-slate-600 dark:text-slate-300">
-                  {classroom.capacity} alunos
+                  {classroom.capacity}{" "}
+                  {t("classroom.detailClassroomModal.students")}
                 </span>
               </div>
             </div>
@@ -80,7 +87,7 @@ export const ClassroomDetailsModal = ({
           <div>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-3 flex items-center gap-2">
               <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              Próximas Aulas
+              {t("classroom.detailClassroomModal.nextLessons")}
               <span className="text-sm font-normal text-slate-500 dark:text-slate-400 ml-1">
                 ({futureLessons.length})
               </span>
@@ -90,10 +97,10 @@ export const ClassroomDetailsModal = ({
               <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-8 text-center border border-slate-200 dark:border-slate-700">
                 <Calendar className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
                 <p className="text-slate-600 dark:text-slate-300 font-medium">
-                  Nenhuma aula agendada
+                  {t("classroom.detailClassroomModal.none")}
                 </p>
                 <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
-                  Não há aulas futuras cadastradas para esta sala
+                  {t("classroom.detailClassroomModal.noneLabel")}
                 </p>
               </div>
             ) : (
@@ -144,7 +151,9 @@ export const ClassroomDetailsModal = ({
                               <span>{lesson.teacher.name}</span>
                               {lesson.teacher.phone && (
                                 <>
-                                  <span className="text-slate-400 dark:text-slate-500">•</span>
+                                  <span className="text-slate-400 dark:text-slate-500">
+                                    •
+                                  </span>
                                   <span className="text-slate-500 dark:text-slate-400">
                                     {lesson.teacher.phone}
                                   </span>

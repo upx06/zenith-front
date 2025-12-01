@@ -1,14 +1,14 @@
 {
   "title": "Classrooms",
   "subtitle": "Manage the institution's classrooms",
-  "new": "New Classroom",
-  "add": "Add Classroom",
+  "new": "New Room",
+  "add": "Add Room",
   "capacity": "Capacity: <strong>{{capacity}}</strong> students",
   "delete": {
-    "title": "Delete Classroom",
-    "message": "Are you sure you want to delete the classroom {{name}}?",
-    "processing": "Deleting classroom...",
-    "success": "Classroom deleted successfully!",
+    "title": "Room Deletion",
+    "message": "Are you sure you want to delete the room {{name}}?",
+    "processing": "Deleting room...",
+    "success": "Room deleted successfully!",
     "confirming": "Deleting..."
   },
   "filters": {
@@ -22,7 +22,50 @@
     },
     "noData": {
       "title": "No classrooms found",
-      "message": "Register a classroom to get started"
+      "message": "Register a room to get started"
     }
+  },
+  "createClassroomModal": {
+    "title": "New Room",
+    "label": {
+      "classroomName": "Room Name",
+      "capacity": "Capacity"
+    },
+    "placeholder": {
+      "classroom": "Ex: Room 101",
+      "capacity": "Ex: 30"
+    },
+    "warning": {
+      "name": "Room name is required",
+      "capacity": "Capacity is required",
+      "capacityNumber": "Capacity must be a number greater than zero"
+    },
+    "toast": {
+      "success": "Room created successfully!",
+      "duplicateError": "A room with this name already exists"
+    },
+    "error": {
+      "creatingClass": "Error creating room"
+    },
+    "creatingClassroom": "Creating room..."
+  },
+  "editClassroomModal": {
+    "title": "Edit Room",
+    "toast": {
+      "success": "Room updated successfully!"
+    },
+    "error": {
+      "editingClass": "Error updating room"
+    },
+    "editingClassroom": "Updating room..."
+  },
+  "detailClassroomModal": {
+    "title": "Classroom Details",
+    "info": "Room Information",
+    "capacity": "Capacity",
+    "students": "students",
+    "nextLessons": "Upcoming Classes",
+    "none": "No scheduled classes",
+    "noneLabel": "There are no upcoming classes registered for this room"
   }
 }

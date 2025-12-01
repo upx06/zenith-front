@@ -1,6 +1,7 @@
 {
   "actions": {
     "add": "Add",
+    "register": "Register",
     "edit": "Edit",
     "delete": "Delete",
     "cancel": "Cancel",
@@ -18,6 +19,7 @@
     "reload": "Reload page"
   },
   "status": {
+    "creating": "Creating...",
     "loading": "Loading...",
     "loadingData": "Loading data...",
     "processing": "Processing...",

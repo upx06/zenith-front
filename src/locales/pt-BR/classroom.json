@@ -24,5 +24,48 @@
       "title": "Nenhuma sala encontrada",
       "message": "Cadastre uma sala para começar"
     }
+  },
+  "createClassroomModal": {
+    "title": "Nova Sala",
+    "label": {
+      "classroomName": "Nome da Sala",
+      "capacity": "Capacidade"
+    },
+    "placeholder": {
+      "classroom": "Ex: Sala 101",
+      "capacity": "Ex: 30"
+    },
+    "warning": {
+      "name": "Nome da Sala é obrigatório",
+      "capacity": "Capacidade é obrigatória",
+      "capacityNumber": "Capacidade deve ser um número maior que zero"
+    },
+    "toast": {
+      "success": "Sala criada com sucesso!",
+      "duplicateError": "Já existe uma sala com este nome"
+    },
+    "error": {
+      "creatingClass": "Erro ao criar sala"
+    },
+    "creatingClassroom": "Criando sala..."
+  },
+  "editClassroomModal": {
+    "title": "Editar Sala",
+    "toast": {
+      "success": "Sala editada com sucesso!"
+    },
+    "error": {
+      "editingClass": "Erro ao editar sala"
+    },
+    "editingClassroom": "Editando sala..."
+  },
+  "detailClassroomModal": {
+    "title": "Detalhes da sala de aula",
+    "info": "Informações da Sala",
+    "capacity": "Capacidade",
+    "students": "alunos",
+    "nextLessons": "Próximas Aulas",
+    "none": "Nenhuma aula agendada",
+    "noneLabel": "Não há aulas futuras cadastradas para esta sala"
   }
 }
