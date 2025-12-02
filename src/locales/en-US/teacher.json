@@ -10,11 +10,6 @@
     "success": "Teacher deleted successfully!",
     "confirming": "Deleting..."
   },
-  "filters": {
-    "byName": "Filter by name...",
-    "byEmail": "Filter by email...",
-    "byPhone": "Filter by phone..."
-  },
   "empty": {
     "withFilters": {
       "title": "No teachers found",
@@ -24,5 +19,20 @@
       "title": "No teachers found",
       "message": "Add a teacher to get started"
     }
+  },
+  "createTeacherModal": {
+    "title": "New Teacher",
+    "creatingTeacher": "Creating teacher..."
+  },
+  "updateTeacherModal": {
+    "title": "Update Teacher",
+    "updatingTeacher": "Updating teacher..."
+  },
+  "detailTeacherModal": {
+    "title": "Teacher's details",
+    "info": "Teacher's Info",
+    "nextLessons": "Upcoming Classes",
+    "none": "No scheduled classes",
+    "noneLabel": "There are no upcoming classes registered for this teacher"
   }
 }

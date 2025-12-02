@@ -102,10 +102,12 @@ export const Teacher = () => {
 
       setConfirmationModal(false);
       setSelectedTeacher(null);
-      toast.success("teacher.delete.success");
+      toast.success(t("toast.teacher.deleteSuccess"));
     } catch (err) {
       console.error("Erro ao excluir professor:", err);
-      toast.error(errorDeleteTeacher?.message || "Erro ao excluir professor");
+      toast.error(
+        errorDeleteTeacher?.message || t("toast.teacher.deleteError")
+      );
     } finally {
       setDeletingTeacherId(null);
     }

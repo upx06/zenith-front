@@ -1,0 +1,10 @@
+{
+  "teacher": {
+    "createSuccess": "Professor criado com sucesso!",
+    "createError": "Erro ao criar professor",
+    "updateSuccess": "Professor atualizado com sucesso!",
+    "updateError": "Erro ao atualizar professor",
+    "deleteSuccess": "Professor deletado com sucesso!",
+    "deleteError": "Erro ao deletar professor"
+  }
+}

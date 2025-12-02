@@ -7,6 +7,7 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "save": "Save",
+    "saveChanges": "Save Changes",
     "back": "Back",
     "next": "Next",
     "previous": "Previous",
@@ -35,5 +36,34 @@
     "capacity": "Capacity",
     "students": "students",
     "name": "Name"
+  },
+  "filters": {
+    "name": "Filter by name...",
+    "byEmail": "Filter by email...",
+    "byPhone": "Filter by phone..."
+  },
+  "formLabels": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "photo": "Photo",
+    "clickToAddPhoto": "Click to add photo",
+    "choosePhoto": "Choose Photo",
+    "changePhoto": "Change Photo"
+  },
+  "formPlaceholders": {
+    "name": "Name",
+    "fullName": "Full name",
+    "email": "Email"
+  },
+  "formRequirements": {
+    "name": "Name is required",
+    "email": "Email is required",
+    "phone": "Phone is required"
+  },
+  "formErrors": {
+    "invalidEmail": "Email is invalid",
+    "invalidPhone": "Phone is invalid",
+    "invalidImage": "Please, enter a valid image"
   }
 }

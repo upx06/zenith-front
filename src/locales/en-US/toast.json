@@ -1,0 +1,10 @@
+{
+  "teacher": {
+    "createSuccess": "Teacher created successfully!",
+    "createError": "Error creating teacher",
+    "updateSuccess": "Teacher updated successfully!",
+    "updateError": "Error updating teacher",
+    "deleteSuccess": "Teacher deleted successfully!",
+    "deleteError": "Error deleting teacher"
+  }
+}

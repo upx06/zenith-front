@@ -7,6 +7,7 @@
     "cancel": "Cancelar",
     "confirm": "Confirmar",
     "save": "Salvar",
+    "saveChanges": "Salvar alterações",
     "back": "Voltar",
     "next": "Próxima",
     "previous": "Anterior",
@@ -35,5 +36,34 @@
     "capacity": "Capacidade",
     "students": "alunos",
     "name": "Nome"
+  },
+  "filters": {
+    "name": "Filtrar por nome...",
+    "byEmail": "Filtrar por email...",
+    "byPhone": "Filtrar por telefone..."
+  },
+  "formLabels": {
+    "name": "Nome",
+    "email": "Email",
+    "phone": "Telefone",
+    "photo": "Foto",
+    "clickToAddPhoto": "Clique para adicionar foto",
+    "choosePhoto": "Escolher foto",
+    "changePhoto": "Mudar foto"
+  },
+  "formPlaceholders": {
+    "name": "Nome",
+    "fullName": "Nome completo",
+    "email": "Email"
+  },
+  "formRequirements": {
+    "name": "Nome é obrigatório",
+    "email": "Email é obrigatório",
+    "phone": "Telefone é obrigatório"
+  },
+  "formErrors": {
+    "invalidEmail": "Email é inválido",
+    "invalidPhone": "Telefone é inválido",
+    "invalidImage": "Por favor, insira uma imagem válida"
   }
 }

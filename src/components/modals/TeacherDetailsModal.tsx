@@ -11,6 +11,7 @@ import {
 import { format, isFuture, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import type { ITeacher } from "../../interfaces/ITeacher";
+import { useTranslation } from "react-i18next";
 
 interface ITeacherDetailsModal {
   teacher: ITeacher;
@@ -23,7 +24,8 @@ export const TeacherDetailsModal = ({
   photo,
   closeTeacherDetailsModal,
 }: ITeacherDetailsModal) => {
-  // Filtra apenas as aulas futuras
+  const { t } = useTranslation();
+
   const futureLessons =
     teacher.lessons
       ?.filter((lesson) => isFuture(parseISO(lesson.datetime)))
@@ -63,7 +65,9 @@ export const TeacherDetailsModal = ({
               )}
               <div>
                 <h2 className="text-2xl font-bold">{teacher.name}</h2>
-                <p className="text-blue-100 mt-1">Detalhes do professor</p>
+                <p className="text-blue-100 mt-1">
+                  {t("teacher.detailTeacherModal.title")}
+                </p>
               </div>
             </div>
             <button
@@ -81,13 +85,15 @@ export const TeacherDetailsModal = ({
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-3 flex items-center gap-2">
               <GraduationCap className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              Informações do Professor
+              {t("teacher.detailTeacherModal.info")}
             </h3>
             <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700 space-y-3">
               <div className="flex items-center gap-3 text-slate-700 dark:text-slate-200">
                 <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" />
                 <div>
-                  <span className="text-sm text-slate-500 dark:text-slate-400 block">E-mail</span>
+                  <span className="text-sm text-slate-500 dark:text-slate-400 block">
+                    E-mail
+                  </span>
                   <span className="font-medium break-all">{teacher.email}</span>
                 </div>
               </div>
@@ -95,7 +101,9 @@ export const TeacherDetailsModal = ({
               <div className="flex items-center gap-3 text-slate-700 dark:text-slate-200">
                 <Phone className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" />
                 <div>
-                  <span className="text-sm text-slate-500 dark:text-slate-400 block">Telefone</span>
+                  <span className="text-sm text-slate-500 dark:text-slate-400 block">
+                    {t("teacher.detailTeacherModal.phoneLabel")}
+                  </span>
                   <span className="font-medium">{teacher.phone}</span>
                 </div>
               </div>
@@ -106,7 +114,7 @@ export const TeacherDetailsModal = ({
           <div>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-3 flex items-center gap-2">
               <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              Próximas Aulas
+              {t("teacher.detailTeacherModal.nextLessons")}
               <span className="text-sm font-normal text-slate-500 dark:text-slate-400 ml-1">
                 ({futureLessons.length})
               </span>
@@ -116,10 +124,10 @@ export const TeacherDetailsModal = ({
               <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-8 text-center border border-slate-200 dark:border-slate-700">
                 <Calendar className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
                 <p className="text-slate-600 dark:text-slate-300 font-medium">
-                  Nenhuma aula agendada
+                  {t("teacher.detailTeacherModal.none")}
                 </p>
                 <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
-                  Não há aulas futuras cadastradas para este professor
+                  {t("teacher.detailTeacherModal.noneLabel")}
                 </p>
               </div>
             ) : (
@@ -167,7 +175,6 @@ export const TeacherDetailsModal = ({
                               </span>
                             </div>
 
-                            {/* Sala - SE DISPONÍVEL */}
                             {lesson.classroom && (
                               <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300 mt-1">
                                 <MapPin className="w-4 h-4 text-slate-400 dark:text-slate-500" />

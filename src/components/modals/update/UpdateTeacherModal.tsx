@@ -6,6 +6,7 @@ import { UPDATE_TEACHER } from "../../../graphql/mutations/update/UpdateTeacher"
 import type { ITeacher } from "../../../interfaces/ITeacher";
 import { sendToAwsS3 } from "../../../utils/aws";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 interface IUpdateTeacherModal {
   teacher: ITeacher;
@@ -20,6 +21,8 @@ export const UpdateTeacherModal = ({
   closeUpdateTeacherModal,
   refetchTeachers,
 }: IUpdateTeacherModal) => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     name: teacher.name,
     email: teacher.email,
@@ -51,25 +54,25 @@ export const UpdateTeacherModal = ({
     let isValid = true;
 
     if (!formData.name.trim()) {
-      newErrors.name = "Nome é obrigatório";
+      newErrors.name = t("common.formRequirements.name");
       isValid = false;
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email é obrigatório";
+      newErrors.email = t("common.formRequirements.email");
       isValid = false;
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email inválido";
+      newErrors.email = t("common.formErrors.invalidEmail");
       isValid = false;
     }
 
     if (!formData.phone.trim()) {
-      newErrors.phone = "Telefone é obrigatório";
+      newErrors.phone = t("common.formRequirements.phone");
       isValid = false;
     } else {
       const cleanPhone = formData.phone.replace(/\D/g, "");
       if (cleanPhone.length < 10) {
-        newErrors.phone = "Telefone inválido";
+        newErrors.phone = t("common.formErrors.invalidPhone");
         isValid = false;
       }
     }
@@ -86,7 +89,7 @@ export const UpdateTeacherModal = ({
       if (!file.type.startsWith("image/")) {
         setErrors((prev) => ({
           ...prev,
-          photo: "Por favor, selecione uma imagem válida",
+          photo: t("common.formErrors.invalidImage"),
         }));
         return;
       }
@@ -142,23 +145,14 @@ export const UpdateTeacherModal = ({
         },
       });
 
-      toast.success("Professor atualizado com sucesso!");
+      toast.success(t("toast.teacher.updateSuccess"));
       await refetchTeachers();
       closeUpdateTeacherModal();
     } catch (err: any) {
       console.error("Erro ao atualizar professor:", err);
-      const errorMessage = err.message || "Erro ao atualizar professor";
+      // const errorMessage = err.message || t("toast.teacher.updateSuccess");
 
-      if (
-        errorMessage.includes("already exists") ||
-        errorMessage.includes("já existe")
-      ) {
-        toast.error("Este email já está cadastrado");
-      } else if (errorMessage.includes("Duplicate")) {
-        toast.error("Já existe um professor com este email");
-      } else {
-        toast.error(errorMessage);
-      }
+      toast.error(t("toast.teacher.updateError"));
     }
   };
 
@@ -211,7 +205,7 @@ export const UpdateTeacherModal = ({
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
               <p className="text-slate-600 dark:text-slate-300 font-medium">
-                Atualizando professor...
+                {t("teacher.updateTeacherModal.updatingTeacher")}
               </p>
             </div>
           </div>
@@ -219,7 +213,7 @@ export const UpdateTeacherModal = ({
 
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-semibold text-slate-800 dark:text-white">
-            Editar Professor
+            {t("teacher.updateTeacherModal.title")}
           </h2>
           <button
             onClick={handleCloseModal}
@@ -235,7 +229,7 @@ export const UpdateTeacherModal = ({
             {/* Seção de Foto */}
             <div className="md:col-span-1">
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
-                Foto do Professor
+                {t("common.formLabels.photo")}
               </label>
               <div className="space-y-3">
                 {/* Preview da foto */}
@@ -263,7 +257,7 @@ export const UpdateTeacherModal = ({
                     >
                       <Camera className="w-12 h-12 text-slate-400 dark:text-slate-500" />
                       <p className="text-xs text-slate-500 dark:text-slate-400 text-center px-2">
-                        Clique para adicionar foto
+                        {t("common.formLabels.clickToAddPhoto")}
                       </p>
                     </div>
                   )}
@@ -288,7 +282,7 @@ export const UpdateTeacherModal = ({
                     className="w-full px-3 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm flex items-center justify-center gap-2"
                   >
                     <Upload className="w-4 h-4" />
-                    Escolher Foto
+                    {t("common.formLabels.choosePhoto")}
                   </button>
                 )}
 
@@ -300,7 +294,7 @@ export const UpdateTeacherModal = ({
                     className="w-full px-3 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm flex items-center justify-center gap-2"
                   >
                     <Upload className="w-4 h-4" />
-                    Alterar Foto
+                    {t("common.formLabels.changePhoto")}
                   </button>
                 )}
 
@@ -316,7 +310,7 @@ export const UpdateTeacherModal = ({
             <div className="md:col-span-2 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
-                  Nome
+                  {t("common.common.name")}
                 </label>
                 <input
                   type="text"
@@ -325,9 +319,11 @@ export const UpdateTeacherModal = ({
                   onChange={handleChange}
                   disabled={loading}
                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-slate-800 text-gray-900 dark:text-white ${
-                    errors.name ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+                    errors.name
+                      ? "border-red-500"
+                      : "border-slate-300 dark:border-slate-700"
                   }`}
-                  placeholder="Nome completo do professor"
+                  placeholder={t("common.formPlaceholders.fullName")}
                 />
                 {errors.name && (
                   <p className="text-red-500 text-xs mt-1">{errors.name}</p>
@@ -336,7 +332,7 @@ export const UpdateTeacherModal = ({
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
-                  Email
+                  {t("common.formLabels.email")}
                 </label>
                 <input
                   type="email"
@@ -345,9 +341,11 @@ export const UpdateTeacherModal = ({
                   onChange={handleChange}
                   disabled={loading}
                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-slate-800 text-gray-900 dark:text-white ${
-                    errors.email ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+                    errors.email
+                      ? "border-red-500"
+                      : "border-slate-300 dark:border-slate-700"
                   }`}
-                  placeholder="email@exemplo.com"
+                  placeholder={t("common.formPlaceholders.email")}
                 />
                 {errors.email && (
                   <p className="text-red-500 text-xs mt-1">{errors.email}</p>
@@ -356,7 +354,7 @@ export const UpdateTeacherModal = ({
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
-                  Telefone
+                  {t("common.formLabels.phone")}
                 </label>
                 <IMaskInput
                   mask={[
@@ -371,7 +369,9 @@ export const UpdateTeacherModal = ({
                   onAccept={handlePhoneChange}
                   disabled={loading}
                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-slate-800 text-gray-900 dark:text-white ${
-                    errors.phone ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+                    errors.phone
+                      ? "border-red-500"
+                      : "border-slate-300 dark:border-slate-700"
                   }`}
                   placeholder="(11) 99999-9999"
                   unmask={true}
@@ -388,10 +388,12 @@ export const UpdateTeacherModal = ({
               <div className="flex items-center gap-2 text-red-800 dark:text-red-400 mb-1">
                 <AlertCircle className="w-4 h-4" />
                 <span className="font-medium text-sm">
-                  Erro ao atualizar professor
+                  {t("toast.teacher.updateError")}
                 </span>
               </div>
-              <p className="text-red-700 dark:text-red-300 text-sm">{error.message}</p>
+              <p className="text-red-700 dark:text-red-300 text-sm">
+                {error.message}
+              </p>
             </div>
           )}
 
@@ -402,7 +404,7 @@ export const UpdateTeacherModal = ({
               disabled={loading}
               className="flex-1 px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base"
             >
-              Cancelar
+              {t("common.actions.cancel")}
             </button>
             <button
               type="submit"
@@ -412,10 +414,10 @@ export const UpdateTeacherModal = ({
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Salvando...
+                  {t("common.status.saving")}
                 </>
               ) : (
-                "Salvar Alterações"
+                t("common.actions.saveChanges")
               )}
             </button>
           </div>
