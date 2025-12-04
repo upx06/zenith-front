@@ -1,1 +1,42 @@
-{}
+{
+  "title": "Alunos",
+  "subtitle": "Gerencie os alunos da instituição",
+  "new": "Novo Aluno",
+  "add": "Adicionar Aluno",
+  "delete": {
+    "title": "Excluir Aluno",
+    "message": "Tem certeza de que deseja excluir o aluno {{name}}?",
+    "processing": "Excluindo aluno...",
+    "success": "Aluno excluído com sucesso!"
+  },
+  "empty": {
+    "withFilters": {
+      "title": "Nenhum aluno encontrado",
+      "message": "Tente ajustar os filtros para encontrar o que você procura"
+    },
+    "noData": {
+      "title": "Nenhum aluno encontrado",
+      "message": "Adicione um aluno para começar"
+    }
+  },
+  "createStudentModal": {
+    "title": "Novo Aluno",
+    "creating": "Criando aluno..."
+  },
+  "updateStudentModal": {
+    "title": "Atualizar Aluno",
+    "updatingTeacher": "Atualizando aluno..."
+  },
+  "detailStudentModal": {
+    "title": "Detalhes do Aluno",
+    "info": "Informações do Aluno",
+    "enrollments": "Matrículas",
+    "noneEnrollments": "Nenhuma matrícula ativa",
+    "noneEnrollmentsSub": "Este aluno ainda não está matriculado em nenhuma turma",
+    "level": "Nível",
+    "language": "Idioma"
+  },
+  "report": {
+    "generating": "Gerando relatório..."
+  }
+}

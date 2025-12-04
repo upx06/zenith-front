@@ -19,6 +19,23 @@
       "message": "Add a student to get started"
     }
   },
+  "createStudentModal": {
+    "title": "New Student",
+    "creating": "Creating student..."
+  },
+  "updateStudentModal": {
+    "title": "Update Student",
+    "updatingTeacher": "Updating student..."
+  },
+  "detailStudentModal": {
+    "title": "Student's details",
+    "info": "Student's Info",
+    "enrollments": "Enrollments",
+    "noneEnrollments": "No active enrollments",
+    "noneEnrollmentsSub": "This student is not yet enrolled with any class",
+    "level": "Level",
+    "language": "Language"
+  },
   "report": {
     "generating": "Generating report..."
   }

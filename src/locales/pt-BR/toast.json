@@ -8,7 +8,11 @@
     "deleteError": "Erro ao deletar professor"
   },
   "student": {
-    "deleteSuccess": "Aluno deletado com sucesso",
+    "createSuccess": "Aluno criado com sucesso!",
+    "createError": "Erro ao criar aluno",
+    "updateSuccess": "Aluno atualizado com sucesso!",
+    "updateError": "Erro ao atualizar aluno",
+    "deleteSuccess": "Aluno deletado com sucesso!",
     "deleteError": "Erro ao deletar aluno",
     "reportSuccess": "Relatório gerado com sucesso!",
     "reportError": "Erro ao gerar relatório"

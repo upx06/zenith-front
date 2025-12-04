@@ -8,6 +8,10 @@
     "deleteError": "Error deleting teacher"
   },
   "student": {
+    "createSuccess": "Student created successfully!",
+    "createError": "Error creating student",
+    "updateSuccess": "Student updated successfully!",
+    "updateError": "Error updating student",
     "deleteSuccess": "Student deleted successfully!",
     "deleteError": "Error deleting student",
     "reportSuccess": "Report generated successfully",

@@ -50,12 +50,14 @@
     "photo": "Photo",
     "clickToAddPhoto": "Click to add photo",
     "choosePhoto": "Choose Photo",
-    "changePhoto": "Change Photo"
+    "changePhoto": "Change Photo",
+    "goal": "Current Goal"
   },
   "formPlaceholders": {
     "name": "Name",
     "fullName": "Full name",
-    "email": "Email"
+    "email": "Email",
+    "goal": "Current goal"
   },
   "formRequirements": {
     "name": "Name is required",
