@@ -17,7 +17,8 @@
     "clearFilters": "Limpar Filtros",
     "viewDetails": "Ver detalhes",
     "tryAgain": "Tentar novamente",
-    "reload": "Recarregar página"
+    "reload": "Recarregar página",
+    "generate": "Gerar Relatório"
   },
   "status": {
     "creating": "Criando...",

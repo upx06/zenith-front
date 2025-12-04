@@ -1,0 +1,25 @@
+{
+  "title": "Students",
+  "subtitle": "Manage the institution's students",
+  "new": "New Student",
+  "add": "Add Student",
+  "delete": {
+    "title": "Delete Student",
+    "message": "Are you sure you want to delete student {{name}}?",
+    "processing": "Deleting student...",
+    "success": "Student deleted successfully!"
+  },
+  "empty": {
+    "withFilters": {
+      "title": "No students found",
+      "message": "Try adjusting the filters to find what you're looking for"
+    },
+    "noData": {
+      "title": "No students found",
+      "message": "Add a student to get started"
+    }
+  },
+  "report": {
+    "generating": "Generating report..."
+  }
+}

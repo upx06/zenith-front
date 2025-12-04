@@ -3,12 +3,16 @@
     "title": "Erro ao carregar dados",
     "unknown": "Ocorreu um erro desconhecido"
   },
+  "classroom": {
+    "deleteError": "Erro ao excluir sala",
+    "loadError": "Erro ao carregar salas"
+  },
   "teacher": {
     "deleteError": "Erro ao excluir professor(a)",
     "loadError": "Erro ao carregar professores(as)"
   },
-  "classroom": {
-    "deleteError": "Erro ao excluir sala",
-    "loadError": "Erro ao carregar salas"
+  "student": {
+    "deleteError": "Erro ao deletar aluno(a)",
+    "loadError": "Erro ao carregar alunos(as)"
   }
 }

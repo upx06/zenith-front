@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client/react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import {
   Loader2,
   Mail,
@@ -32,6 +33,8 @@ import { StudentDetailsModal } from "../../components/modals/StudentDetailsModal
 import { getPresignedUrlFromAwsS3 } from "../../utils/aws";
 
 export const Student = () => {
+  const { t } = useTranslation();
+
   const [createStudentModal, setCreateStudentModal] = useState(false);
   const [updateStudentModal, setUpdateStudentModal] = useState(false);
   const [detailStudentModal, setDetailStudentModal] = useState(false);
@@ -44,7 +47,7 @@ export const Student = () => {
   const [deletingStudentId, setDeletingStudentId] = useState<string | null>(
     null
   );
-  const [generatingReportId, setGeneratingReportId] = useState<string | null>( // 👈 NOVO ESTADO
+  const [generatingReportId, setGeneratingReportId] = useState<string | null>(
     null
   );
   const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({});
@@ -125,12 +128,10 @@ export const Student = () => {
       // Limpa a URL temporária
       window.URL.revokeObjectURL(url);
 
-      toast.success("Relatório gerado com sucesso!");
+      toast.success(t("toast.student.reportSuccess"));
     } catch (err) {
       console.error("Erro ao gerar relatório:", err);
-      toast.error(
-        err instanceof Error ? err.message : "Erro ao gerar relatório"
-      );
+      toast.error(t("toast.student.reportError"));
     } finally {
       setGeneratingReportId(null);
     }
@@ -155,10 +156,10 @@ export const Student = () => {
 
       setConfirmationModal(false);
       setSelectedStudent(null);
-      toast.success("Aluno excluído com sucesso!");
+      toast.success(t("toast.student.deleteSuccess"));
     } catch (err) {
       console.error("Erro ao excluir aluno:", err);
-      toast.error(errorDeleteStudent?.message || "Erro ao excluir aluno");
+      toast.error(t("toast.student.deleteError"));
     } finally {
       setDeletingStudentId(null);
     }
@@ -259,14 +260,14 @@ export const Student = () => {
           <div className="text-center max-w-md">
             <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
             <h2 className="text-xl font-bold text-red-600 mb-2">
-              Erro ao carregar dados
+              {t("errors.general.title")}
             </h2>
             <p className="text-slate-600 mb-6">{error.message}</p>
             <button
               onClick={() => refetch()}
               className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg transition-colors"
             >
-              Tentar novamente
+              {t("common.actions.tryAgain")}
             </button>
           </div>
         </div>
@@ -288,8 +289,8 @@ export const Student = () => {
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
               <p className="text-slate-600 font-medium">
                 {deletingStudentId
-                  ? "Excluindo aluno..."
-                  : "Gerando relatório..."}
+                  ? t("student.delete.processing")
+                  : t("student.report.generating")}
               </p>
             </div>
           </div>
@@ -300,7 +301,9 @@ export const Student = () => {
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
               <div className="flex items-center gap-2 text-red-800 mb-2">
                 <AlertCircle className="w-4 h-4" />
-                <span className="font-medium">Erro ao excluir aluno:</span>
+                <span className="font-medium">
+                  {t("errors.student.deleteError")}:
+                </span>
               </div>
               <p className="text-red-700 text-sm mb-3">
                 {errorDeleteStudent.message}
@@ -309,7 +312,7 @@ export const Student = () => {
                 onClick={() => window.location.reload()}
                 className="px-4 py-2 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition-colors"
               >
-                Recarregar página
+                {t("common.actions.reload")}
               </button>
             </div>
           )}
@@ -318,10 +321,10 @@ export const Student = () => {
             <div className="flex flex-row justify-between items-center gap-4 pt-5 md:pt-0">
               <div className="flex-1 min-w-0">
                 <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white uppercase">
-                  Alunos
+                  {t("student.title")}
                 </h1>
                 <p className="hidden sm:block text-slate-600 dark:text-slate-300 text-sm md:text-base">
-                  Gerencie os alunos da instituição
+                  {t("student.subtitle")}
                 </p>
               </div>
 
@@ -340,10 +343,12 @@ export const Student = () => {
                     text-sm md:text-base relative
                     w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2
                   `}
-                  title="Filtros"
+                  title={t("common.actions.filters")}
                 >
                   <Filter className="w-4 h-4 md:w-5 md:h-5" />
-                  <span className="hidden sm:inline">Filtros</span>
+                  <span className="hidden sm:inline">
+                    {t("common.actions.filters")}
+                  </span>
                   {hasActiveFilters && (
                     <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
                   )}
@@ -360,7 +365,7 @@ export const Student = () => {
                   "
                 >
                   <Plus className="w-4 h-4 md:w-5 md:h-5" />
-                  <span className="hidden sm:inline">Novo Aluno</span>
+                  <span className="hidden sm:inline">{t("student.new")}</span>
                 </button>
               </div>
             </div>
@@ -377,7 +382,7 @@ export const Student = () => {
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder="Filtrar por nome..."
+                      placeholder={t("common.filters.byName")}
                       value={filters.name}
                       onChange={(e) =>
                         handleFilterChange("name", e.target.value)
@@ -398,7 +403,7 @@ export const Student = () => {
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder="Filtrar por email..."
+                      placeholder={t("common.filters.byEmail")}
                       value={filters.email}
                       onChange={(e) =>
                         handleFilterChange("email", e.target.value)
@@ -419,7 +424,7 @@ export const Student = () => {
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder="Filtrar por telefone..."
+                      placeholder={t("common.filters.byPhone")}
                       value={filters.phone}
                       onChange={(e) =>
                         handleFilterChange("phone", e.target.value)
@@ -443,7 +448,7 @@ export const Student = () => {
                     className="w-full px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
                   >
                     <X className="w-4 h-4" />
-                    Limpar Filtros
+                    {t("common.actions.clearFilters")}
                   </button>
                 </div>
               </div>
@@ -454,7 +459,7 @@ export const Student = () => {
                 <div className="flex flex-col items-center gap-4">
                   <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
                   <p className="text-slate-600 font-medium">
-                    Carregando dados...
+                    {t("common.status.loadingData")}
                   </p>
                 </div>
               </div>
@@ -517,7 +522,6 @@ export const Student = () => {
                         </div>
                       </div>
 
-                      {/* 👇 BOTÕES ATUALIZADOS */}
                       <div className="flex gap-2 pt-2 border-t border-slate-100 dark:border-slate-700">
                         <button
                           onClick={() =>
@@ -526,14 +530,14 @@ export const Student = () => {
                           disabled={isProcessing}
                           className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
                         >
-                          Ver detalhes
+                          {t("common.actions.viewDetails")}
                         </button>
 
                         <button
                           onClick={() => handleGenerateReport(student)}
                           disabled={isProcessing}
                           className="flex items-center justify-center px-3 py-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                          title="Gerar Relatório"
+                          title={t("common.actions.generate")}
                         >
                           {generatingReportId === student.id ? (
                             <Loader2 className="w-4 h-4 animate-spin" />
@@ -548,7 +552,7 @@ export const Student = () => {
                           }
                           disabled={isProcessing}
                           className="flex items-center justify-center px-3 py-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                          title="Editar"
+                          title={t("common.actions.edit")}
                         >
                           <Pencil className="w-4 h-4" />
                         </button>
@@ -556,7 +560,7 @@ export const Student = () => {
                           onClick={() => handleOpenConfirmationModal(student)}
                           disabled={isProcessing}
                           className="flex items-center justify-center px-3 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                          title="Excluir"
+                          title={t("common.actions.delete")}
                         >
                           {deletingStudentId === student.id ? (
                             <Loader2 className="w-4 h-4 animate-spin" />
@@ -583,11 +587,13 @@ export const Student = () => {
                   className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
                 >
                   <ChevronLeft className="w-4 h-4" />
-                  <span className="hidden sm:inline">Anterior</span>
+                  <span className="hidden sm:inline">
+                    {t("common.pagination.previous")}
+                  </span>
                 </button>
 
                 <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-semibold min-w-[60px] text-center">
-                  Pág. {currentPage}
+                  {t("common.pagination.page")} {currentPage}
                 </div>
 
                 <button
@@ -600,7 +606,9 @@ export const Student = () => {
                   disabled={currentPage >= getTotalPages() || isLoadingData}
                   className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
                 >
-                  <span className="hidden sm:inline">Próxima</span>
+                  <span className="hidden sm:inline">
+                    {t("common.pagination.next")}
+                  </span>
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
@@ -610,16 +618,16 @@ export const Student = () => {
               <div className="text-center py-12">
                 <Filter className="w-12 h-12 md:w-16 md:h-16 text-slate-300 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-slate-600 dark:text-white mb-2">
-                  Nenhum aluno encontrado
+                  {t("student.empty.withFilters.title")}
                 </h3>
                 <p className="text-slate-600 dark:text-white text-sm mb-4">
-                  Tente ajustar os filtros para encontrar o que procura
+                  {t("student.empty.withFilters.message")}
                 </p>
                 <button
                   onClick={handleClearFilters}
                   className="border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
                 >
-                  Limpar Filtros
+                  {t("common.actions.clearFilters")}
                 </button>
               </div>
             )}
@@ -628,10 +636,10 @@ export const Student = () => {
               <div className="text-center py-12">
                 <Users className="w-12 h-12 md:w-16 md:h-16 text-slate-300 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-slate-600 dark:text-white mb-2">
-                  Nenhum aluno encontrado
+                  {t("student.empty.noData.title")}
                 </h3>
                 <p className="text-slate-600 dark:text-slate-300 text-sm mb-4">
-                  Cadastre um aluno para começar
+                  {t("student.empty.noData.message")}
                 </p>
                 <button
                   onClick={() => setCreateStudentModal(true)}
@@ -639,7 +647,7 @@ export const Student = () => {
                   className="border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
                 >
                   <Plus className="w-4 h-4" />
-                  Adicionar Aluno
+                  {t("student.add")}
                 </button>
               </div>
             )}
@@ -677,12 +685,16 @@ export const Student = () => {
                   }
                 }}
                 onConfirm={() => handleDeleteStudent(selectedStudent.id)}
-                title="Deleção de Aluno"
-                message={`Tem certeza que deseja excluir o(a) aluno(a) ${selectedStudent.name}?`}
+                title={t("student.delete.title")}
+                message={t("student.delete.message", {
+                  name: selectedStudent.name,
+                })}
                 confirmText={
-                  loadingDeleteStudent ? "Excluindo..." : "Confirmar"
+                  loadingDeleteStudent
+                    ? t("common.status.deleting")
+                    : t("common.actions.confirm")
                 }
-                cancelText="Cancelar"
+                cancelText={t("common.actions.cancel")}
                 isLoading={loadingDeleteStudent}
                 isDisabled={isProcessing}
               />

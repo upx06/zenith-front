@@ -6,5 +6,11 @@
     "updateError": "Erro ao atualizar professor",
     "deleteSuccess": "Professor deletado com sucesso!",
     "deleteError": "Erro ao deletar professor"
+  },
+  "student": {
+    "deleteSuccess": "Aluno deletado com sucesso",
+    "deleteError": "Erro ao deletar aluno",
+    "reportSuccess": "Relatório gerado com sucesso!",
+    "reportError": "Erro ao gerar relatório"
   }
 }

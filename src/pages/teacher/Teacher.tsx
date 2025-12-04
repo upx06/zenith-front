@@ -331,7 +331,7 @@ export const Teacher = () => {
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder={t("teacher.filters.byName")}
+                      placeholder={t("common.filters.byName")}
                       value={filters.name}
                       onChange={(e) =>
                         handleFilterChange("name", e.target.value)
@@ -352,7 +352,7 @@ export const Teacher = () => {
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder={t("teacher.filters.byEmail")}
+                      placeholder={t("common.filters.byEmail")}
                       value={filters.email}
                       onChange={(e) =>
                         handleFilterChange("email", e.target.value)
@@ -373,7 +373,7 @@ export const Teacher = () => {
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder={t("teacher.filters.byPhone")}
+                      placeholder={t("common.filters.byPhone")}
                       value={filters.phone}
                       onChange={(e) =>
                         handleFilterChange("phone", e.target.value)
@@ -558,7 +558,7 @@ export const Teacher = () => {
                   onClick={handleClearFilters}
                   className="border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
                 >
-                  {t("teacher.empty.withFilters.title")}
+                  {t("common.actions.clearFilters")}
                 </button>
               </div>
             )}
@@ -622,7 +622,7 @@ export const Teacher = () => {
                 message={`teacher.delete.message ${selectedTeacher.name}?`}
                 confirmText={
                   loadingDeleteTeacher
-                    ? t("teacher.delete.confirming")
+                    ? t("common.status.deleting")
                     : t("common.actions.confirm")
                 }
                 cancelText={t("common.actions.cancel")}
