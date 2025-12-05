@@ -6,6 +6,7 @@ import { LIST_LANGUAGES } from "../../../graphql/queries/ListLanguages";
 import type { IClass } from "../../../interfaces/IClass";
 import type { IListLanguages } from "../../../interfaces/IListLanguages";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 interface IUpdateClassModal {
   clas: IClass;
@@ -19,6 +20,8 @@ export const UpdateClassModal = ({
   refetchClasses,
 }: IUpdateClassModal) => {
   if (!clas) return null;
+
+  const { t } = useTranslation();
 
   const {
     data: dataLanguage,
@@ -50,17 +53,17 @@ export const UpdateClassModal = ({
     let isValid = true;
 
     if (!formData.name.trim()) {
-      newErrors.name = "Nome é obrigatório";
+      newErrors.name = t("common.formRequirements.name");
       isValid = false;
     }
 
     if (!formData.level.trim()) {
-      newErrors.level = "Nível é obrigatório";
+      newErrors.level = t("common.formRequirements.level");
       isValid = false;
     }
 
     if (!formData.languageId.trim()) {
-      newErrors.languageId = "Linguagem é obrigatória";
+      newErrors.languageId = t("common.formRequirements.language");
       isValid = false;
     }
 
@@ -85,23 +88,14 @@ export const UpdateClassModal = ({
         },
       });
 
-      toast.success("Turma atualizada com sucesso!");
-      await refetchClasses();
-      closeUpdateClassModal();
+      toast.success(t("toast.class.updateSuccess"));
+
+      refetchClasses();
     } catch (err: any) {
       console.error("Erro ao atualizar turma:", err);
-      const errorMessage = err.message || "Erro ao atualizar turma";
-
-      if (
-        errorMessage.includes("already exists") ||
-        errorMessage.includes("já existe")
-      ) {
-        toast.error("Esta turma já está cadastrada");
-      } else if (errorMessage.includes("Duplicate")) {
-        toast.error("Já existe uma turma com este nome");
-      } else {
-        toast.error(errorMessage);
-      }
+      toast.error(t("toast.class.updateError"));
+    } finally {
+      closeUpdateClassModal();
     }
   };
 
@@ -148,14 +142,18 @@ export const UpdateClassModal = ({
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
               <p className="text-slate-600 dark:text-slate-300 font-medium">
-                {loading ? "Atualizando turma..." : "Carregando linguagens..."}
+                {loading
+                  ? t("clas.updateClassModal.updating")
+                  : t("clas.createClassModal.loadingLanguages")}
               </p>
             </div>
           </div>
         )}
 
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Editar Turma</h2>
+          <h2 className="text-lg font-semibold text-slate-800 dark:text-white">
+            {t("clas.updateClassModal.title")}
+          </h2>
           <button
             onClick={handleCloseModal}
             disabled={isLoading}
@@ -168,7 +166,7 @@ export const UpdateClassModal = ({
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
-              Nome
+              {t("common.common.name")}
             </label>
             <input
               type="text"
@@ -177,9 +175,11 @@ export const UpdateClassModal = ({
               onChange={handleChange}
               disabled={isLoading}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-slate-800 text-gray-900 dark:text-white ${
-                errors.name ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+                errors.name
+                  ? "border-red-500"
+                  : "border-slate-300 dark:border-slate-700"
               }`}
-              placeholder="Nome da turma"
+              placeholder={t("common.formPlaceholders.fullName")}
             />
             {errors.name && (
               <p className="text-red-500 text-xs mt-1">{errors.name}</p>
@@ -188,7 +188,7 @@ export const UpdateClassModal = ({
 
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
-              Linguagem
+              {t("common.formLabels.language")}
             </label>
             <select
               name="languageId"
@@ -196,10 +196,12 @@ export const UpdateClassModal = ({
               onChange={handleChange}
               disabled={isLoading}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-slate-800 text-gray-900 dark:text-white ${
-                errors.languageId ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+                errors.languageId
+                  ? "border-red-500"
+                  : "border-slate-300 dark:border-slate-700"
               }`}
             >
-              <option value="">Selecione a linguagem</option>
+              <option value="">{t("common.formLabels.selectLanguage")}</option>
               {dataLanguage?.listLanguages?.results?.map((language) => (
                 <option key={language.id} value={language.id}>
                   {language.name}
@@ -210,13 +212,14 @@ export const UpdateClassModal = ({
             {/* Estados de loading e error das linguagens */}
             {loadingLanguage && !isLoading && (
               <p className="text-blue-500 dark:text-blue-400 text-xs mt-1">
-                Carregando linguagens...
+                {t("class.createClassModal.loadingLanguages")}
               </p>
             )}
             {errorLanguage && (
               <div className="p-2 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 rounded mt-1">
                 <p className="text-red-600 dark:text-red-400 text-xs">
-                  Erro ao carregar linguagens: {errorLanguage.message}
+                  {t("errors.class.languages.loadError")}:{" "}
+                  {errorLanguage.message}
                 </p>
               </div>
             )}
@@ -227,7 +230,7 @@ export const UpdateClassModal = ({
 
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
-              Nível
+              {t("common.formLabels.level")}
             </label>
             <select
               name="level"
@@ -235,10 +238,12 @@ export const UpdateClassModal = ({
               onChange={handleChange}
               disabled={isLoading}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-slate-800 text-gray-900 dark:text-white ${
-                errors.level ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+                errors.level
+                  ? "border-red-500"
+                  : "border-slate-300 dark:border-slate-700"
               }`}
             >
-              <option value="">Selecione o nível</option>
+              <option value="">{t("common.filters.byLevel")}</option>
               <option value="A1">A1</option>
               <option value="A2">A2</option>
               <option value="B1">B1</option>
@@ -257,10 +262,12 @@ export const UpdateClassModal = ({
               <div className="flex items-center gap-2 text-red-800 dark:text-red-400 mb-1">
                 <AlertCircle className="w-4 h-4" />
                 <span className="font-medium text-sm">
-                  Erro ao atualizar turma
+                  {t("toast.class.updateError")}
                 </span>
               </div>
-              <p className="text-red-700 dark:text-red-300 text-sm">{error.message}</p>
+              <p className="text-red-700 dark:text-red-300 text-sm">
+                {error.message}
+              </p>
             </div>
           )}
 
@@ -271,7 +278,7 @@ export const UpdateClassModal = ({
               disabled={isLoading}
               className="flex-1 px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base"
             >
-              Cancelar
+              {t("common.actions.cancel")}
             </button>
             <button
               type="submit"
@@ -281,10 +288,10 @@ export const UpdateClassModal = ({
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Atualizando...
+                  {t("common.status.saving")}
                 </>
               ) : (
-                "Salvar"
+                t("common.actions.saveChanges")
               )}
             </button>
           </div>

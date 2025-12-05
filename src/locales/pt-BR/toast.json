@@ -16,5 +16,13 @@
     "deleteError": "Erro ao deletar aluno",
     "reportSuccess": "Relatório gerado com sucesso!",
     "reportError": "Erro ao gerar relatório"
+  },
+  "class": {
+    "createSuccess": "Classe criada com sucesso!",
+    "createError": "Erro ao criar classe",
+    "updateSuccess": "Classe atualizada com sucesso!",
+    "updateError": "Erro ao atualizar classe",
+    "deleteSuccess": "Classe deletada com sucesso!",
+    "deleteError": "Erro ao deletar classe"
   }
 }

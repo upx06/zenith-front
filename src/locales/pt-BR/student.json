@@ -3,6 +3,7 @@
   "subtitle": "Gerencie os alunos da instituição",
   "new": "Novo Aluno",
   "add": "Adicionar Aluno",
+  "loading": "Carregando alunos...",
   "delete": {
     "title": "Excluir Aluno",
     "message": "Tem certeza de que deseja excluir o aluno {{name}}?",

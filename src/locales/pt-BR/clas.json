@@ -1,0 +1,50 @@
+{
+  "title": "Turmas",
+  "subtitle": "Gerencie as turmas da instituição",
+  "new": "Nova Turma",
+  "add": "Adicionar Turma",
+  "delete": {
+    "title": "Excluir Turma",
+    "message": "Tem certeza que deseja excluir a turma {{name}}?",
+    "processing": "Excluindo turma...",
+    "success": "Turma excluída com sucesso!"
+  },
+  "empty": {
+    "withFilters": {
+      "title": "Nenhuma turma encontrada",
+      "message": "Tente ajustar os filtros para encontrar o que você procura"
+    },
+    "noData": {
+      "title": "Nenhuma turma encontrada",
+      "message": "Adicione uma turma para começar"
+    }
+  },
+  "card": {
+    "student": "aluno",
+    "students": "alunos"
+  },
+  "createClassModal": {
+    "title": "Nova Turma",
+    "creating": "Criando turma...",
+    "loadingLanguages": "Carregando idiomas..."
+  },
+  "updateClassModal": {
+    "title": "Atualizar Turma",
+    "updating": "Atualizando turma..."
+  },
+  "detailClassModal": {
+    "title": "Detalhes da turma",
+    "info": "Informações da Turma",
+    "noneLabel": "Não há aulas futuras registradas para esta turma"
+  },
+  "manageClassModal": {
+    "enrolling": "Matriculando alunos",
+    "enrollStudent": "Matricular Aluno",
+    "enrolledStudents": "Alunos Matriculados",
+    "removingEnrollment": "Removendo matrícula",
+    "loadingEnrolledStudents": "Carregando alunos matriculados",
+    "errorLoadingEnrolledStudents": "Erro ao carregar alunos matriculados",
+    "noStudentEnrolled": "Nenhum aluno matriculado nesta turma",
+    "selectStudents": "Selecionar Alunos ({{quantity}} selecionados)"
+  }
+}

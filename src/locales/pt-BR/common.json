@@ -18,7 +18,8 @@
     "viewDetails": "Ver detalhes",
     "tryAgain": "Tentar novamente",
     "reload": "Recarregar página",
-    "generate": "Gerar Relatório"
+    "generate": "Gerar Relatório",
+    "close": "Fechar"
   },
   "status": {
     "creating": "Criando...",
@@ -41,17 +42,24 @@
   "filters": {
     "name": "Filtrar por nome...",
     "byEmail": "Filtrar por email...",
-    "byPhone": "Filtrar por telefone..."
+    "byPhone": "Filtrar por telefone...",
+    "byLevel": "Todos os níveis",
+    "byLanguage": "Todas as linguagens"
   },
   "formLabels": {
     "name": "Nome",
     "email": "Email",
     "phone": "Telefone",
     "photo": "Foto",
+    "language": "Idioma",
+    "level": "Nível",
     "clickToAddPhoto": "Clique para adicionar foto",
     "choosePhoto": "Escolher foto",
     "changePhoto": "Mudar foto",
-    "goal": "Objetivo Atual"
+    "goal": "Objetivo Atual",
+    "selectLanguage": "Selecione um idioma",
+    "enrolledStudents": "Alunos Matriculados",
+    "nextLessons": "Próximas Aulas"
   },
   "formPlaceholders": {
     "name": "Nome",
@@ -62,11 +70,18 @@
   "formRequirements": {
     "name": "Nome é obrigatório",
     "email": "Email é obrigatório",
-    "phone": "Telefone é obrigatório"
+    "phone": "Telefone é obrigatório",
+    "level": "Nível é obrigatório",
+    "language": "Idioma é obrigatório"
   },
   "formErrors": {
     "invalidEmail": "Email é inválido",
     "invalidPhone": "Telefone é inválido",
     "invalidImage": "Por favor, insira uma imagem válida"
+  },
+  "random": {
+    "noScheduled": "Sem aula agendada",
+    "removeStudent": "Remover aluno(a)",
+    "noAvaibleEnrollment": "Nenhum aluno disponível para matrícula"
   }
 }

@@ -5,6 +5,7 @@ import { CREATE_CLASS } from "../../../graphql/mutations/create/CreateClass";
 import { LIST_LANGUAGES } from "../../../graphql/queries/ListLanguages";
 import type { IListLanguages } from "../../../interfaces/IListLanguages";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 interface ICreateClassModal {
   closeCreateClassModal: () => void;
@@ -15,6 +16,8 @@ export const CreateClassModal = ({
   closeCreateClassModal,
   refetchClasses,
 }: ICreateClassModal) => {
+  const { t } = useTranslation();
+
   const {
     data: dataLanguage,
     loading: loadingLanguage,
@@ -45,17 +48,17 @@ export const CreateClassModal = ({
     let isValid = true;
 
     if (!formData.name.trim()) {
-      newErrors.name = "Nome é obrigatório";
+      newErrors.name = t("common.formRequirements.name");
       isValid = false;
     }
 
     if (!formData.level.trim()) {
-      newErrors.level = "Nível é obrigatório";
+      newErrors.level = t("common.formRequirements.level");
       isValid = false;
     }
 
     if (!formData.languageId.trim()) {
-      newErrors.languageId = "Linguagem é obrigatória";
+      newErrors.languageId = t("common.formRequirements.language");
       isValid = false;
     }
 
@@ -79,22 +82,11 @@ export const CreateClassModal = ({
         },
       });
 
-      toast.success("Turma criada com sucesso!");
+      toast.success(t("toast.class.createSuccess"));
       refetchClasses();
     } catch (err: any) {
       console.error("Erro ao criar turma:", err);
-      const errorMessage = err.message || "Erro ao criar turma";
-
-      if (
-        errorMessage.includes("already exists") ||
-        errorMessage.includes("já existe")
-      ) {
-        toast.error("Já existe uma turma com este nome");
-      } else if (errorMessage.includes("Duplicate")) {
-        toast.error("Já existe uma turma com este nome");
-      } else {
-        toast.error(errorMessage);
-      }
+      toast.error(t("toast.class.createError"));
     } finally {
       closeCreateClassModal();
     }
@@ -143,14 +135,18 @@ export const CreateClassModal = ({
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
               <p className="text-slate-600 dark:text-slate-300 font-medium">
-                {loading ? "Criando turma..." : "Carregando linguagens..."}
+                {loading
+                  ? t("clas.createClassModal.creating")
+                  : t("clas.createClassModal.loadingLanguages")}
               </p>
             </div>
           </div>
         )}
 
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Nova Turma</h2>
+          <h2 className="text-lg font-semibold text-slate-800 dark:text-white">
+            {t("clas.createClassModal.title")}
+          </h2>
           <button
             onClick={handleCloseModal}
             disabled={isLoading}
@@ -163,7 +159,7 @@ export const CreateClassModal = ({
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
-              Nome
+              {t("common.common.name")}
             </label>
             <input
               type="text"
@@ -172,9 +168,11 @@ export const CreateClassModal = ({
               onChange={handleChange}
               disabled={isLoading}
               className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
-                errors.name ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+                errors.name
+                  ? "border-red-500"
+                  : "border-slate-300 dark:border-slate-700"
               }`}
-              placeholder="Nome da turma"
+              placeholder={t("common.formPlaceholders.fullName")}
             />
             {errors.name && (
               <p className="text-red-500 text-xs mt-1">{errors.name}</p>
@@ -183,7 +181,7 @@ export const CreateClassModal = ({
 
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
-              Linguagem
+              {t("common.formLabels.language")}
             </label>
             <select
               name="languageId"
@@ -191,10 +189,12 @@ export const CreateClassModal = ({
               onChange={handleChange}
               disabled={isLoading}
               className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
-                errors.languageId ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+                errors.languageId
+                  ? "border-red-500"
+                  : "border-slate-300 dark:border-slate-700"
               }`}
             >
-              <option value="">Selecione a linguagem</option>
+              <option value="">{t("common.formLabels.selectLanguage")}</option>
               {dataLanguage?.listLanguages?.results?.map((language) => (
                 <option key={language.id} value={language.id}>
                   {language.name}
@@ -205,13 +205,14 @@ export const CreateClassModal = ({
             {/* Estados de loading e error das linguagens */}
             {loadingLanguage && !isLoading && (
               <p className="text-blue-500 text-xs mt-1">
-                Carregando linguagens...
+                {t("clas.createClassModal.loadingLanguages")}
               </p>
             )}
             {errorLanguage && (
               <div className="p-2 bg-red-50 border border-red-200 rounded mt-1">
                 <p className="text-red-600 text-xs">
-                  Erro ao carregar linguagens: {errorLanguage.message}
+                  {t("errors.class.languages.loadError")}:{" "}
+                  {errorLanguage.message}
                 </p>
               </div>
             )}
@@ -222,7 +223,7 @@ export const CreateClassModal = ({
 
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
-              Nível
+              {t("common.formLabels.level")}
             </label>
             <select
               name="level"
@@ -230,10 +231,12 @@ export const CreateClassModal = ({
               onChange={handleChange}
               disabled={isLoading}
               className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
-                errors.level ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+                errors.level
+                  ? "border-red-500"
+                  : "border-slate-300 dark:border-slate-700"
               }`}
             >
-              <option value="">Selecione o nível</option>
+              <option value="">{t("common.filters.byLevel")}</option>
               <option value="A1">A1</option>
               <option value="A2">A2</option>
               <option value="B1">B1</option>
@@ -251,7 +254,9 @@ export const CreateClassModal = ({
             <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
               <div className="flex items-center gap-2 text-red-800 mb-1">
                 <AlertCircle className="w-4 h-4" />
-                <span className="font-medium text-sm">Erro ao criar turma</span>
+                <span className="font-medium text-sm">
+                  {t("toast.class.createError")}
+                </span>
               </div>
               <p className="text-red-700 text-sm">{error.message}</p>
             </div>
@@ -264,7 +269,7 @@ export const CreateClassModal = ({
               disabled={isLoading}
               className="flex-1 px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base"
             >
-              Cancelar
+              {t("common.actions.cancel")}
             </button>
             <button
               type="submit"
@@ -274,10 +279,10 @@ export const CreateClassModal = ({
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Criando...
+                  {t("common.status.creating")}
                 </>
               ) : (
-                "Cadastrar"
+                t("common.actions.register")
               )}
             </button>
           </div>

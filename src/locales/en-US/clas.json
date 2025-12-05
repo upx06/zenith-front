@@ -1,0 +1,50 @@
+{
+  "title": "Classes",
+  "subtitle": "Manage the institution's classes",
+  "new": "New Class",
+  "add": "Add Class",
+  "delete": {
+    "title": "Delete Class",
+    "message": "Are you sure you want to delete class {{name}}?",
+    "processing": "Deleting class...",
+    "success": "Class deleted successfully!"
+  },
+  "empty": {
+    "withFilters": {
+      "title": "No classes found",
+      "message": "Try adjusting the filters to find what you're looking for"
+    },
+    "noData": {
+      "title": "No classes found",
+      "message": "Add a class to get started"
+    }
+  },
+  "card": {
+    "student": "student",
+    "students": "students"
+  },
+  "createClassModal": {
+    "title": "New Class",
+    "creating": "Creating class...",
+    "loadingLanguages": "Loading languages..."
+  },
+  "updateClassModal": {
+    "title": "Update Class",
+    "updating": "Updating class..."
+  },
+  "detailClassModal": {
+    "title": "Class's details",
+    "info": "Class's Info",
+    "noneLabel": "There are no upcoming classes registered for this class"
+  },
+  "manageClassModal": {
+    "enrolling": "Enrolling students",
+    "enrollStudent": "Enroll Student",
+    "enrolledStudents": "Enrolled Students",
+    "removingEnrollment": "Removing enrollment",
+    "loadingEnrolledStudents": "Loading enrolled students",
+    "errorLoadingEnrolledStudents": "Error loading enrolled students",
+    "noStudentEnrolled": "No student enrolled in this class",
+    "selectStudents": "Select Students ({{quantity}} selected)"
+  }
+}

@@ -16,5 +16,13 @@
     "deleteError": "Error deleting student",
     "reportSuccess": "Report generated successfully",
     "reportError": "Error generating report"
+  },
+  "class": {
+    "createSuccess": "Class created successfully!",
+    "createError": "Error creating class",
+    "updateSuccess": "Class updated successfully!",
+    "updateError": "Error updating class",
+    "deleteSuccess": "Class deleted successfully!",
+    "deleteError": "Error deleting class"
   }
 }

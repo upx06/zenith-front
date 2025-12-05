@@ -8,17 +8,22 @@ import {
   Check,
   Loader2,
 } from "lucide-react";
-import type { IClass } from "../../interfaces/IClass";
+
+import { useTranslation } from "react-i18next";
 import { useLazyQuery, useMutation } from "@apollo/client/react";
 import { useEffect, useState } from "react";
-import { LIST_STUDENT_NOT_ENROLLED_IN_CLASS } from "../../graphql/queries/ListStudentNotEnrolledInClass";
 import { PhoneDisplay } from "../PhoneDisplay";
+
+import type { IClass } from "../../interfaces/IClass";
+
 import type { IEnrollment } from "../../interfaces/IEnrollment";
 import type { IListSpecificEnrollments } from "../../interfaces/IListSpecificEnrollments";
 import type { IListStudentNotEnrolledInClass } from "../../interfaces/IListStudentNotEnrolledInClass";
+
 import { LIST_SPECIFIC_ENROLLMENTS } from "../../graphql/queries/ListSpecificClassEnrollments";
 import { CREATE_ENROLLMENT } from "../../graphql/mutations/create/CreateEnrollment";
 import { DESTROY_ENROLLMENT } from "../../graphql/mutations/destroy/DestroyEnrollment";
+import { LIST_STUDENT_NOT_ENROLLED_IN_CLASS } from "../../graphql/queries/ListStudentNotEnrolledInClass";
 
 interface IManageClassModalProps {
   clas: IClass;
@@ -31,6 +36,8 @@ export const ManageClassModal = ({
   closeManageClassModal,
   refetchClasses,
 }: IManageClassModalProps) => {
+  const { t } = useTranslation();
+
   const [classId] = useState(clas.id);
   const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
   const [isAddingStudents, setIsAddingStudents] = useState(false);
@@ -182,8 +189,8 @@ export const ManageClassModal = ({
               <Loader2 className="w-8 h-8 text-blue-600 dark:text-blue-400 animate-spin" />
               <p className="text-slate-600 dark:text-slate-300 font-medium">
                 {loadingCreateEnrollment
-                  ? "Matriculando alunos..."
-                  : "Removendo matrícula..."}
+                  ? t("clas.manageClassModal.enrolling")
+                  : t("clas.manageClassModal.removingEnrollment")}
               </p>
             </div>
           </div>
@@ -222,7 +229,7 @@ export const ManageClassModal = ({
             <div className="mb-4 p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 rounded-lg">
               <div className="flex items-center gap-2 text-red-800 dark:text-red-300">
                 <X className="w-4 h-4" />
-                <span className="font-medium">Erro:</span>
+                <span className="font-medium">{t("error.general.error")}:</span>
                 <span className="text-sm">
                   {errorCreateEnrollment?.message ||
                     errorDestroyEnrollment?.message}
@@ -238,7 +245,7 @@ export const ManageClassModal = ({
                 }}
                 className="mt-2 px-3 py-1 text-xs bg-red-600 dark:bg-red-500 text-white rounded hover:bg-red-700 dark:hover:bg-red-600 transition-colors"
               >
-                Tentar novamente
+                {t("common.actions.tryAgain")}
               </button>
             </div>
           )}
@@ -250,11 +257,14 @@ export const ManageClassModal = ({
                 <h3 className="font-semibold text-slate-800 dark:text-white flex items-center gap-2">
                   <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   {loadingSpecificClassEnrollments ? (
-                    "Carregando alunos..."
+                    t("student.loading")
                   ) : errorSpecificClassEnrollments ? (
-                    <span className="text-red-600 dark:text-red-400">Erro ao carregar</span>
+                    <span className="text-red-600 dark:text-red-400">
+                      {t("errors.general.title")}
+                    </span>
                   ) : (
-                    `Alunos Matriculados (${classEnrollments.length})`
+                    t("clas.manageClassModal.enrolledStudents") +
+                    ` (${classEnrollments.length})`
                   )}
                 </h3>
                 {!isAddingStudents &&
@@ -266,7 +276,7 @@ export const ManageClassModal = ({
                       className="flex items-center gap-2 px-3 py-1.5 text-sm bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors"
                     >
                       <UserPlus className="w-4 h-4" />
-                      Adicionar Aluno
+                      {t("clas.manageClassModal.enrollStudent")}
                     </button>
                   )}
               </div>
@@ -276,7 +286,7 @@ export const ManageClassModal = ({
                 <div className="text-center py-8 bg-slate-50 dark:bg-slate-800 rounded-lg">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-2"></div>
                   <p className="text-slate-500 dark:text-slate-400 text-sm">
-                    Carregando alunos matriculados...
+                    {t("clas.manageClassModal.loadingEnrolledStudents")}
                   </p>
                 </div>
               )}
@@ -285,7 +295,7 @@ export const ManageClassModal = ({
                 <div className="text-center py-8 bg-red-50 dark:bg-red-950/30 rounded-lg">
                   <Users className="w-12 h-12 text-red-300 dark:text-red-700 mx-auto mb-2" />
                   <p className="text-red-600 dark:text-red-400 text-sm">
-                    Erro ao carregar alunos matriculados
+                    {t("clas.manageClassModal.errorLoadingEnrolledStudents")}
                   </p>
                   <button
                     onClick={() =>
@@ -293,7 +303,7 @@ export const ManageClassModal = ({
                     }
                     className="mt-2 px-4 py-2 text-sm bg-red-600 dark:bg-red-500 text-white rounded-lg hover:bg-red-700 dark:hover:bg-red-600 transition-colors"
                   >
-                    Tentar novamente
+                    {t("common.actions.tryAgain")}
                   </button>
                 </div>
               )}
@@ -315,17 +325,16 @@ export const ManageClassModal = ({
                               </div>
                               <div>
                                 <p className="font-medium text-slate-800 dark:text-white text-sm">
-                                  {enrollment.student?.name || "Nome do aluno"}
+                                  {enrollment.student?.name || "-"}
                                 </p>
                                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                                  {enrollment.student?.email ||
-                                    "email@exemplo.com"}
+                                  {enrollment.student?.email || "-"}
                                 </p>
                               </div>
                             </div>
                             <button
                               className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                              title="Remover aluno"
+                              title={t("common.random.removeStudent")}
                               disabled={
                                 isProcessing ||
                                 destroyingEnrollmentId === enrollment.id
@@ -347,7 +356,7 @@ export const ManageClassModal = ({
                       <div className="text-center py-8 bg-slate-50 dark:bg-slate-800 rounded-lg">
                         <Users className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
                         <p className="text-slate-500 dark:text-slate-400 text-sm">
-                          Nenhum aluno matriculado nesta turma
+                          {t("clas.manageClassModal.noStudentEnrolled")}
                         </p>
                       </div>
                     )}
@@ -362,11 +371,15 @@ export const ManageClassModal = ({
                   <h3 className="font-semibold text-slate-800 dark:text-white flex items-center gap-2">
                     <UserPlus className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                     {loadingSpecificNoClassEnrollments ? (
-                      "Carregando alunos disponíveis..."
+                      t("student.loading")
                     ) : errorSpecificNoClassEnrollments ? (
-                      <span className="text-red-600 dark:text-red-400">Erro ao carregar</span>
+                      <span className="text-red-600 dark:text-red-400">
+                        {t("errors.general.title")}
+                      </span>
                     ) : (
-                      `Selecionar Alunos (${selectedStudents.length} selecionados)`
+                      t("clas.manageClassModal.selectStudents", {
+                        quantity: selectedStudents.length,
+                      })
                     )}
                   </h3>
                   <div className="flex gap-2">
@@ -375,7 +388,7 @@ export const ManageClassModal = ({
                       disabled={loadingCreateEnrollment}
                       className="px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
-                      Cancelar
+                      {t("common.actions.cancel")}
                     </button>
                     <button
                       onClick={handleSaveStudents}
@@ -389,12 +402,12 @@ export const ManageClassModal = ({
                       {loadingCreateEnrollment ? (
                         <>
                           <Loader2 className="w-4 h-4 animate-spin" />
-                          Salvando...
+                          {t("common.status.saving")}
                         </>
                       ) : (
                         <>
                           <Check className="w-4 h-4" />
-                          Salvar
+                          {t("common.actions.save")}
                         </>
                       )}
                     </button>
@@ -406,7 +419,7 @@ export const ManageClassModal = ({
                   <div className="text-center py-8 bg-slate-50 dark:bg-slate-800 rounded-lg">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-2"></div>
                     <p className="text-slate-500 dark:text-slate-400 text-sm">
-                      Carregando alunos disponíveis...
+                      {t("student.loading")}
                     </p>
                   </div>
                 )}
@@ -415,7 +428,7 @@ export const ManageClassModal = ({
                   <div className="text-center py-8 bg-red-50 dark:bg-red-950/30 rounded-lg">
                     <UserPlus className="w-12 h-12 text-red-300 dark:text-red-700 mx-auto mb-2" />
                     <p className="text-red-600 dark:text-red-400 text-sm">
-                      Erro ao carregar alunos disponíveis
+                      {t("errors.student.loadError")}
                     </p>
                     <button
                       onClick={() =>
@@ -425,7 +438,7 @@ export const ManageClassModal = ({
                       }
                       className="mt-2 px-4 py-2 text-sm bg-red-600 dark:bg-red-500 text-white rounded-lg hover:bg-red-700 dark:hover:bg-red-600 transition-colors"
                     >
-                      Tentar novamente
+                      {t("common.actions.tryAgain")}
                     </button>
                   </div>
                 )}
@@ -485,7 +498,7 @@ export const ManageClassModal = ({
                         <div className="text-center py-8 bg-slate-50 dark:bg-slate-800 rounded-lg">
                           <UserPlus className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
                           <p className="text-slate-500 dark:text-slate-400 text-sm">
-                            Nenhum aluno disponível para matrícula
+                            {t("common.random.noAvaibleEnrollment")}
                           </p>
                         </div>
                       )}
@@ -502,7 +515,7 @@ export const ManageClassModal = ({
             disabled={isProcessing}
             className="w-full px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base font-medium"
           >
-            Fechar
+            {t("common.actions.close")}
           </button>
         </div>
       </div>

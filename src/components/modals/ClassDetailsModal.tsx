@@ -12,6 +12,7 @@ import {
 import { format, isFuture, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import type { IClass } from "../../interfaces/IClass";
+import { useTranslation } from "react-i18next";
 
 interface IClassDetailsModal {
   clas: IClass;
@@ -22,7 +23,8 @@ export const ClassDetailsModal = ({
   clas,
   closeClassDetailsModal,
 }: IClassDetailsModal) => {
-  // Filtra apenas as aulas futuras
+  const { t } = useTranslation();
+
   const futureLessons =
     clas.lessons
       ?.filter((lesson) => isFuture(parseISO(lesson.datetime)))
@@ -54,7 +56,9 @@ export const ClassDetailsModal = ({
               </div>
               <div>
                 <h2 className="text-2xl font-bold">{clas.name}</h2>
-                <p className="text-blue-100 mt-1">Detalhes da turma</p>
+                <p className="text-blue-100 mt-1">
+                  {t("clas.detailClassModal.title")}
+                </p>
               </div>
             </div>
             <button
@@ -72,13 +76,15 @@ export const ClassDetailsModal = ({
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-3 flex items-center gap-2">
               <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              Informações da Turma
+              {t("clas.detailClassModal.info")}
             </h3>
             <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700 space-y-3">
               <div className="flex items-center gap-3 text-slate-700 dark:text-slate-200">
                 <Star className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" />
                 <div>
-                  <span className="text-sm text-slate-500 dark:text-slate-400 block">Nível</span>
+                  <span className="text-sm text-slate-500 dark:text-slate-400 block">
+                    {t("common.formLabels.level")}
+                  </span>
                   <span className="font-medium">{clas.level}</span>
                 </div>
               </div>
@@ -87,7 +93,7 @@ export const ClassDetailsModal = ({
                 <Languages className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" />
                 <div>
                   <span className="text-sm text-slate-500 dark:text-slate-400 block">
-                    Linguagem
+                    {t("common.formLabels.language")}
                   </span>
                   <span className="font-medium">{clas.language?.name}</span>
                 </div>
@@ -97,10 +103,13 @@ export const ClassDetailsModal = ({
                 <Users className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" />
                 <div>
                   <span className="text-sm text-slate-500 dark:text-slate-400 block">
-                    Alunos Matriculados
+                    {t("common.formLabels.enrolledStudents")}
                   </span>
                   <span className="font-medium">
-                    {totalStudents} {totalStudents === 1 ? "aluno" : "alunos"}
+                    {totalStudents}{" "}
+                    {totalStudents === 1
+                      ? t("clas.card.student")
+                      : t("clas.card.students")}
                   </span>
                 </div>
               </div>
@@ -143,7 +152,7 @@ export const ClassDetailsModal = ({
           <div>
             <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-3 flex items-center gap-2">
               <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              Próximas Aulas
+              {t("common.formLabels.nextLessons")}
               <span className="text-sm font-normal text-slate-500 dark:text-slate-400 ml-1">
                 ({futureLessons.length})
               </span>
@@ -153,10 +162,10 @@ export const ClassDetailsModal = ({
               <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-8 text-center border border-slate-200 dark:border-slate-700">
                 <Calendar className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
                 <p className="text-slate-600 dark:text-slate-300 font-medium">
-                  Nenhuma aula agendada
+                  {t("common.random.noScheduled")}
                 </p>
                 <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
-                  Não há aulas futuras cadastradas para esta turma
+                  {t("clas.detailClassModal.noneLabel")}
                 </p>
               </div>
             ) : (

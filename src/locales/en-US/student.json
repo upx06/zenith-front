@@ -3,6 +3,7 @@
   "subtitle": "Manage the institution's students",
   "new": "New Student",
   "add": "Add Student",
+  "loading": "Loading students...",
   "delete": {
     "title": "Delete Student",
     "message": "Are you sure you want to delete student {{name}}?",

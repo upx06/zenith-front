@@ -18,7 +18,8 @@
     "viewDetails": "View details",
     "tryAgain": "Try again",
     "reload": "Reload page",
-    "generate": "Generate Report"
+    "generate": "Generate Report",
+    "close": "Close"
   },
   "status": {
     "creating": "Creating...",
@@ -41,17 +42,24 @@
   "filters": {
     "name": "Filter by name...",
     "byEmail": "Filter by email...",
-    "byPhone": "Filter by phone..."
+    "byPhone": "Filter by phone...",
+    "byLevel": "All levels",
+    "byLanguage": "All languages"
   },
   "formLabels": {
     "name": "Name",
     "email": "Email",
     "phone": "Phone",
     "photo": "Photo",
+    "language": "Language",
+    "level": "Level",
     "clickToAddPhoto": "Click to add photo",
     "choosePhoto": "Choose Photo",
     "changePhoto": "Change Photo",
-    "goal": "Current Goal"
+    "goal": "Current Goal",
+    "selectLanguage": "Select a language",
+    "enrolledStudents": "Enrolled Students",
+    "nextLessons": "Next Lessons"
   },
   "formPlaceholders": {
     "name": "Name",
@@ -62,11 +70,18 @@
   "formRequirements": {
     "name": "Name is required",
     "email": "Email is required",
-    "phone": "Phone is required"
+    "phone": "Phone is required",
+    "level": "Level is required",
+    "language": "Language is required"
   },
   "formErrors": {
     "invalidEmail": "Email is invalid",
     "invalidPhone": "Phone is invalid",
     "invalidImage": "Please, enter a valid image"
+  },
+  "random": {
+    "noScheduled": "No schedulued classes",
+    "removeStudent": "Remove student",
+    "noAvaibleEnrollment": "No student avaible for enrollment"
   }
 }

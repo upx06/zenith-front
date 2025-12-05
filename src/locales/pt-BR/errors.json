@@ -1,5 +1,6 @@
 {
   "general": {
+    "error": "Erro",
     "title": "Erro ao carregar dados",
     "unknown": "Ocorreu um erro desconhecido"
   },
@@ -14,5 +15,12 @@
   "student": {
     "deleteError": "Erro ao deletar aluno(a)",
     "loadError": "Erro ao carregar alunos(as)"
+  },
+  "class": {
+    "deleteError": "Erro ao deletar classe",
+    "loadError": "Erro ao carregar classes",
+    "languages": {
+      "loadError": "Erro ao carregar linguagens"
+    }
   }
 }
