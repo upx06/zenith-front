@@ -5,6 +5,7 @@ import teacher from "./teacher.json";
 import classroom from "./classroom.json";
 import clas from "./clas.json";
 import toast from "./toast.json";
+import exam from "./exam.json";
 
 export default {
   common,
@@ -14,4 +15,5 @@ export default {
   teacher,
   classroom,
   toast,
+  exam,
 };

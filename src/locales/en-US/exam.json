@@ -1,0 +1,26 @@
+{
+  "title": "Test",
+  "subtitle": "Manage student's tests",
+  "new": "New Exam",
+  "add": "Add Exam",
+  "loading": "Loading exams...",
+  "empty": {
+    "withFilters": {
+      "title": "No tests found",
+      "message": "Try adjusting the filters to find what you're looking for"
+    },
+    "noData": {
+      "title": "No tests found",
+      "message": "Add a test to get started"
+    }
+  },
+  "createExamModal": {
+    "title": "New Test",
+    "subtitle": "Fill in the details to create a new review",
+    "creating": "Creating test...",
+    "info": "Basic Info"
+  },
+  "random": {
+    "gradesControl": "Grades Control"
+  }
+}

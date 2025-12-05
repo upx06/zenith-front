@@ -35,9 +35,18 @@
     "next": "Próxima"
   },
   "common": {
+    "class": "Classe",
+    "student": "Aluno",
     "capacity": "Capacidade",
     "students": "alunos",
-    "name": "Nome"
+    "name": "Nome",
+    "teacher": "Professor",
+    "type": "Tipo",
+    "target": "Alvo",
+    "actions": "Ações",
+    "grades": "Notas",
+    "enrollment": "Matrícula",
+    "topic": "Tópico"
   },
   "filters": {
     "name": "Filtrar por nome...",
@@ -59,20 +68,33 @@
     "goal": "Objetivo Atual",
     "selectLanguage": "Selecione um idioma",
     "enrolledStudents": "Alunos Matriculados",
-    "nextLessons": "Próximas Aulas"
+    "nextLessons": "Próximas Aulas",
+    "testName": "Nome da Avaliação",
+    "testType": "Tipo da Avaliação",
+    "testTopic": "Tópicos da Avaliação",
+    "responsibleTeacher": "Professor Responsável"
   },
   "formPlaceholders": {
     "name": "Nome",
     "fullName": "Nome completo",
     "email": "Email",
-    "goal": "Objetivo Atual"
+    "goal": "Objetivo Atual",
+    "test": "Ex: Avaliação Final - Módulo 3",
+    "selectTeacher": "Selecione um professor",
+    "selectClass": "Selecione uma turma",
+    "selectEnrollment": "Selecione uma matrícula"
   },
   "formRequirements": {
     "name": "Nome é obrigatório",
     "email": "Email é obrigatório",
     "phone": "Telefone é obrigatório",
+    "teacher": "Telefone é obrigatório",
     "level": "Nível é obrigatório",
-    "language": "Idioma é obrigatório"
+    "language": "Idioma é obrigatório",
+    "class": "Sala é obrigatória",
+    "enrollment": "Matrícula é obrigatória",
+    "minimumTopic": "Adicione pelo menos um tópico",
+    "topicName": "Todos os tópicos devem ter um nome"
   },
   "formErrors": {
     "invalidEmail": "Email é inválido",
@@ -82,6 +104,9 @@
   "random": {
     "noScheduled": "Sem aula agendada",
     "removeStudent": "Remover aluno(a)",
-    "noAvaibleEnrollment": "Nenhum aluno disponível para matrícula"
+    "noAvaibleEnrollment": "Nenhum aluno disponível para matrícula",
+    "allTeachers": "Todos os professores",
+    "allTypes": "Todos os tipos",
+    "addTopic": "Adicionar Tópico"
   }
 }

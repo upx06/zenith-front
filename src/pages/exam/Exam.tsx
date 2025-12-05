@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@apollo/client/react";
+import { useTranslation } from "react-i18next";
 import {
   Loader2,
   AlertCircle,
@@ -28,6 +29,8 @@ import type { IExam } from "../../interfaces/IExam";
 import { UpdateExamModal } from "../../components/modals/update/UpdateExamModal";
 
 export const Exam = () => {
+  const { t } = useTranslation();
+
   const [createExamModal, setCreateExamModal] = useState(false);
   const [detailsExamModal, setDetailsExamModal] = useState(false);
   const [gradesControlModal, setGradesControlModal] = useState(false);
@@ -147,14 +150,14 @@ export const Exam = () => {
           <div className="text-center max-w-md">
             <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
             <h2 className="text-xl font-bold text-red-600 mb-2">
-              Erro ao carregar dados
+              {t("errors.general.title")}
             </h2>
             <p className="text-slate-600 mb-6">{error.message}</p>
             <button
               onClick={() => refetch()}
               className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg transition-colors"
             >
-              Tentar novamente
+              {t("common.actions.tryAgain")}
             </button>
           </div>
         </div>
@@ -176,10 +179,10 @@ export const Exam = () => {
             <div className="flex flex-row justify-between items-center gap-4 pt-5 md:pt-0">
               <div className="flex-1 min-w-0">
                 <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white uppercase">
-                  Avaliações
+                  {t("exam.title")}
                 </h1>
                 <p className="hidden sm:block text-slate-600 dark:text-slate-300 text-sm md:text-base">
-                  Gerencie as avaliações dos alunos
+                  {t("exam.subtitle")}
                 </p>
               </div>
 
@@ -196,10 +199,12 @@ export const Exam = () => {
                     text-sm md:text-base relative
                     w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2
                   `}
-                  title="Filtros"
+                  title={t("common.actions.filters")}
                 >
                   <Filter className="w-4 h-4 md:w-5 md:h-5" />
-                  <span className="hidden sm:inline">Filtros</span>
+                  <span className="hidden sm:inline">
+                    {t("common.actions.filters")}
+                  </span>
                   {hasActiveFilters && (
                     <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
                   )}
@@ -214,7 +219,7 @@ export const Exam = () => {
                   "
                 >
                   <Plus className="w-4 h-4 md:w-5 md:h-5" />
-                  <span className="hidden sm:inline">Nova Avaliação</span>
+                  <span className="hidden sm:inline">{t("exam.new")}</span>
                 </button>
               </div>
             </div>
@@ -232,7 +237,7 @@ export const Exam = () => {
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder="Filtrar por nome..."
+                      placeholder={t("common.filters.name")}
                       value={filters.name}
                       onChange={(e) =>
                         handleFilterChange("name", e.target.value)
@@ -297,7 +302,7 @@ export const Exam = () => {
                       }
                       className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     >
-                      <option value="">Todos os professores</option>
+                      <option value="">{t("common.random.allTeachers")}</option>
                       {/* {teachers.map((teacher: any) => (
                         <option key={teacher.id} value={teacher.id}>
                           {teacher.name}
@@ -314,9 +319,11 @@ export const Exam = () => {
                       }
                       className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     >
-                      <option value="all">Todos os tipos</option>
-                      <option value="class">Turma Completa</option>
-                      <option value="student">Aluno Específico</option>
+                      <option value="all">{t("common.random.allTypes")}</option>
+                      <option value="class">{t("common.common.class")}</option>
+                      <option value="student">
+                        {t("common.common.student")}
+                      </option>
                     </select>
                   </div>
 
@@ -326,7 +333,7 @@ export const Exam = () => {
                     className="w-full px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
                   >
                     <X className="w-4 h-4" />
-                    Limpar Filtros
+                    {t("common.actions.clearFilters")}
                   </button>
                 </div>
               </div>
@@ -338,7 +345,7 @@ export const Exam = () => {
                 <div className="flex flex-col items-center gap-4">
                   <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
                   <p className="text-slate-600 font-medium">
-                    Carregando avaliações...
+                    {t("exam.loading")}
                   </p>
                 </div>
               </div>
@@ -349,16 +356,16 @@ export const Exam = () => {
               <div className="text-center py-12">
                 <Filter className="w-12 h-12 md:w-16 md:h-16 text-slate-300 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-slate-800 dark:text-white mb-2">
-                  Nenhuma avaliação encontrada
+                  {t("clas.empty.withFilters.title")}
                 </h3>
                 <p className="text-slate-600 dark:text-slate-300 text-sm mb-4">
-                  Tente ajustar os filtros para encontrar o que procura
+                  {t("clas.empty.withFilters.message")}
                 </p>
                 <button
                   onClick={handleClearFilters}
                   className="border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
                 >
-                  Limpar Filtros
+                  {t("common.actions.clearFilters")}
                 </button>
               </div>
             )}
@@ -367,17 +374,17 @@ export const Exam = () => {
               <div className="text-center py-12">
                 <ClipboardList className="w-12 h-12 md:w-16 md:h-16 text-slate-300 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-slate-800 dark:text-white mb-2">
-                  Nenhuma avaliação encontrada
+                  {t("clas.empty.noData.title")}
                 </h3>
                 <p className="text-slate-600 dark:text-slate-300 text-sm mb-4">
-                  Crie uma avaliação para começar
+                  {t("clas.empty.noData.message")}
                 </p>
                 <button
                   onClick={() => setCreateExamModal(true)}
                   className="border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto text-sm md:text-base"
                 >
                   <Plus className="w-4 h-4" />
-                  Nova Avaliação
+                  {t("exam.new")}
                 </button>
               </div>
             )}
@@ -387,11 +394,17 @@ export const Exam = () => {
                 <div className="md:bg-white dark:md:bg-slate-900 md:rounded-xl md:border md:border-slate-200 dark:border-slate-700 md:shadow-md md:overflow-hidden">
                   {/* Header da tabela - Desktop */}
                   <div className="hidden md:grid md:grid-cols-12 gap-4 bg-slate-50 dark:bg-slate-800 px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide">
-                    <div className="col-span-3">Nome</div>
-                    <div className="col-span-2">Professor</div>
-                    <div className="col-span-2">Tipo</div>
-                    <div className="col-span-2">Alvo</div>
-                    <div className="col-span-3 text-right">Ações</div>
+                    <div className="col-span-3">{t("common.common.name")}</div>
+                    <div className="col-span-2">
+                      {t("common.common.teacher")}
+                    </div>
+                    <div className="col-span-2">{t("common.common.type")}</div>
+                    <div className="col-span-2">
+                      {t("common.common.target")}
+                    </div>
+                    <div className="col-span-3 text-right">
+                      {t("common.common.actions")}
+                    </div>
                   </div>
 
                   {/* Linhas da tabela */}
@@ -418,11 +431,11 @@ export const Exam = () => {
                                   </h3>
                                   {isClassEvaluation ? (
                                     <span className="text-xs text-blue-600 dark:text-blue-400 font-medium">
-                                      Turma
+                                      {t("common.common.class")}
                                     </span>
                                   ) : (
                                     <span className="text-xs text-red-600 dark:text-red-400 font-medium">
-                                      Aluno
+                                      {t("common.common.student")}
                                     </span>
                                   )}
                                 </div>
@@ -459,9 +472,9 @@ export const Exam = () => {
                                   setGradesControlModal(true);
                                 }}
                                 className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg transition-colors text-sm font-medium"
-                                title="Controle de Notas"
+                                title={t("common.random.gradesControl")}
                               >
-                                Notas
+                                {t("common.common.grades")}
                               </button>
                               <button
                                 onClick={() => {
@@ -469,7 +482,7 @@ export const Exam = () => {
                                   setDetailsExamModal(true);
                                 }}
                                 className="flex items-center justify-center px-3 py-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg transition-colors"
-                                title="Ver detalhes"
+                                title={t("common.actions.viewDetails")}
                               >
                                 <Eye className="w-4 h-4" />
                               </button>
@@ -479,13 +492,13 @@ export const Exam = () => {
                                   setUpdateExamModal(true);
                                 }}
                                 className="flex items-center justify-center px-3 py-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg transition-colors"
-                                title="Editar"
+                                title={t("common.actions.edit")}
                               >
                                 <Pencil className="w-4 h-4" />
                               </button>
                               <button
                                 className="flex items-center justify-center px-3 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg transition-colors"
-                                title="Excluir"
+                                title={t("common.actions.delete")}
                               >
                                 <Trash2 className="w-4 h-4" />
                               </button>
@@ -526,14 +539,14 @@ export const Exam = () => {
                                   <div className="flex items-center gap-1.5 text-blue-700 dark:text-blue-400 px-3 py-1.5 rounded-lg shadow-sm border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/30">
                                     <Users className="w-3.5 h-3.5" />
                                     <span className="text-xs font-semibold">
-                                      Turma
+                                      {t("common.common.class")}
                                     </span>
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-1.5 text-red-700 dark:text-red-400 px-3 py-1.5 rounded-lg shadow-sm border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/30">
                                     <User className="w-3.5 h-3.5" />
                                     <span className="text-xs font-semibold">
-                                      Aluno
+                                      {t("common.common.student")}
                                     </span>
                                   </div>
                                 )}
@@ -557,7 +570,7 @@ export const Exam = () => {
                                   setGradesControlModal(true);
                                 }}
                                 className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-blue-200 dark:hover:border-blue-800"
-                                title="Controle de Notas"
+                                title={t("exam.random.gradesControl")}
                               >
                                 <Award className="w-4 h-4" />
                               </button>
@@ -567,7 +580,7 @@ export const Exam = () => {
                                   setDetailsExamModal(true);
                                 }}
                                 className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-blue-200 dark:hover:border-blue-800"
-                                title="Ver detalhes"
+                                title={t("common.actions.viewDetails")}
                               >
                                 <Eye className="w-4 h-4" />
                               </button>
@@ -577,13 +590,13 @@ export const Exam = () => {
                                   setUpdateExamModal(true);
                                 }}
                                 className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-blue-200 dark:hover:border-blue-800"
-                                title="Editar"
+                                title={t("common.actions.edit")}
                               >
                                 <Pencil className="w-4 h-4" />
                               </button>
                               <button
                                 className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors shadow-sm hover:shadow border border-transparent hover:border-red-200 dark:hover:border-red-800"
-                                title="Excluir"
+                                title={t("common.actions.delete")}
                               >
                                 <Trash2 className="w-4 h-4" />
                               </button>
@@ -610,11 +623,13 @@ export const Exam = () => {
                       className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
                     >
                       <ChevronLeft className="w-4 h-4" />
-                      <span className="hidden sm:inline">Anterior</span>
+                      <span className="hidden sm:inline">
+                        {t("common.pagination.previous")}
+                      </span>
                     </button>
 
                     <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-semibold min-w-[60px] text-center">
-                      Pág. {currentPage}
+                      {t("common.pagination.page")} {currentPage}
                     </div>
 
                     <button
@@ -628,7 +643,9 @@ export const Exam = () => {
                       disabled={currentPage >= getTotalPages() || loading}
                       className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
                     >
-                      <span className="hidden sm:inline">Próxima</span>
+                      <span className="hidden sm:inline">
+                        {t("common.pagination.next")}
+                      </span>
                       <ChevronRight className="w-4 h-4" />
                     </button>
                   </div>

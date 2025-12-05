@@ -1,0 +1,26 @@
+{
+  "title": "Provas",
+  "subtitle": "Gerencie as provas dos alunos",
+  "new": "Nova Prova",
+  "add": "Adicionar Prova",
+  "loading": "Carregando provas...",
+  "empty": {
+    "withFilters": {
+      "title": "Nenhuma prova encontrada",
+      "message": "Tente ajustar os filtros para encontrar o que você procura"
+    },
+    "noData": {
+      "title": "Nenhuma prova encontrada",
+      "message": "Adicione uma prova para começar"
+    }
+  },
+  "createExamModal": {
+    "title": "Nova Prova",
+    "subtitle": "Preencha os detalhes para criar uma nova avaliação",
+    "creating": "Criando prova...",
+    "info": "Informações Básicas"
+  },
+  "random": {
+    "gradesControl": "Controle de Notas"
+  }
+}

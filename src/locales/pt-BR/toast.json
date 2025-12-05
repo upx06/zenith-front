@@ -24,5 +24,9 @@
     "updateError": "Erro ao atualizar classe",
     "deleteSuccess": "Classe deletada com sucesso!",
     "deleteError": "Erro ao deletar classe"
+  },
+  "exam": {
+    "createSuccess": "Avaliação criada criado com sucesso!",
+    "createError": "Erro ao criar avaliação"
   }
 }

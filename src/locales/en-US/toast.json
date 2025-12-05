@@ -24,5 +24,9 @@
     "updateError": "Error updating class",
     "deleteSuccess": "Class deleted successfully!",
     "deleteError": "Error deleting class"
+  },
+  "exam": {
+    "createSuccess": "Exam created successfully!",
+    "createError": "Error creating test"
   }
 }

@@ -3,6 +3,7 @@ import { useMutation } from "@apollo/client/react";
 import { X, Loader2, Plus, Trash2, ClipboardList } from "lucide-react";
 import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
+import { useTranslation } from "react-i18next";
 
 import { CREATE_EXAM } from "../../../graphql/mutations/create/CreateExam";
 
@@ -25,6 +26,8 @@ export const CreateExamModal = ({
   closeCreateExamModal,
   refetchExams,
 }: ICreateExamModal) => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     name: "",
     teacherId: "",
@@ -54,7 +57,7 @@ export const CreateExamModal = ({
 
   useEffect(() => {
     if (errorCreateExam) {
-      toast.error(errorCreateExam.message || "Erro ao criar avaliação");
+      toast.error(t("toast.exam.createError"));
     }
   }, [errorCreateExam]);
 
@@ -70,31 +73,31 @@ export const CreateExamModal = ({
     let isValid = true;
 
     if (!formData.name.trim()) {
-      newErrors.name = "Nome é obrigatório";
+      newErrors.name = t("common.formRequirements.name");
       isValid = false;
     }
 
     if (!formData.teacherId) {
-      newErrors.teacherId = "Professor é obrigatório";
+      newErrors.teacherId = t("common.formRequirements.teacher");
       isValid = false;
     }
 
     if (formData.evaluationType === "class" && !formData.classId) {
-      newErrors.classId = "Turma é obrigatória";
+      newErrors.classId = t("common.formRequirements.class");
       isValid = false;
     }
 
     if (formData.evaluationType === "student" && !formData.enrollmentId) {
-      newErrors.enrollmentId = "Matrícula é obrigatória";
+      newErrors.enrollmentId = t("common.formRequirements.enrollment");
       isValid = false;
     }
 
     const hasEmptyTopic = topics.some((topic) => !topic.name.trim());
     if (topics.length === 0) {
-      newErrors.topics = "Adicione pelo menos um tópico";
+      newErrors.topics = t("common.formRequirements.minimumTopic");
       isValid = false;
     } else if (hasEmptyTopic) {
-      newErrors.topics = "Todos os tópicos devem ter um nome";
+      newErrors.topics = t("common.formRequirements.topicName");
       isValid = false;
     }
 
@@ -126,7 +129,7 @@ export const CreateExamModal = ({
     });
 
     if (result.data) {
-      toast.success("Avaliação criada com sucesso!");
+      toast.success(t("toast.exam.createSuccess"));
       refetchExams();
       closeCreateExamModal();
     }
@@ -208,7 +211,9 @@ export const CreateExamModal = ({
           <div className="absolute inset-0 bg-white/70 dark:bg-slate-900/70 flex items-center justify-center rounded-xl z-10">
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-              <p className="text-slate-600 dark:text-slate-300 font-medium">Criando avaliação...</p>
+              <p className="text-slate-600 dark:text-slate-300 font-medium">
+                {t("exam.createExamModal.creating")}
+              </p>
             </div>
           </div>
         )}
@@ -221,9 +226,11 @@ export const CreateExamModal = ({
                 <ClipboardList className="w-6 h-6" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold">Nova Avaliação</h2>
+                <h2 className="text-2xl font-bold">
+                  {t("exam.createExamModal.title")}
+                </h2>
                 <p className="text-blue-100 dark:text-blue-50 text-sm mt-1">
-                  Preencha os dados para criar uma nova avaliação
+                  {t("exam.createExamModal.subtitle")}
                 </p>
               </div>
             </div>
@@ -243,13 +250,13 @@ export const CreateExamModal = ({
             {/* Informações Básicas */}
             <div className="space-y-4">
               <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide border-b border-slate-200 dark:border-slate-700 pb-2">
-                Informações Básicas
+                {t("exam.createExamModal.info")}
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1.5">
-                    Nome da Avaliação *
+                    {t("common.formLabels.testName")}
                   </label>
                   <input
                     type="text"
@@ -258,9 +265,11 @@ export const CreateExamModal = ({
                     onChange={handleChange}
                     disabled={loadingCreateExam}
                     className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm disabled:opacity-50 disabled:cursor-not-allowed ${
-                      errors.name ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+                      errors.name
+                        ? "border-red-500"
+                        : "border-slate-300 dark:border-slate-700"
                     }`}
-                    placeholder="Ex: Prova Final - Módulo 3"
+                    placeholder={t("common.formPlaceholders.test")}
                   />
                   {errors.name && (
                     <p className="text-red-500 text-xs mt-1">{errors.name}</p>
@@ -269,7 +278,7 @@ export const CreateExamModal = ({
 
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1.5">
-                    Professor Responsável *
+                    {t("common.formLabels.responsibleTeacher")}
                   </label>
                   <select
                     name="teacherId"
@@ -277,10 +286,14 @@ export const CreateExamModal = ({
                     onChange={handleChange}
                     disabled={loadingCreateExam || loadingTeachers}
                     className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm disabled:opacity-50 disabled:cursor-not-allowed ${
-                      errors.teacherId ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+                      errors.teacherId
+                        ? "border-red-500"
+                        : "border-slate-300 dark:border-slate-700"
                     }`}
                   >
-                    <option value="">Selecione um professor</option>
+                    <option value="">
+                      {t("common.formPlaceholders.selectTeacher")}
+                    </option>
                     {teachers.map((teacher) => (
                       <option key={teacher.id} value={teacher.id}>
                         {teacher.name}
@@ -299,7 +312,7 @@ export const CreateExamModal = ({
             {/* Tipo de Avaliação e Seleção */}
             <div className="space-y-4">
               <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide border-b border-slate-200 dark:border-slate-700 pb-2">
-                Tipo de Avaliação
+                {"common.formLabels.testType"}
               </h3>
 
               <div className="flex flex-col md:flex-row items-start md:items-end gap-4">
@@ -330,7 +343,7 @@ export const CreateExamModal = ({
                           : "text-slate-700 dark:text-slate-200"
                       }`}
                     >
-                      Turma
+                      {t("common.common.class")}
                     </span>
                   </label>
 
@@ -359,7 +372,7 @@ export const CreateExamModal = ({
                           : "text-slate-700 dark:text-slate-200"
                       }`}
                     >
-                      Aluno
+                      {t("common.common.student")}
                     </span>
                   </label>
                 </div>
@@ -369,7 +382,7 @@ export const CreateExamModal = ({
                   {formData.evaluationType === "class" ? (
                     <div>
                       <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1.5">
-                        Selecione a Turma *
+                        {t("common.common.class")}
                       </label>
                       <select
                         name="classId"
@@ -377,10 +390,14 @@ export const CreateExamModal = ({
                         onChange={handleChange}
                         disabled={loadingCreateExam || loadingClasses}
                         className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm disabled:opacity-50 disabled:cursor-not-allowed ${
-                          errors.classId ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+                          errors.classId
+                            ? "border-red-500"
+                            : "border-slate-300 dark:border-slate-700"
                         }`}
                       >
-                        <option value="">Selecione uma turma</option>
+                        <option value="">
+                          {t("common.formPlaceholders.selectClass")}
+                        </option>
                         {classes.map((classItem) => (
                           <option key={classItem.id} value={classItem.id}>
                             {classItem.name} - {classItem.level} (
@@ -397,7 +414,7 @@ export const CreateExamModal = ({
                   ) : (
                     <div>
                       <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1.5">
-                        Selecione a Matrícula *
+                        {t("common.common.enrollment")}
                       </label>
                       <select
                         name="enrollmentId"
@@ -410,7 +427,9 @@ export const CreateExamModal = ({
                             : "border-slate-300 dark:border-slate-700"
                         }`}
                       >
-                        <option value="">Selecione uma matrícula</option>
+                        <option value="">
+                          {t("common.formPlaceholders.selectEnrollment")}
+                        </option>
                         {enrollments.map((enrollment) => (
                           <option key={enrollment.id} value={enrollment.id}>
                             {enrollment.student.name} - {enrollment.class.name}{" "}
@@ -433,7 +452,7 @@ export const CreateExamModal = ({
             <div>
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide">
-                  Critérios de Avaliação *
+                  {"common.formLabels.testTopic"}
                 </h3>
                 <button
                   type="button"
@@ -442,7 +461,7 @@ export const CreateExamModal = ({
                   className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-xs font-medium"
                 >
                   <Plus className="w-3.5 h-3.5" />
-                  Adicionar Tópico
+                  {"common.random.addTopic"}
                 </button>
               </div>
 
@@ -468,7 +487,9 @@ export const CreateExamModal = ({
                             }
                             disabled={loadingCreateExam}
                             className="flex-1 px-2 py-1.5 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                            placeholder={`Tópico ${index + 1}`}
+                            placeholder={
+                              t("common.common.topic") + ` ${index + 1}`
+                            }
                           />
                         </div>
                       </div>
@@ -500,7 +521,7 @@ export const CreateExamModal = ({
               disabled={loadingCreateExam}
               className="flex-1 px-4 py-2.5 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
             >
-              Cancelar
+              {t("common.actions.cancel")}
             </button>
             <button
               type="submit"
@@ -510,10 +531,10 @@ export const CreateExamModal = ({
               {loadingCreateExam ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Criando...
+                  {t("common.status.creating")}
                 </>
               ) : (
-                "Criar Avaliação"
+                t("exam.createExamModal.creating")
               )}
             </button>
           </div>

@@ -35,9 +35,18 @@
     "next": "Next"
   },
   "common": {
+    "class": "Class",
+    "student": "Student",
     "capacity": "Capacity",
     "students": "students",
-    "name": "Name"
+    "name": "Name",
+    "teacher": "Teacher",
+    "type": "Type",
+    "target": "Target",
+    "actions": "Actions",
+    "grades": "Grades",
+    "enrollment": "Enrollment",
+    "topic": "Topic"
   },
   "filters": {
     "name": "Filter by name...",
@@ -59,20 +68,33 @@
     "goal": "Current Goal",
     "selectLanguage": "Select a language",
     "enrolledStudents": "Enrolled Students",
-    "nextLessons": "Next Lessons"
+    "nextLessons": "Next Lessons",
+    "testName": "Test name",
+    "testType": "Test type",
+    "testTopic": "Test Topics",
+    "responsibleTeacher": "Responsible Teacher"
   },
   "formPlaceholders": {
     "name": "Name",
     "fullName": "Full name",
     "email": "Email",
-    "goal": "Current goal"
+    "goal": "Current goal",
+    "test": "Ex: Final Test - Module 3",
+    "selectTeacher": "Select a teacher",
+    "selectClass": "Select a class",
+    "selectEnrollment": "Select an enrollment"
   },
   "formRequirements": {
     "name": "Name is required",
     "email": "Email is required",
     "phone": "Phone is required",
+    "teacher": "Teacher is required",
     "level": "Level is required",
-    "language": "Language is required"
+    "language": "Language is required",
+    "class": "Class is required",
+    "enrollment": "Enrollment is required",
+    "minimumTopic": "Add at least one topic",
+    "topicName": "All topics must have a name"
   },
   "formErrors": {
     "invalidEmail": "Email is invalid",
@@ -82,6 +104,9 @@
   "random": {
     "noScheduled": "No schedulued classes",
     "removeStudent": "Remove student",
-    "noAvaibleEnrollment": "No student avaible for enrollment"
+    "noAvaibleEnrollment": "No student avaible for enrollment",
+    "allTeachers": "All teachers",
+    "allTypes": "All types",
+    "addTopic": "Add Topic"
   }
 }
