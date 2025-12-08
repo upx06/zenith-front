@@ -5,6 +5,7 @@ import { UPDATE_EXAM_BASIC } from "../../../graphql/mutations/update/UpdateExamB
 import type { IExam } from "../../../interfaces/IExam";
 import toast from "react-hot-toast";
 import { useTeachers } from "../../../hooks/useTeachers";
+import { useTranslation } from "react-i18next";
 
 interface IUpdateExamModal {
   exam: IExam;
@@ -17,6 +18,8 @@ export const UpdateExamModal = ({
   closeUpdateExamModal,
   refetchExams,
 }: IUpdateExamModal) => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     name: exam.name,
     teacherId: exam.teacher?.id || "",
@@ -39,12 +42,12 @@ export const UpdateExamModal = ({
     let isValid = true;
 
     if (!formData.name.trim()) {
-      newErrors.name = "Nome da avaliação é obrigatório";
+      newErrors.name = t("common.formRequirements.name");
       isValid = false;
     }
 
     if (!formData.teacherId) {
-      newErrors.teacherId = "Professor é obrigatório";
+      newErrors.teacherId = t("common.formRequirements.teacher");
       isValid = false;
     }
 
@@ -68,23 +71,13 @@ export const UpdateExamModal = ({
         },
       });
 
-      toast.success("Avaliação atualizada com sucesso!");
+      toast.success(t("toast.exam.updateSuccess"));
       refetchExams();
       closeUpdateExamModal();
     } catch (err: any) {
       console.error("Erro ao atualizar avaliação:", err);
-      const errorMessage = err.message || "Erro ao atualizar avaliação";
 
-      if (
-        errorMessage.includes("already exists") ||
-        errorMessage.includes("já existe")
-      ) {
-        toast.error("Esta avaliação já está cadastrada");
-      } else if (errorMessage.includes("Duplicate")) {
-        toast.error("Já existe uma avaliação com este nome");
-      } else {
-        toast.error(errorMessage);
-      }
+      toast.error(t("toast.exam.updateError"));
     }
   };
 
@@ -129,7 +122,9 @@ export const UpdateExamModal = ({
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
               <p className="text-slate-600 dark:text-slate-300 font-medium">
-                {loading ? "Atualizando avaliação..." : "Carregando professores..."}
+                {loading
+                  ? t("exam.updateExamModal.updateExam")
+                  : t("exam.updateExamModal.loadingTeachers")}
               </p>
             </div>
           </div>
@@ -137,7 +132,7 @@ export const UpdateExamModal = ({
 
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-slate-800 dark:text-white">
-            Editar Avaliação
+            {t("exam.updateExamModal.title")}
           </h2>
           <button
             onClick={handleCloseModal}
@@ -151,7 +146,7 @@ export const UpdateExamModal = ({
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
-              Nome da Avaliação
+              {t("common.common.name")}
             </label>
             <input
               type="text"
@@ -160,9 +155,11 @@ export const UpdateExamModal = ({
               onChange={handleChange}
               disabled={isLoading}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-slate-800 text-gray-900 dark:text-white ${
-                errors.name ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+                errors.name
+                  ? "border-red-500"
+                  : "border-slate-300 dark:border-slate-700"
               }`}
-              placeholder="Ex: Prova de Final de Módulo"
+              placeholder={t("common.formPlaceholders.test")}
             />
             {errors.name && (
               <p className="text-red-500 text-xs mt-1">{errors.name}</p>
@@ -171,7 +168,7 @@ export const UpdateExamModal = ({
 
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
-              Professor Responsável
+              {t("common.common.teacher")}
             </label>
             <select
               name="teacherId"
@@ -179,10 +176,14 @@ export const UpdateExamModal = ({
               onChange={handleChange}
               disabled={isLoading}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-slate-800 text-gray-900 dark:text-white ${
-                errors.teacherId ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+                errors.teacherId
+                  ? "border-red-500"
+                  : "border-slate-300 dark:border-slate-700"
               }`}
             >
-              <option value="">Selecione um professor</option>
+              <option value="">
+                {t("common.formPlaceholders.selectTeacher")}
+              </option>
               {teachers.map((teacher) => (
                 <option key={teacher.id} value={teacher.id}>
                   {teacher.name}
@@ -200,10 +201,12 @@ export const UpdateExamModal = ({
               <div className="flex items-center gap-2 text-red-800 dark:text-red-400 mb-1">
                 <AlertCircle className="w-4 h-4" />
                 <span className="font-medium text-sm">
-                  Erro ao atualizar avaliação
+                  {t("errors.exam.updateError")}
                 </span>
               </div>
-              <p className="text-red-700 dark:text-red-300 text-sm">{error.message}</p>
+              <p className="text-red-700 dark:text-red-300 text-sm">
+                {error.message}
+              </p>
             </div>
           )}
 
@@ -214,7 +217,7 @@ export const UpdateExamModal = ({
               disabled={isLoading}
               className="flex-1 px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base"
             >
-              Cancelar
+              {t("common.actions.cancel")}
             </button>
             <button
               type="submit"
@@ -224,7 +227,7 @@ export const UpdateExamModal = ({
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Salvando...
+                  {t("common.status.saving")}
                 </>
               ) : (
                 "Salvar"

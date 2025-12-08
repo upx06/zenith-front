@@ -312,7 +312,7 @@ export const CreateExamModal = ({
             {/* Tipo de Avaliação e Seleção */}
             <div className="space-y-4">
               <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide border-b border-slate-200 dark:border-slate-700 pb-2">
-                {"common.formLabels.testType"}
+                {t("common.formLabels.testType")}
               </h3>
 
               <div className="flex flex-col md:flex-row items-start md:items-end gap-4">
@@ -452,7 +452,7 @@ export const CreateExamModal = ({
             <div>
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide">
-                  {"common.formLabels.testTopic"}
+                  {t("common.formLabels.testTopic")}
                 </h3>
                 <button
                   type="button"
@@ -461,7 +461,7 @@ export const CreateExamModal = ({
                   className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-xs font-medium"
                 >
                   <Plus className="w-3.5 h-3.5" />
-                  {"common.random.addTopic"}
+                  {t("common.random.addTopic")}
                 </button>
               </div>
 

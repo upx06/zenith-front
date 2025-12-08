@@ -22,5 +22,8 @@
     "languages": {
       "loadError": "Error loading languages"
     }
+  },
+  "exam": {
+    "updateError": "Error updating test"
   }
 }

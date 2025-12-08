@@ -46,7 +46,11 @@
     "actions": "Actions",
     "grades": "Grades",
     "enrollment": "Enrollment",
-    "topic": "Topic"
+    "topic": "Topic",
+    "insufficient": "Insufficient",
+    "regular": "Regular",
+    "good": "Good",
+    "results": "Resultados"
   },
   "filters": {
     "name": "Filter by name...",
@@ -71,7 +75,7 @@
     "nextLessons": "Next Lessons",
     "testName": "Test name",
     "testType": "Test type",
-    "testTopic": "Test Topics",
+    "testTopic": "Test's Topics",
     "responsibleTeacher": "Responsible Teacher"
   },
   "formPlaceholders": {
@@ -82,7 +86,8 @@
     "test": "Ex: Final Test - Module 3",
     "selectTeacher": "Select a teacher",
     "selectClass": "Select a class",
-    "selectEnrollment": "Select an enrollment"
+    "selectEnrollment": "Select an enrollment",
+    "selectFeedback": "Enter the feedback for the student on this topic..."
   },
   "formRequirements": {
     "name": "Name is required",
@@ -102,11 +107,16 @@
     "invalidImage": "Please, enter a valid image"
   },
   "random": {
+    "of": "of",
     "noScheduled": "No schedulued classes",
     "removeStudent": "Remove student",
     "noAvaibleEnrollment": "No student avaible for enrollment",
     "allTeachers": "All teachers",
     "allTypes": "All types",
-    "addTopic": "Add Topic"
+    "addTopic": "Add Topic",
+    "noStudentEnrolled": "No students enrolled",
+    "classNoStudentEnrolled": "This class has no enrolled students",
+    "noTopic": "No topics registered",
+    "examNoTopic": "This exam has no defined topics"
   }
 }

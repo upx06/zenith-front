@@ -12,6 +12,7 @@ import {
 import { UPDATE_SCORE } from "../../graphql/mutations/update/UpdateScore";
 import type { IExam } from "../../interfaces/IExam";
 import { useMutation } from "@apollo/client/react";
+import { useTranslation } from "react-i18next";
 
 interface IGradesControlModal {
   exam: IExam;
@@ -34,6 +35,8 @@ export const GradesControlModal = ({
   closeGradesControlModal,
   refetchExams,
 }: IGradesControlModal) => {
+  const { t } = useTranslation();
+
   const [grades, setGrades] = useState<GradeState>(() => {
     const existingGrades: GradeState = {};
 
@@ -222,12 +225,18 @@ export const GradesControlModal = ({
                 <Award className="w-7 h-7" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold">Controle de Notas</h2>
-                <p className="text-blue-100 dark:text-blue-200 mt-1">{exam.name}</p>
+                <h2 className="text-2xl font-bold">
+                  {t("exam.gradesControlModal.title")}
+                </h2>
+                <p className="text-blue-100 dark:text-blue-200 mt-1">
+                  {exam.name}
+                </p>
                 <p className="text-blue-200 dark:text-blue-300 text-sm mt-1">
                   {isClassExam
                     ? `${exam.class?.name} - ${exam.class?.level}`
-                    : `Aluno: ${exam.enrollment?.student.name}`}
+                    : `${t("common.common.student")}: ${
+                        exam.enrollment?.student.name
+                      }`}
                 </p>
               </div>
             </div>
@@ -247,20 +256,20 @@ export const GradesControlModal = ({
             <div className="text-center py-12">
               <User className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
               <p className="text-slate-600 dark:text-slate-300 font-medium">
-                Nenhum aluno matriculado
+                {t("common.random.noStudentEnrolled")}
               </p>
               <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
-                Esta turma não possui alunos matriculados
+                {t("common.random.classNoStudentEnrolled")}
               </p>
             </div>
           ) : topics.length === 0 ? (
             <div className="text-center py-12">
               <BookOpen className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
               <p className="text-slate-600 dark:text-slate-300 font-medium">
-                Nenhum tópico cadastrado
+                {t("common.random.noTopic")}
               </p>
               <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
-                Esta avaliação não possui tópicos definidos
+                {t("common.random.examNoTopic")}
               </p>
             </div>
           ) : (
@@ -288,7 +297,8 @@ export const GradesControlModal = ({
                         </div>
                         <div className="text-right">
                           <div className="text-sm text-slate-600 dark:text-slate-300">
-                            {studentAssignedGrades} de {topics.length}
+                            {studentAssignedGrades} {t("common.random.of")}{" "}
+                            {topics.length}
                           </div>
                         </div>
                       </div>
@@ -363,7 +373,9 @@ export const GradesControlModal = ({
                                     }
                                     disabled:opacity-50 disabled:cursor-not-allowed
                                   `}
-                                  title="Adicionar feedback"
+                                  title={t(
+                                    "exam.gradesControlModal.addFeedback"
+                                  )}
                                 >
                                   <MessageSquare className="w-4 h-4" />
                                 </button>
@@ -383,7 +395,9 @@ export const GradesControlModal = ({
                                     )
                                   }
                                   disabled={loadingExam}
-                                  placeholder="Digite o feedback para o aluno sobre este tópico..."
+                                  placeholder={t(
+                                    "common.formPlaceholders.selectFeedback"
+                                  )}
                                   className="w-full px-3 py-2 bg-white dark:bg-slate-800 text-gray-900 dark:text-white border-2 border-slate-200 dark:border-slate-600 rounded-lg focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none resize-none text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                                   rows={3}
                                 />

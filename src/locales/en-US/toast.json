@@ -27,6 +27,8 @@
   },
   "exam": {
     "createSuccess": "Exam created successfully!",
-    "createError": "Error creating test"
+    "createError": "Error creating test",
+    "updateSuccess": "Exam updated successfully!",
+    "updateError": "Error updating exam"
   }
 }

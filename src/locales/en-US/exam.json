@@ -20,6 +20,22 @@
     "creating": "Creating test...",
     "info": "Basic Info"
   },
+  "gradesControlModal": {
+    "title": "Grades Control",
+    "addFeedback": "Add feedback"
+  },
+  "examDetailsModal": {
+    "criteria": "Exam Criteria",
+    "evaluatedTopic": "Evaluated Topics",
+    "noResult": "No avaible result",
+    "noResultsYet": "This exam has not yet released any results",
+    "notEvaluated": "No evaluated"
+  },
+  "updateExamModal": {
+    "title": "Update Test",
+    "updateExam": "Updating test...",
+    "loadingTeachers": "Loading teachers..."
+  },
   "random": {
     "gradesControl": "Grades Control"
   }

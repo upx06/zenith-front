@@ -46,7 +46,11 @@
     "actions": "Ações",
     "grades": "Notas",
     "enrollment": "Matrícula",
-    "topic": "Tópico"
+    "topic": "Tópico",
+    "insufficient": "Insuficiente",
+    "regular": "Regular",
+    "good": "Bom",
+    "results": "Resultados"
   },
   "filters": {
     "name": "Filtrar por nome...",
@@ -82,7 +86,8 @@
     "test": "Ex: Avaliação Final - Módulo 3",
     "selectTeacher": "Selecione um professor",
     "selectClass": "Selecione uma turma",
-    "selectEnrollment": "Selecione uma matrícula"
+    "selectEnrollment": "Selecione uma matrícula",
+    "selectFeedback": "Digite o feedback para o aluno sobre este tópico..."
   },
   "formRequirements": {
     "name": "Nome é obrigatório",
@@ -102,11 +107,16 @@
     "invalidImage": "Por favor, insira uma imagem válida"
   },
   "random": {
+    "of": "de",
     "noScheduled": "Sem aula agendada",
     "removeStudent": "Remover aluno(a)",
     "noAvaibleEnrollment": "Nenhum aluno disponível para matrícula",
     "allTeachers": "Todos os professores",
     "allTypes": "Todos os tipos",
-    "addTopic": "Adicionar Tópico"
+    "addTopic": "Adicionar Tópico",
+    "noStudentEnrolled": "Nenhum estudante matriculado",
+    "classNoStudentEnrolled": "Esta turma não possui estudantes matriculados",
+    "noTopic": "Nenhum tópico registrado",
+    "examNoTopic": "Este exame não possui tópicos definidos"
   }
 }

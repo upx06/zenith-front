@@ -8,6 +8,7 @@ import {
   Award,
 } from "lucide-react";
 import type { IExam } from "../../interfaces/IExam";
+import { useTranslation } from "react-i18next";
 
 interface IExamDetailsModal {
   exam: IExam;
@@ -42,6 +43,8 @@ export const ExamDetailsModal = ({
   exam,
   closeExamDetailsModal,
 }: IExamDetailsModal) => {
+  const { t } = useTranslation();
+
   const isClassEvaluation = !!exam.class;
   const hasResults = exam.scores && exam.scores.length > 0;
 
@@ -64,9 +67,12 @@ export const ExamDetailsModal = ({
   const studentResults = isClassEvaluation ? getStudentResults() : [];
 
   // Para avaliação individual, pegar scores do aluno
-  const individualScores = !isClassEvaluation && exam.enrollment
-    ? exam.scores?.filter((score) => score.enrollmentId === exam.enrollment.id) || []
-    : [];
+  const individualScores =
+    !isClassEvaluation && exam.enrollment
+      ? exam.scores?.filter(
+          (score) => score.enrollmentId === exam.enrollment.id
+        ) || []
+      : [];
 
   return (
     <div
@@ -94,12 +100,12 @@ export const ExamDetailsModal = ({
                   {isClassEvaluation ? (
                     <div className="px-3 py-1 bg-white/20 rounded-full text-xs font-medium flex items-center gap-1">
                       <Users className="w-3 h-3" />
-                      Turma Completa
+                      {t("common.common.class")}
                     </div>
                   ) : (
                     <div className="px-3 py-1 bg-white/20 rounded-full text-xs font-medium flex items-center gap-1">
                       <User className="w-3 h-3" />
-                      Aluno Específico
+                      {t("common.common.student")}
                     </div>
                   )}
                 </div>
@@ -129,7 +135,9 @@ export const ExamDetailsModal = ({
                   )}
                   <div className="flex-1 min-w-0">
                     <span className="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wide block">
-                      {isClassEvaluation ? "Turma" : "Aluno"}
+                      {isClassEvaluation
+                        ? t("common.common.class")
+                        : t("common.common.student")}
                     </span>
                     <span className="font-semibold text-slate-800 dark:text-white truncate block">
                       {isClassEvaluation
@@ -146,10 +154,11 @@ export const ExamDetailsModal = ({
                   <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <span className="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wide block">
-                      Critérios de Avaliação
+                      {t("exam.examDetailsModal.criteria")}
                     </span>
                     <span className="font-semibold text-slate-800 dark:text-white">
-                      {exam.topics?.length || 0} tópico
+                      {exam.topics?.length || 0}{" "}
+                      {t("common.common.topic").toLowerCase()}
                       {exam.topics?.length !== 1 ? "s" : ""}
                     </span>
                   </div>
@@ -161,14 +170,14 @@ export const ExamDetailsModal = ({
             <div>
               <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3 uppercase tracking-wide flex items-center gap-2">
                 <ClipboardList className="w-4 h-4" />
-                Tópicos Avaliados
+                {t("exam.examDetailsModal.criteira")}
               </h3>
 
               {exam.topics?.length === 0 ? (
                 <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-6 text-center border border-slate-200 dark:border-slate-700">
                   <ClipboardList className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
                   <p className="text-slate-600 dark:text-slate-300 text-sm">
-                    Nenhum tópico cadastrado
+                    {t("exam.examDetailsModal.evaluatedTopic")}
                   </p>
                 </div>
               ) : (
@@ -198,24 +207,34 @@ export const ExamDetailsModal = ({
             <div>
               <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3 uppercase tracking-wide flex items-center gap-2">
                 <Award className="w-4 h-4" />
-                Resultados
-                {hasResults && isClassEvaluation && (
+                {t("common.common.results")}
+                {/* {hasResults && isClassEvaluation && (
                   <span className="text-xs font-normal text-slate-500 dark:text-slate-400 ml-1">
-                    ({studentResults.filter(sr => sr.scores.length > 0).length} aluno
-                    {studentResults.filter(sr => sr.scores.length > 0).length !== 1 ? "s" : ""} avaliado
-                    {studentResults.filter(sr => sr.scores.length > 0).length !== 1 ? "s" : ""})
+                    (
+                    {studentResults.filter((sr) => sr.scores.length > 0).length}{" "}
+                    aluno
+                    {studentResults.filter((sr) => sr.scores.length > 0)
+                      .length !== 1
+                      ? "s"
+                      : ""}{" "}
+                    avaliado
+                    {studentResults.filter((sr) => sr.scores.length > 0)
+                      .length !== 1
+                      ? "s"
+                      : ""}
+                    )
                   </span>
-                )}
+                )} */}
               </h3>
 
               {!hasResults ? (
                 <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-8 text-center border border-slate-200 dark:border-slate-700">
                   <Award className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
                   <p className="text-slate-600 dark:text-slate-300 font-medium">
-                    Nenhum resultado disponível
+                    {t("exam.examDetailsModal.noResult")}
                   </p>
                   <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
-                    Esta avaliação ainda não possui resultados lançados
+                    {t("exam.examDetailsModal.noResultsYet")}
                   </p>
                 </div>
               ) : (
@@ -303,7 +322,7 @@ export const ExamDetailsModal = ({
                               </div>
                               {scores.length === 0 && (
                                 <span className="px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-medium rounded">
-                                  Não avaliado
+                                  {t("exam.examDetailsModal.notEvaluated")}
                                 </span>
                               )}
                             </div>

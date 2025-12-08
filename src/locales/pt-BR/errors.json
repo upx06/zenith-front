@@ -22,5 +22,8 @@
     "languages": {
       "loadError": "Erro ao carregar linguagens"
     }
+  },
+  "exam": {
+    "updateError": "Erro ao atualizar prova"
   }
 }

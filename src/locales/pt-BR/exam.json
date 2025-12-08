@@ -20,6 +20,22 @@
     "creating": "Criando prova...",
     "info": "Informações Básicas"
   },
+  "gradesControlModal": {
+    "title": "Controle de Notas",
+    "addFeedback": "Adicionar feedback"
+  },
+  "examDetialsModal": {
+    "criteria": "Critérios de Avaliação",
+    "evaluatedTopic": "Tópicos avaliação",
+    "noResult": "Sem resultados disponíveis",
+    "noResultsYet": "Esta prova ainda não possui resultados lançados",
+    "notEvaluated": "Não avaliado"
+  },
+  "updateExamModal": {
+    "title": "Editar Prova",
+    "updateExam": "Atualizando prova...",
+    "loadingTeachers": "Carregando professores..."
+  },
   "random": {
     "gradesControl": "Controle de Notas"
   }
