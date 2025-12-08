@@ -6,6 +6,7 @@ import { useLazyQuery } from "@apollo/client/react";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import { ThemeToggle } from "../../components/ThemeToggle";
+import { useTranslation } from "react-i18next";
 
 interface SignInData {
   signIn: {
@@ -22,6 +23,8 @@ interface GetUserByEmailData {
 }
 
 export default function SignIn() {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -46,7 +49,7 @@ export default function SignIn() {
     e.preventDefault();
 
     if (!formData.email || !formData.password) {
-      toast.error("Por favor, preencha todos os campos");
+      toast.error(t("auth.in.toast.fillInFields"));
       return;
     }
 
@@ -60,9 +63,7 @@ export default function SignIn() {
       const user = userResult.data?.getUserByEmail;
 
       if (user && user.active === false) {
-        toast.error(
-          "Sua conta ainda não foi ativada. Entre em contato com o administrador."
-        );
+        toast.error(t("auth.in.toast.inactiveAccount"));
         return;
       }
 
@@ -75,10 +76,10 @@ export default function SignIn() {
 
       if (result.data?.signIn?.token) {
         localStorage.setItem("token", result.data.signIn.token);
-        toast.success("Login realizado com sucesso!");
+        toast.success(t("auth.in.toast.success"));
         navigate("/home");
       } else if (result.error) {
-        toast.error("Email ou senha inválidos");
+        toast.error(t("auth.in.toast.emailPassInvalid"));
       }
     } catch (error: any) {
       console.error("Erro ao fazer login:", error);
@@ -92,12 +93,12 @@ export default function SignIn() {
           errorCode === "authentication_failed" ||
           errorCode === "AUTHENTICATION_FAILED"
         ) {
-          toast.error("Email ou senha inválidos");
+          toast.error(t("auth.in.toast.emailPassInvalid"));
           return;
         }
       }
 
-      const errorMessage = error.message || "Erro ao fazer login";
+      const errorMessage = t("auth.in.toast.error");
       toast.error(errorMessage);
     }
   };
@@ -145,10 +146,10 @@ export default function SignIn() {
           <div className="w-full max-w-md">
             <div className="mb-8 hidden sm:block">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                Entrar
+                {t("auth.in.title")}
               </h2>
               <p className="text-gray-600 dark:text-slate-300">
-                Entre com suas credenciais para acessar o sistema
+                {t("auth.in.subtitle")}
               </p>
             </div>
 
@@ -158,7 +159,7 @@ export default function SignIn() {
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700 dark:text-slate-200 mb-1.5"
                 >
-                  Email
+                  {t("auth.in.email")}
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-slate-500" />
@@ -167,7 +168,7 @@ export default function SignIn() {
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="seu@email.com"
+                    placeholder={t("auth.in.emailPlaceholder")}
                     className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-1 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors outline-none text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     disabled={loadingSignIn || loadingGetUser}
                     autoComplete="off"
@@ -180,7 +181,7 @@ export default function SignIn() {
                   htmlFor="password"
                   className="block text-sm font-medium text-gray-700 dark:text-slate-200 mb-1.5"
                 >
-                  Senha
+                  {t("auth.in.password")}
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-slate-500" />
@@ -189,7 +190,7 @@ export default function SignIn() {
                     type="password"
                     value={formData.password}
                     onChange={handleChange}
-                    placeholder="Digite sua senha"
+                    placeholder={t("auth.in.passwordPlaceholder")}
                     className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-1 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors outline-none text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     disabled={loadingSignIn || loadingGetUser}
                     autoComplete="off"
@@ -205,10 +206,10 @@ export default function SignIn() {
                 {loadingSignIn || loadingGetUser ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    Entrando...
+                    {t("auth.in.signingIn")}
                   </>
                 ) : (
-                  "Entrar"
+                  t("auth.in.signInButton")
                 )}
               </button>
 
@@ -218,7 +219,7 @@ export default function SignIn() {
                 </div>
                 <div className="relative flex justify-center text-xs">
                   <span className="px-3 bg-white dark:bg-slate-900 text-gray-500 dark:text-slate-400">
-                    Não tem uma conta?
+                    {t("auth.in.noAccount")}
                   </span>
                 </div>
               </div>
@@ -228,7 +229,7 @@ export default function SignIn() {
                 onClick={() => navigate("/sign-up")}
                 className="w-full border border-red-600 dark:border-red-500 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 py-2.5 px-4 rounded-md cursor-pointer font-medium transition-colors text-sm"
               >
-                Criar conta
+                {t("auth.in.createAccount")}
               </button>
             </form>
           </div>

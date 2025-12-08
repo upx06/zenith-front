@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { CREATE_USER } from "../../graphql/mutations/create/CreateUser";
 import toast from "react-hot-toast";
 import { ThemeToggle } from "../../components/ThemeToggle";
+import { useTranslation } from "react-i18next";
 
 interface SignUpData {
   createUser: {
@@ -15,6 +16,8 @@ interface SignUpData {
 }
 
 export default function SignUp() {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -47,17 +50,17 @@ export default function SignUp() {
       !formData.password ||
       !formData.passwordConfirmation
     ) {
-      toast.error("Por favor, preencha todos os campos");
+      toast.error(t("auth.out.toast.fillInFields"));
       return;
     }
 
     if (formData.password.length < 8) {
-      toast.error("A senha deve ter no mínimo 8 caracteres");
+      toast.error(t("auth.out.toast.passwordMinLength"));
       return;
     }
 
     if (formData.password !== formData.passwordConfirmation) {
-      toast.error("As senhas não coincidem");
+      toast.error(t("auth.out.toast.passwordsDoNotMatch"));
       return;
     }
 
@@ -74,34 +77,31 @@ export default function SignUp() {
       });
 
       if (result.data?.createUser?.result?.id) {
-        toast.success(
-          "Conta criada com sucesso! Entre em contato com o administrador para ativação.",
-          {
-            duration: 6000,
-          }
-        );
+        toast.success(t("auth.out.toast.success"), {
+          duration: 6000,
+        });
         setTimeout(() => navigate("/"), 1500);
       } else if (result.error) {
-        const errorMessage = result.error?.message || "Erro ao criar conta";
+        const errorMessage = result.error?.message || t("auth.out.toast.error");
 
         if (
           errorMessage.includes("already exists") ||
           errorMessage.includes("já existe")
         ) {
-          toast.error("Este email já está cadastrado");
+          toast.error(t("auth.out.toast.emailAlreadyExists"));
         } else {
           toast.error(errorMessage);
         }
       }
     } catch (error: any) {
       console.error("Erro ao criar conta:", error);
-      const errorMessage = error.message || "Erro ao criar conta";
+      const errorMessage = error.message || t("auth.out.toast.error");
 
       if (
         errorMessage.includes("already exists") ||
         errorMessage.includes("já existe")
       ) {
-        toast.error("Este email já está cadastrado");
+        toast.error(t("auth.out.toast.emailAlreadyExists"));
       } else {
         toast.error(errorMessage);
       }
@@ -144,7 +144,6 @@ export default function SignUp() {
         </div>
 
         <div className="lg:w-1/2 bg-white dark:bg-slate-900 p-8 lg:p-12 flex items-center justify-center relative">
-          {/* Theme toggle for desktop - top right */}
           <div className="absolute top-4 right-4 hidden sm:block">
             <ThemeToggle />
           </div>
@@ -152,10 +151,10 @@ export default function SignUp() {
           <div className="w-full max-w-md">
             <div className="mb-8 hidden sm:block">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                Criar Conta
+                {t("auth.out.title")}
               </h2>
               <p className="text-gray-600 dark:text-slate-300">
-                Preencha os campos abaixo para criar sua conta
+                {t("auth.out.subtitle")}
               </p>
             </div>
 
@@ -165,7 +164,7 @@ export default function SignUp() {
                   htmlFor="name"
                   className="block text-sm font-medium text-gray-700 dark:text-slate-200 mb-1.5"
                 >
-                  Nome
+                  {t("auth.out.name")}
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-slate-500" />
@@ -174,7 +173,7 @@ export default function SignUp() {
                     type="text"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="Seu nome completo"
+                    placeholder={t("auth.out.namePlaceholder")}
                     className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-1 focus:ring-red-500 dark:focus:ring-red-400 focus:border-red-500 dark:focus:border-red-400 transition-colors outline-none text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     disabled={loadingSignUp}
                   />
@@ -186,7 +185,7 @@ export default function SignUp() {
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700 dark:text-slate-200 mb-1.5"
                 >
-                  Email
+                  {t("auth.out.email")}
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-slate-500" />
@@ -195,7 +194,7 @@ export default function SignUp() {
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="seu@email.com"
+                    placeholder={t("auth.out.emailPlaceholder")}
                     className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-1 focus:ring-red-500 dark:focus:ring-red-400 focus:border-red-500 dark:focus:border-red-400 transition-colors outline-none text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     disabled={loadingSignUp}
                     autoComplete="off"
@@ -208,7 +207,7 @@ export default function SignUp() {
                   htmlFor="password"
                   className="block text-sm font-medium text-gray-700 dark:text-slate-200 mb-1.5"
                 >
-                  Senha
+                  {t("auth.out.password")}
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-slate-500" />
@@ -217,7 +216,7 @@ export default function SignUp() {
                     type={showPassword ? "text" : "password"}
                     value={formData.password}
                     onChange={handleChange}
-                    placeholder="Mínimo 8 caracteres"
+                    placeholder={t("auth.out.passwordPlaceholder")}
                     className="w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-1 focus:ring-red-500 dark:focus:ring-red-400 focus:border-red-500 dark:focus:border-red-400 transition-colors outline-none text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     disabled={loadingSignUp}
                     autoComplete="off"
@@ -242,7 +241,7 @@ export default function SignUp() {
                   htmlFor="passwordConfirmation"
                   className="block text-sm font-medium text-gray-700 dark:text-slate-200 mb-1.5"
                 >
-                  Confirmar Senha
+                  {t("auth.out.passwordConfirmation")}
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-slate-500" />
@@ -251,7 +250,7 @@ export default function SignUp() {
                     type={showPasswordConfirmation ? "text" : "password"}
                     value={formData.passwordConfirmation}
                     onChange={handleChange}
-                    placeholder="Digite a senha novamente"
+                    placeholder={t("auth.out.passwordConfirmationPlaceholder")}
                     className="w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-slate-700 rounded-md focus:ring-1 focus:ring-red-500 dark:focus:ring-red-400 focus:border-red-500 dark:focus:border-red-400 transition-colors outline-none text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     disabled={loadingSignUp}
                     autoComplete="off"
@@ -281,10 +280,10 @@ export default function SignUp() {
                 {loadingSignUp ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    Criando conta...
+                    {t("auth.out.creatingAccount")}
                   </>
                 ) : (
-                  "Criar conta"
+                  t("auth.out.createAccountButton")
                 )}
               </button>
 
@@ -294,7 +293,7 @@ export default function SignUp() {
                 </div>
                 <div className="relative flex justify-center text-xs">
                   <span className="px-3 bg-white dark:bg-slate-900 text-gray-500 dark:text-slate-400">
-                    Já tem uma conta?
+                    {t("auth.out.alreadyHaveAccount")}
                   </span>
                 </div>
               </div>
@@ -304,7 +303,7 @@ export default function SignUp() {
                 onClick={() => navigate("/")}
                 className="w-full border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 py-2.5 px-4 rounded-md cursor-pointer font-medium transition-colors text-sm"
               >
-                Entrar
+                {t("auth.out.signInButton")}
               </button>
             </form>
           </div>

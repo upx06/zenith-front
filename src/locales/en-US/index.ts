@@ -11,6 +11,7 @@ import frequency from "./frequency.json";
 import dashboard from "./dashboard.json";
 import home from "./home.json";
 import menu from "./menu.json";
+import auth from "./auth.json";
 
 export default {
   common,
@@ -26,4 +27,5 @@ export default {
   dashboard,
   home,
   menu,
+  auth,
 };
