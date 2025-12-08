@@ -44,6 +44,7 @@
     "teacher": "Professor",
     "type": "Tipo",
     "target": "Alvo",
+    "action": "Ação",
     "actions": "Ações",
     "grades": "Notas",
     "enrollment": "Matrícula",
@@ -52,8 +53,12 @@
     "regular": "Regular",
     "good": "Bom",
     "results": "Resultados",
+    "presence": "Presença",
     "presences": "Presenças",
-    "absences": "Faltas"
+    "absence": "Falta",
+    "absences": "Faltas",
+    "status": "Status",
+    "datenhour": "Data/Hora"
   },
   "filters": {
     "name": "Filtrar por nome...",
@@ -90,7 +95,9 @@
     "selectTeacher": "Selecione um professor",
     "selectClass": "Selecione uma turma",
     "selectEnrollment": "Selecione uma matrícula",
-    "selectFeedback": "Digite o feedback para o aluno sobre este tópico..."
+    "selectFeedback": "Digite o feedback para o aluno sobre este tópico...",
+    "startingDate": "Data Inicial",
+    "endingDate": "Data Final"
   },
   "formRequirements": {
     "name": "Nome é obrigatório",
@@ -121,6 +128,13 @@
     "classNoStudentEnrolled": "Esta turma não possui estudantes matriculados",
     "noTopic": "Nenhum tópico registrado",
     "examNoTopic": "Este exame não possui tópicos definidos",
-    "pickClass": "Escolha uma turma para visualizar o relatório de alunos"
+    "pickClass": "Escolha uma turma para visualizar o relatório de alunos",
+    "allStatus": "Todos os status",
+    "pendents": "Pendentes",
+    "closed": "Fechados",
+    "loadingClasses": "Carregando turmas...",
+    "noClassFound": "Nenhuma turma encontrada",
+    "noClassFoundSystem": "Não há turmas registradas no sistema",
+    "tryAdjustFilters": "Tente ajustar os filtros para encontrar o que procura"
   }
 }

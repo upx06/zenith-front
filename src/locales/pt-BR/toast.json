@@ -30,5 +30,9 @@
     "createError": "Erro ao criar prova",
     "updateSuccess": "Prova atualizada com sucesso!",
     "updateError": "Erro ao atualizar prova"
+  },
+  "frequency": {
+    "saveFrequencies": "Frequências salvas com sucesso!",
+    "saveError": "Erro ao salvar frequências"
   }
 }

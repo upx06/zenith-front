@@ -44,6 +44,7 @@
     "teacher": "Teacher",
     "type": "Type",
     "target": "Target",
+    "action": "Action",
     "actions": "Actions",
     "grades": "Grades",
     "enrollment": "Enrollment",
@@ -52,8 +53,12 @@
     "regular": "Regular",
     "good": "Good",
     "results": "Results",
+    "presence": "Presence",
     "presences": "Presences",
-    "absences": "Absences"
+    "absence": "Absence",
+    "absences": "Absences",
+    "status": "Status",
+    "datenhour": "Date/Hour"
   },
   "filters": {
     "name": "Filter by name...",
@@ -90,7 +95,9 @@
     "selectTeacher": "Select a teacher",
     "selectClass": "Select a class",
     "selectEnrollment": "Select an enrollment",
-    "selectFeedback": "Enter the feedback for the student on this topic..."
+    "selectFeedback": "Enter the feedback for the student on this topic...",
+    "startingDate": "Starting Date",
+    "endingDate": "Ending Date"
   },
   "formRequirements": {
     "name": "Name is required",
@@ -121,6 +128,13 @@
     "classNoStudentEnrolled": "This class has no enrolled students",
     "noTopic": "No topics registered",
     "examNoTopic": "This exam has no defined topics",
-    "pickClass": "Select a class to view the student's reports"
+    "pickClass": "Select a class to view the student's reports",
+    "allStatus": "All status",
+    "pendents": "Pending",
+    "closed": "Closed",
+    "loadingClasses": "Loading classes...",
+    "noClassFound": "No classes found",
+    "noClassFoundSystem": "There are no classes registered in the system",
+    "tryAdjustFilters": "Try adjusting the filters to find what you're looking for"
   }
 }

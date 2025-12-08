@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useMutation } from "@apollo/client/react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
+
 import {
   X,
   CheckCircle2,
@@ -41,6 +43,8 @@ export const AttendanceModal = ({
   onSuccess,
   existingFrequencies = [],
 }: AttendanceModalProps) => {
+  const { t } = useTranslation();
+
   const [attendanceRecords, setAttendanceRecords] = useState<
     Record<string, AttendanceRecord>
   >(() => {
@@ -124,12 +128,12 @@ export const AttendanceModal = ({
         },
       });
 
-      toast.success("Frequências salvas com sucesso!");
+      toast.success(t("toast.frequency.saveFrequencies"));
       onSuccess();
       onClose();
     } catch (err) {
       console.error("Erro ao salvar frequências:", err);
-      toast.error("Erro ao salvar frequências");
+      toast.error(t("toast.frequency.saveError"));
     } finally {
       setIsSaving(false);
     }
@@ -161,7 +165,7 @@ export const AttendanceModal = ({
               </div>
               <div>
                 <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-white">
-                  Registro de Presença
+                  {t("frequency.presenceRegister")}
                 </h2>
                 <p className="text-xs md:text-sm text-slate-600 dark:text-slate-300">
                   {lesson.class.name} - {lesson.class.level}
@@ -195,12 +199,14 @@ export const AttendanceModal = ({
             </div>
             <div className="flex items-center gap-2 text-xs md:text-sm text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 px-2 md:px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700">
               <UsersIcon className="w-4 h-4 text-slate-400 dark:text-slate-500" />
-              <span className="truncate">{enrollments.length} aluno(s)</span>
+              <span className="truncate">
+                {enrollments.length} {t("common.common.student")}(s)
+              </span>
             </div>
             <div className="flex items-center gap-2 text-xs md:text-sm text-slate-600 dark:text-slate-300 bg-green-50 dark:bg-green-950/30 px-2 md:px-3 py-2 rounded-lg border border-green-200 dark:border-green-900">
               <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400" />
               <span className="truncate text-green-700 dark:text-green-400 font-medium">
-                {presentCount} presente(s)
+                {presentCount} {t("common.common.presence")}(s)
               </span>
             </div>
           </div>
@@ -212,7 +218,7 @@ export const AttendanceModal = ({
             <div className="text-center py-12">
               <UsersIcon className="w-12 h-12 md:w-16 md:h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
               <p className="text-sm text-slate-500 dark:text-slate-400">
-                Nenhum aluno matriculado nesta turma
+                {t("common.random.classNoStudentEnrolled")}
               </p>
             </div>
           ) : (
@@ -248,7 +254,7 @@ export const AttendanceModal = ({
                           } disabled:opacity-50 disabled:cursor-not-allowed`}
                         >
                           <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5" />
-                          <span>Presente</span>
+                          <span>{t("common.common.presence")}</span>
                         </button>
                         <button
                           onClick={() =>
@@ -262,7 +268,7 @@ export const AttendanceModal = ({
                           } disabled:opacity-50 disabled:cursor-not-allowed`}
                         >
                           <XCircle className="w-4 h-4 md:w-5 md:h-5" />
-                          <span>Ausente</span>
+                          <span>{t("common.common.absence")}</span>
                         </button>
                       </div>
                     </div>
@@ -280,7 +286,7 @@ export const AttendanceModal = ({
               {absentCount > 0 && (
                 <span className="flex items-center gap-1">
                   <XCircle className="w-4 h-4 text-red-600 dark:text-red-400" />
-                  {absentCount} ausente(s)
+                  {absentCount} {t("common.common.absence")}(s)
                 </span>
               )}
             </div>
@@ -290,7 +296,7 @@ export const AttendanceModal = ({
                 disabled={isSaving}
                 className="flex-1 sm:flex-none px-6 py-2 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Cancelar
+                {t("common.actions.cancel")}
               </button>
               <button
                 onClick={handleSave}
@@ -300,12 +306,12 @@ export const AttendanceModal = ({
                 {isSaving ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    Salvando...
+                    {t("common.status.saving")}
                   </>
                 ) : (
                   <>
                     <Save className="w-5 h-5" />
-                    Salvar Frequências
+                    {t("frequency.saveFrequencies")}
                   </>
                 )}
               </button>

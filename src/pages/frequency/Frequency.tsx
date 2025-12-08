@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@apollo/client/react";
+import { useTranslation } from "react-i18next";
+
 import {
   Loader2,
   AlertCircle,
@@ -33,6 +35,8 @@ interface IListLessons {
 }
 
 export const Frequency = () => {
+  const { t } = useTranslation();
+
   const [selectedLesson, setSelectedLesson] = useState<ILesson | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
@@ -178,14 +182,14 @@ export const Frequency = () => {
           <div className="text-center max-w-md">
             <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
             <h2 className="text-xl font-bold text-red-600 mb-2">
-              Erro ao carregar dados
+              {t("errors.general.title")}
             </h2>
             <p className="text-slate-600 mb-6">{error.message}</p>
             <button
               onClick={() => refetch()}
               className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg transition-colors"
             >
-              Tentar novamente
+              {t("common.actions.tryAgain")}
             </button>
           </div>
         </div>
@@ -207,10 +211,10 @@ export const Frequency = () => {
             <div className="flex flex-row justify-between items-center gap-4 pt-5 md:pt-0">
               <div className="flex-1 min-w-0">
                 <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white uppercase">
-                  Frequências
+                  {t("frequency.title")}
                 </h1>
                 <p className="hidden sm:block text-slate-600 dark:text-slate-300 text-sm md:text-base">
-                  Registre a presença dos alunos nas aulas
+                  {t("frequency.subtitle")}
                 </p>
               </div>
 
@@ -229,7 +233,9 @@ export const Frequency = () => {
                   `}
                 >
                   <Filter className="w-4 h-4 md:w-5 md:h-5" />
-                  <span className="hidden sm:inline">Filtros</span>
+                  <span className="hidden sm:inline">
+                    {t("common.actions.filters")}
+                  </span>
                   {hasActiveFilters && (
                     <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
                   )}
@@ -250,7 +256,7 @@ export const Frequency = () => {
                   <div className="relative">
                     <input
                       type="date"
-                      placeholder="Data inicial"
+                      placeholder={t("common.formPlaceholders.startingDate")}
                       value={filters.startDate}
                       onChange={(e) =>
                         handleFilterChange("startDate", e.target.value)
@@ -270,7 +276,7 @@ export const Frequency = () => {
                   <div className="relative">
                     <input
                       type="date"
-                      placeholder="Data final"
+                      placeholder={t("common.formPlaceholders.endingDate")}
                       value={filters.endDate}
                       onChange={(e) =>
                         handleFilterChange("endDate", e.target.value)
@@ -295,7 +301,7 @@ export const Frequency = () => {
                       }
                       className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     >
-                      <option value="">Todos os professores</option>
+                      <option value="">{t("common.random.allTeachers")}</option>
                       {teachers.map((teacher) => (
                         <option key={teacher.id} value={teacher.id}>
                           {teacher.name}
@@ -312,9 +318,15 @@ export const Frequency = () => {
                       }
                       className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                     >
-                      <option value="all">Todos os status</option>
-                      <option value="pending">Pendentes</option>
-                      <option value="completed">Concluídas</option>
+                      <option value="all">
+                        {t("common.random.allStatus")}
+                      </option>
+                      <option value="pending">
+                        {t("common.random.pendents")}
+                      </option>
+                      <option value="completed">
+                        {t("common.random.closed")}
+                      </option>
                     </select>
                   </div>
 
@@ -324,7 +336,7 @@ export const Frequency = () => {
                     className="w-full px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
                   >
                     <X className="w-4 h-4" />
-                    Limpar Filtros
+                    {t("common.actions.clearFilters")}
                   </button>
                 </div>
               </div>
@@ -336,7 +348,7 @@ export const Frequency = () => {
                 <div className="flex flex-col items-center gap-4">
                   <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
                   <p className="text-slate-600 font-medium">
-                    Carregando aulas...
+                    {t("common.random.loadingClasses")}
                   </p>
                 </div>
               </div>
@@ -347,16 +359,16 @@ export const Frequency = () => {
               <div className="text-center py-12">
                 <Filter className="w-12 h-12 md:w-16 md:h-16 text-slate-300 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-slate-600 dark:text-white mb-2">
-                  Nenhuma aula encontrada
+                  {t("common.random.noClassFound")}
                 </h3>
                 <p className="text-slate-500 dark:text-slate-300 text-sm mb-4">
-                  Tente ajustar os filtros para encontrar o que procura
+                  {t("common.random.tryAdjustFilters")}
                 </p>
                 <button
                   onClick={handleClearFilters}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
                 >
-                  Limpar Filtros
+                  {t("common.actions.clearFilters")}
                 </button>
               </div>
             )}
@@ -365,10 +377,10 @@ export const Frequency = () => {
               <div className="text-center py-12">
                 <ClipboardCheck className="w-12 h-12 md:w-16 md:h-16 text-slate-300 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-slate-800 dark:text-white">
-                  Nenhuma aula encontrada
+                  {t("common.random.noClassFound")}
                 </h3>
                 <p className="text-slate-600 dark:text-slate-300 text-sm">
-                  Não há aulas cadastradas no sistema
+                  {t("common.random.noClassFoundSystem")}
                 </p>
               </div>
             )}
@@ -379,12 +391,22 @@ export const Frequency = () => {
                 <div className="md:bg-white dark:md:bg-slate-900 md:rounded-xl md:border md:border-slate-200 dark:border-slate-700 md:shadow-md md:overflow-hidden">
                   {/* Header da tabela - Desktop */}
                   <div className="hidden md:grid md:grid-cols-12 gap-4 bg-slate-50 dark:bg-slate-800 px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide">
-                    <div className="col-span-1 text-center">Status</div>
-                    <div className="col-span-3">Turma</div>
-                    <div className="col-span-2">Data/Hora</div>
-                    <div className="col-span-3">Professor</div>
-                    <div className="col-span-2">Alunos</div>
-                    <div className="col-span-1 text-right">Ação</div>
+                    <div className="col-span-1 text-center">
+                      {t("common.common.status")}
+                    </div>
+                    <div className="col-span-3">{t("common.common.class")}</div>
+                    <div className="col-span-2">
+                      {t("common.common.datenhour")}
+                    </div>
+                    <div className="col-span-3">
+                      {t("common.common.teacher")}
+                    </div>
+                    <div className="col-span-2">
+                      {t("common.common.student")}
+                    </div>
+                    <div className="col-span-1 text-right">
+                      {t("common.common.action")}
+                    </div>
                   </div>
 
                   {/* Linhas da tabela */}
@@ -422,7 +444,7 @@ export const Frequency = () => {
                               <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
                                 <Calendar className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                                 <span className="text-sm">
-                                  {lessonDate.toLocaleDateString("pt-BR")} às{" "}
+                                  {lessonDate.toLocaleDateString("pt-BR")} |{" "}
                                   {lessonDate.toLocaleTimeString("pt-BR", {
                                     hour: "2-digit",
                                     minute: "2-digit",
@@ -438,7 +460,8 @@ export const Frequency = () => {
                               <div className="flex items-center gap-2">
                                 <CheckCircle2 className="w-4 h-4 text-slate-600 dark:text-slate-300" />
                                 <span className="text-sm text-slate-600 dark:text-slate-300">
-                                  {enrollments.length} aluno(s)
+                                  {enrollments.length}{" "}
+                                  {t("common.common.student")}(s)
                                 </span>
                               </div>
                             </div>
@@ -510,7 +533,8 @@ export const Frequency = () => {
                             {/* Alunos */}
                             <div className="col-span-2 flex items-center justify-center">
                               <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
-                                {enrollments.length} aluno(s)
+                                {enrollments.length}{" "}
+                                {t("common.common.student")}(s)
                               </span>
                             </div>
 
@@ -557,11 +581,13 @@ export const Frequency = () => {
                       className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
                     >
                       <ChevronLeft className="w-4 h-4" />
-                      <span className="hidden sm:inline">Anterior</span>
+                      <span className="hidden sm:inline">
+                        {t("common.pagination.previous")}
+                      </span>
                     </button>
 
                     <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-semibold min-w-[60px] text-center">
-                      Pág. {currentPage}
+                      {t("common.pagination.page")} {currentPage}
                     </div>
 
                     <button
@@ -575,7 +601,9 @@ export const Frequency = () => {
                       disabled={currentPage >= getTotalPages() || loading}
                       className="flex items-center gap-1.5 px-3 md:px-4 py-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm font-medium"
                     >
-                      <span className="hidden sm:inline">Próxima</span>
+                      <span className="hidden sm:inline">
+                        {t("common.pagination.next")}
+                      </span>
                       <ChevronRight className="w-4 h-4" />
                     </button>
                   </div>
