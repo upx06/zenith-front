@@ -15,10 +15,11 @@ import { ClassroomLayout } from "../ClassroomLayout";
 import type { IClass } from "../../interfaces/IClass";
 import { formatDateTimeForDisplay } from "../../utils/date";
 import { format, parseISO } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { ptBR, enUS } from "date-fns/locale";
 import { useMutation } from "@apollo/client/react";
 import { DESTROY_LESSON } from "../../graphql/mutations/destroy/DestroyLesson";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 interface DetailsSchedulingModalProps {
   onClose: () => void;
@@ -62,6 +63,7 @@ export const DetailsSchedulingModal = ({
   isLoading = false,
   refetchScheduling,
 }: DetailsSchedulingModalProps) => {
+  const { t, i18n } = useTranslation();
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   const [
@@ -81,13 +83,15 @@ export const DetailsSchedulingModal = ({
         },
       });
 
-      toast.success("Aula excluída com sucesso!");
+      toast.success(t("schedule.detailSchedulingModal.toast.deleteSuccess"));
       refetchScheduling();
       setShowConfirmation(false);
       onClose();
     } catch (error: any) {
       console.error("Erro ao excluir agendamento:", error);
-      toast.error(error?.message || "Erro ao excluir aula");
+      toast.error(
+        error?.message || t("schedule.detailSchedulingModal.toast.deleteError")
+      );
     }
   };
 
@@ -100,8 +104,9 @@ export const DetailsSchedulingModal = ({
   const isProcessing = isLoading || loadingDeleteLesson;
 
   const parsedDate = parseISO(scheduling.datetime);
-  const dayOfWeek = format(parsedDate, "EEEE", { locale: ptBR });
-  const formattedDate = format(parsedDate, "dd/MM/yyyy", { locale: ptBR });
+  const locale = i18n.language === "pt-BR" ? ptBR : enUS;
+  const dayOfWeek = format(parsedDate, "EEEE", { locale });
+  const formattedDate = format(parsedDate, "dd/MM/yyyy", { locale });
 
   const students = classData?.enrollments?.map((e) => e.student) || [];
   const teacher = teacherData || {
@@ -127,7 +132,8 @@ export const DetailsSchedulingModal = ({
                   {scheduling.subject}
                 </h2>
                 <p className="text-blue-100 text-sm">
-                  {date} • {timeSlot} • Sala {roomName}
+                  {date} • {timeSlot} •{" "}
+                  {t("schedule.detailSchedulingModal.room")} {roomName}
                 </p>
               </div>
               <button
@@ -147,7 +153,7 @@ export const DetailsSchedulingModal = ({
                   <div className="flex items-center gap-2 mb-3">
                     <MapPin className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                     <span className="text-xs font-semibold text-slate-700 dark:text-slate-200 uppercase">
-                      Local
+                      {t("schedule.detailSchedulingModal.location")}
                     </span>
                   </div>
                   <div className="space-y-0.5">
@@ -156,7 +162,9 @@ export const DetailsSchedulingModal = ({
                     </div>
                     {classroomData && (
                       <div className="text-sm text-slate-600 dark:text-slate-300">
-                        Capacidade: {classroomData.capacity} lugares
+                        {t("schedule.detailSchedulingModal.capacity")}:{" "}
+                        {classroomData.capacity}{" "}
+                        {t("schedule.detailSchedulingModal.places")}
                       </div>
                     )}
                   </div>
@@ -166,7 +174,7 @@ export const DetailsSchedulingModal = ({
                   <div className="flex items-center gap-2 mb-3">
                     <Calendar className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                     <span className="text-xs font-semibold text-slate-700 dark:text-slate-200 uppercase">
-                      Data e Hora
+                      {t("schedule.detailSchedulingModal.dateAndTime")}
                     </span>
                   </div>
                   <div className="space-y-1">
@@ -183,7 +191,7 @@ export const DetailsSchedulingModal = ({
                   <div className="flex items-center gap-2 mb-3">
                     <User className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                     <span className="text-xs font-semibold text-slate-700 dark:text-slate-200 uppercase">
-                      Professor
+                      {t("schedule.detailSchedulingModal.teacher")}
                     </span>
                   </div>
                   <div className="space-y-1">
@@ -210,12 +218,14 @@ export const DetailsSchedulingModal = ({
                 <div className="flex items-center gap-2 mb-3">
                   <Users className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                   <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
-                    Informações da Turma
+                    {t("schedule.detailSchedulingModal.classInfo")}
                   </h3>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   <div className="text-center">
-                    <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">Turma</div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">
+                      {t("schedule.detailSchedulingModal.class")}
+                    </div>
                     <div className="text-base font-bold text-slate-900 dark:text-white">
                       {scheduling.class}
                     </div>
@@ -224,21 +234,23 @@ export const DetailsSchedulingModal = ({
                     <>
                       <div className="text-center">
                         <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">
-                          Idioma
+                          {t("schedule.detailSchedulingModal.language")}
                         </div>
                         <div className="text-base font-bold text-slate-900 dark:text-white">
                           {classData.language?.name}
                         </div>
                       </div>
                       <div className="text-center">
-                        <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">Nível</div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">
+                          {t("schedule.detailSchedulingModal.level")}
+                        </div>
                         <div className="text-base font-bold text-slate-900 dark:text-white">
                           {classData.level}
                         </div>
                       </div>
                       <div className="text-center">
                         <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">
-                          Alunos
+                          {t("schedule.detailSchedulingModal.students")}
                         </div>
                         <div className="text-base font-bold text-slate-900 dark:text-white">
                           {students.length}
@@ -251,7 +263,7 @@ export const DetailsSchedulingModal = ({
 
               <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
                 <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">
-                  Visualização da Sala de Aula
+                  {t("schedule.detailSchedulingModal.classroomView")}
                 </h3>
                 <ClassroomLayout
                   teacher={teacher}
@@ -265,7 +277,9 @@ export const DetailsSchedulingModal = ({
                 <div className="p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 rounded-lg">
                   <div className="flex items-center gap-2 text-red-800 dark:text-red-400 mb-1">
                     <span className="font-medium text-sm">
-                      Erro ao excluir agendamento
+                      {t(
+                        "schedule.detailSchedulingModal.errorDeletingScheduling"
+                      )}
                     </span>
                   </div>
                   <p className="text-red-700 dark:text-red-300 text-sm">
@@ -287,7 +301,7 @@ export const DetailsSchedulingModal = ({
                     className="px-4 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-lg transition-colors font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <Edit className="h-4 w-4" />
-                    <span>Editar</span>
+                    <span>{t("schedule.detailSchedulingModal.edit")}</span>
                   </button>
                 )}
                 <button
@@ -295,7 +309,7 @@ export const DetailsSchedulingModal = ({
                   disabled={isProcessing}
                   className="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Fechar
+                  {t("schedule.detailSchedulingModal.close")}
                 </button>
               </div>
               <button
@@ -306,12 +320,12 @@ export const DetailsSchedulingModal = ({
                 {loadingDeleteLesson ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>Excluindo...</span>
+                    <span>{t("schedule.detailSchedulingModal.deleting")}</span>
                   </>
                 ) : (
                   <>
                     <Trash2 className="h-4 w-4" />
-                    <span>Excluir</span>
+                    <span>{t("schedule.detailSchedulingModal.delete")}</span>
                   </>
                 )}
               </button>
@@ -325,14 +339,18 @@ export const DetailsSchedulingModal = ({
         <ConfirmationModal
           onClose={handleCloseConfirmation}
           onConfirm={handleConfirmDelete}
-          title="Excluir Agendamento"
-          message={`Tem certeza que deseja excluir o agendamento da turma ${
-            scheduling.class
-          } às ${formatDateTimeForDisplay(scheduling.datetime)} com ${
-            scheduling.teacher
-          }?`}
-          confirmText={loadingDeleteLesson ? "Excluindo..." : "Excluir"}
-          cancelText="Cancelar"
+          title={t("schedule.detailSchedulingModal.confirmDelete.title")}
+          message={t("schedule.detailSchedulingModal.confirmDelete.message", {
+            className: scheduling.class,
+            dateTime: formatDateTimeForDisplay(scheduling.datetime),
+            teacherName: scheduling.teacher,
+          })}
+          confirmText={
+            loadingDeleteLesson
+              ? t("schedule.detailSchedulingModal.deleting")
+              : t("schedule.detailSchedulingModal.confirmDelete.confirm")
+          }
+          cancelText={t("schedule.detailSchedulingModal.confirmDelete.cancel")}
           isLoading={loadingDeleteLesson}
           isDisabled={loadingDeleteLesson}
         />

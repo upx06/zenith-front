@@ -12,6 +12,7 @@ import dashboard from "./dashboard.json";
 import home from "./home.json";
 import menu from "./menu.json";
 import auth from "./auth.json";
+import schedule from "./schedule.json";
 
 export default {
   common,
@@ -28,4 +29,5 @@ export default {
   home,
   menu,
   auth,
+  schedule,
 };

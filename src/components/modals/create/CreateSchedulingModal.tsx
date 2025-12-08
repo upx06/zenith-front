@@ -18,6 +18,7 @@ import type { ITeacher } from "../../../interfaces/ITeacher";
 import type { IClass } from "../../../interfaces/IClass";
 import { formatDateDisplay } from "../../../utils/date";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 interface ListTeachersData {
   listTeachers: {
@@ -50,6 +51,8 @@ export const CreateSchedulingModal = ({
   date,
   isLoading = false,
 }: CreateSchedulingModalProps) => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     teacherId: "",
     classId: "",
@@ -100,12 +103,12 @@ export const CreateSchedulingModal = ({
     let isValid = true;
 
     if (!formData.teacherId.trim()) {
-      newErrors.teacherId = "Professor é obrigatório";
+      newErrors.teacherId = t("schedule.createSchedulingModal.teacherRequired");
       isValid = false;
     }
 
     if (!formData.classId.trim()) {
-      newErrors.classId = "Turma é obrigatória";
+      newErrors.classId = t("schedule.createSchedulingModal.classRequired");
       isValid = false;
     }
 
@@ -139,20 +142,22 @@ export const CreateSchedulingModal = ({
         },
       });
 
-      toast.success("Aula criada com sucesso!");
+      toast.success(t("schedule.createSchedulingModal.toast.success"));
       refetchScheduling();
       handleCloseModal();
     } catch (err: any) {
       console.error("Erro ao criar agendamento:", err);
-      const errorMessage = err.message || "Erro ao criar agendamento";
+      const errorMessage =
+        err.message ||
+        t("schedule.createSchedulingModal.errorCreatingScheduling");
 
       if (
         errorMessage.includes("already exists") ||
         errorMessage.includes("já existe")
       ) {
-        toast.error("Já existe uma aula agendada para este horário");
+        toast.error(t("schedule.createSchedulingModal.toast.alreadyExists"));
       } else if (errorMessage.includes("Duplicate")) {
-        toast.error("Já existe uma aula agendada para este horário");
+        toast.error(t("schedule.createSchedulingModal.toast.duplicate"));
       } else {
         toast.error(errorMessage);
       }
@@ -203,7 +208,7 @@ export const CreateSchedulingModal = ({
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
               <p className="text-slate-600 dark:text-slate-300 font-medium">
-                Criando agendamento...
+                {t("schedule.createSchedulingModal.creatingScheduling")}
               </p>
             </div>
           </div>
@@ -213,7 +218,7 @@ export const CreateSchedulingModal = ({
           <div className="flex flex-col items-center justify-center py-12">
             <Loader2 className="w-8 h-8 text-blue-600 animate-spin mb-3" />
             <p className="text-slate-600 dark:text-slate-300 font-medium text-center">
-              Carregando dados...
+              {t("schedule.createSchedulingModal.loadingData")}
             </p>
           </div>
         )}
@@ -222,7 +227,7 @@ export const CreateSchedulingModal = ({
           <>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold text-slate-800 dark:text-white">
-                Novo Agendamento
+                {t("schedule.createSchedulingModal.title")}
               </h2>
               <button
                 onClick={handleCloseModal}
@@ -237,19 +242,27 @@ export const CreateSchedulingModal = ({
             <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 space-y-3 mb-6">
               <div className="flex items-center gap-2 text-sm">
                 <BookOpen className="w-4 h-4 text-slate-600 dark:text-slate-300 shrink-0" />
-                <span className="text-slate-600 dark:text-slate-300">Sala:</span>
+                <span className="text-slate-600 dark:text-slate-300">
+                  {t("schedule.createSchedulingModal.room")}
+                </span>
                 <span className="font-semibold text-slate-900 dark:text-white">
                   {classroomName}
                 </span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Clock className="w-4 h-4 text-slate-600 dark:text-slate-300 shrink-0" />
-                <span className="text-slate-600 dark:text-slate-300">Horário:</span>
-                <span className="font-semibold text-slate-900 dark:text-white">{timeSlot}</span>
+                <span className="text-slate-600 dark:text-slate-300">
+                  {t("schedule.createSchedulingModal.time")}
+                </span>
+                <span className="font-semibold text-slate-900 dark:text-white">
+                  {timeSlot}
+                </span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Calendar className="w-4 h-4 text-slate-600 dark:text-slate-300 shrink-0" />
-                <span className="text-slate-600 dark:text-slate-300">Data:</span>
+                <span className="text-slate-600 dark:text-slate-300">
+                  {t("schedule.createSchedulingModal.date")}
+                </span>
                 <span className="font-semibold text-slate-900 dark:text-white capitalize">
                   {formattedDate}
                 </span>
@@ -262,7 +275,7 @@ export const CreateSchedulingModal = ({
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
                   <div className="flex items-center gap-2">
                     <User className="w-4 h-4" />
-                    <span>Professor</span>
+                    <span>{t("schedule.createSchedulingModal.teacher")}</span>
                   </div>
                 </label>
                 <select
@@ -270,11 +283,15 @@ export const CreateSchedulingModal = ({
                   onChange={(e) => handleChange("teacherId", e.target.value)}
                   disabled={loading}
                   className={`w-full px-3 py-2.5 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
-                    errors.teacherId ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+                    errors.teacherId
+                      ? "border-red-500"
+                      : "border-slate-300 dark:border-slate-700"
                   }`}
                   required
                 >
-                  <option value="">Selecione um professor</option>
+                  <option value="">
+                    {t("schedule.createSchedulingModal.selectTeacher")}
+                  </option>
                   {teachers.map((teacher) => (
                     <option key={teacher.id} value={teacher.id}>
                       {teacher.name}
@@ -293,7 +310,7 @@ export const CreateSchedulingModal = ({
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
                   <div className="flex items-center gap-2">
                     <Users className="w-4 h-4" />
-                    <span>Turma</span>
+                    <span>{t("schedule.createSchedulingModal.class")}</span>
                   </div>
                 </label>
                 <select
@@ -301,11 +318,15 @@ export const CreateSchedulingModal = ({
                   onChange={(e) => handleChange("classId", e.target.value)}
                   disabled={loading}
                   className={`w-full px-3 py-2.5 border rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
-                    errors.classId ? "border-red-500" : "border-slate-300 dark:border-slate-700"
+                    errors.classId
+                      ? "border-red-500"
+                      : "border-slate-300 dark:border-slate-700"
                   }`}
                   required
                 >
-                  <option value="">Selecione uma turma</option>
+                  <option value="">
+                    {t("schedule.createSchedulingModal.selectClass")}
+                  </option>
                   {classes.map((classItem) => (
                     <option key={classItem.id} value={classItem.id}>
                       {classItem.name}
@@ -323,7 +344,9 @@ export const CreateSchedulingModal = ({
                   <div className="flex items-center gap-2 text-red-800 mb-1">
                     <AlertCircle className="w-4 h-4" />
                     <span className="font-medium text-sm">
-                      Erro ao criar agendamento
+                      {t(
+                        "schedule.createSchedulingModal.errorCreatingScheduling"
+                      )}
                     </span>
                   </div>
                   <p className="text-red-700 text-sm">
@@ -340,7 +363,7 @@ export const CreateSchedulingModal = ({
                   disabled={loading}
                   className="flex-1 px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base"
                 >
-                  Cancelar
+                  {t("schedule.createSchedulingModal.cancel")}
                 </button>
                 <button
                   type="submit"
@@ -350,10 +373,10 @@ export const CreateSchedulingModal = ({
                   {loading ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      Criando...
+                      {t("schedule.createSchedulingModal.creating")}
                     </>
                   ) : (
-                    "Criar Agendamento"
+                    t("schedule.createSchedulingModal.create")
                   )}
                 </button>
               </div>
@@ -367,7 +390,7 @@ export const CreateSchedulingModal = ({
             <div className="flex items-center gap-2 text-red-800 mb-1">
               <AlertCircle className="w-4 h-4" />
               <span className="font-medium text-sm">
-                Erro ao carregar dados
+                {t("schedule.createSchedulingModal.errorLoadingData")}
               </span>
             </div>
             <p className="text-red-700 text-sm">
@@ -377,7 +400,7 @@ export const CreateSchedulingModal = ({
               onClick={handleCloseModal}
               className="mt-3 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm w-full"
             >
-              Fechar
+              {t("schedule.createSchedulingModal.close")}
             </button>
           </div>
         )}

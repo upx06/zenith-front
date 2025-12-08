@@ -25,6 +25,7 @@ import type { ILesson } from "../../interfaces/ILesson";
 import { formatDateDisplay } from "../../utils/date";
 import { formatDateInput } from "../../utils/date";
 import { isToday } from "../../utils/date";
+import { useTranslation } from "react-i18next";
 
 interface SchedulingsState {
   [key: string]: {
@@ -45,6 +46,8 @@ interface ListLessonsData {
 }
 
 export const Scheduling = () => {
+  const { t } = useTranslation();
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showCreateSchedulingModal, setShowCreateSchedulingModal] =
     useState(false);
@@ -249,10 +252,10 @@ export const Scheduling = () => {
               <div className="flex flex-row justify-between items-center gap-4 pt-5 md:pt-0">
                 <div className="flex-1 min-w-0">
                   <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white uppercase">
-                    Agendamentos
+                    {t("schedule.title")}
                   </h1>
                   <p className="hidden sm:block text-slate-600 dark:text-slate-300 text-sm md:text-base">
-                    Gerencie a ocupação das salas por horário
+                    {t("schedule.subtitle")}
                   </p>
                 </div>
 
@@ -265,7 +268,9 @@ export const Scheduling = () => {
                     text-sm md:text-base
                     w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2"
                     title={
-                      viewMode === "grid" ? "Ver em Cards" : "Ver em Grade"
+                      viewMode === "grid"
+                        ? t("schedule.viewCards")
+                        : t("schedule.viewGrid")
                     }
                   >
                     {viewMode === "grid" ? (
@@ -274,7 +279,9 @@ export const Scheduling = () => {
                       <TableProperties className="w-4 h-4 md:w-5 md:h-5" />
                     )}
                     <span className="hidden sm:inline">
-                      {viewMode === "grid" ? "Cards" : "Grade"}
+                      {viewMode === "grid"
+                        ? t("schedule.cards")
+                        : t("schedule.grid")}
                     </span>
                   </button>
                   <button
@@ -289,7 +296,9 @@ export const Scheduling = () => {
                     title="Filtros"
                   >
                     <Filter className="w-4 h-4 md:w-5 md:h-5" />
-                    <span className="hidden sm:inline">Filtros</span>
+                    <span className="hidden sm:inline">
+                      {t("schedule.filters")}
+                    </span>
                     {hasActiveFilters && (
                       <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
                     )}
@@ -299,10 +308,12 @@ export const Scheduling = () => {
                     className="bg-slate-500 dark:bg-slate-600 hover:bg-slate-600 dark:hover:bg-slate-700 text-white rounded-lg flex items-center justify-center gap-2
                     transition-colors text-sm md:text-base
                     w-12 h-12 md:w-auto md:h-auto md:px-4 md:py-2"
-                    title="Reagendar Grade"
+                    title={t("schedule.rescheduleGrid")}
                   >
                     <Copy className="w-4 h-4 md:w-5 md:h-5" />
-                    <span className="hidden sm:inline">Reagendar Grade</span>
+                    <span className="hidden sm:inline">
+                      {t("schedule.rescheduleGrid")}
+                    </span>
                   </button>
                 </div>
               </div>
@@ -319,7 +330,7 @@ export const Scheduling = () => {
                     <div className="relative">
                       <input
                         type="text"
-                        placeholder="Filtrar por turma..."
+                        placeholder={t("schedule.filterByClass")}
                         value={filters.className}
                         onChange={(e) =>
                           handleFilterChange("className", e.target.value)
@@ -339,7 +350,7 @@ export const Scheduling = () => {
                     <div className="relative">
                       <input
                         type="text"
-                        placeholder="Filtrar por professor..."
+                        placeholder={t("schedule.filterByTeacher")}
                         value={filters.teacherName}
                         onChange={(e) =>
                           handleFilterChange("teacherName", e.target.value)
@@ -359,7 +370,7 @@ export const Scheduling = () => {
                     <div className="relative">
                       <input
                         type="text"
-                        placeholder="Filtrar por sala..."
+                        placeholder={t("schedule.filterByClassroom")}
                         value={filters.classroomName}
                         onChange={(e) =>
                           handleFilterChange("classroomName", e.target.value)
@@ -384,7 +395,7 @@ export const Scheduling = () => {
                       className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center justify-center gap-2"
                     >
                       <X className="w-4 h-4" />
-                      Limpar Filtros
+                      {t("schedule.clearFilters")}
                     </button>
                   </div>
                 </div>
@@ -396,12 +407,12 @@ export const Scheduling = () => {
                     <div className="flex items-center gap-2">
                       <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                       <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-                        Selecione a Data
+                        {t("schedule.selectDate")}
                       </span>
                     </div>
                     {isToday(selectedDate) && (
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-600 text-white">
-                        Hoje
+                        {t("schedule.today")}
                       </span>
                     )}
                   </div>
@@ -413,7 +424,7 @@ export const Scheduling = () => {
                       <button
                         onClick={() => navigateDate(-1)}
                         className="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-200 group"
-                        title="Dia anterior"
+                        title={t("schedule.previousDay")}
                       >
                         <ChevronLeft className="h-5 w-5 text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white" />
                       </button>
@@ -421,7 +432,7 @@ export const Scheduling = () => {
                       <button
                         onClick={() => navigateDate(1)}
                         className="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-200 group"
-                        title="Próximo dia"
+                        title={t("schedule.nextDay")}
                       >
                         <ChevronRight className="h-5 w-5 text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white" />
                       </button>
@@ -462,7 +473,7 @@ export const Scheduling = () => {
                         className="px-4 py-2.5 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-lg transition-colors flex items-center gap-2 text-sm font-semibold shadow-sm hover:shadow-md"
                       >
                         <Clock className="h-4 w-4" />
-                        Hoje
+                        {t("schedule.today")}
                       </button>
                     </div>
                   </div>
@@ -475,10 +486,10 @@ export const Scheduling = () => {
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400"></div>
                     <div>
                       <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
-                        Carregando salas...
+                        {t("schedule.loadingRooms")}
                       </h3>
                       <p className="text-sm text-slate-600 dark:text-slate-400">
-                        Buscando informações das salas de aula
+                        {t("schedule.fetchingRoomsInfo")}
                       </p>
                     </div>
                   </div>
@@ -491,30 +502,16 @@ export const Scheduling = () => {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
-                        Nenhuma sala cadastrada
+                        {t("schedule.noRoomsRegistered")}
                       </h3>
                       <p className="text-sm text-slate-600 dark:text-slate-400">
-                        Cadastre salas para começar a fazer agendamentos
+                        {t("schedule.registerRoomsToSchedule")}
                       </p>
                     </div>
                   </div>
                 </div>
               ) : viewMode === "grid" ? (
                 <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 overflow-hidden">
-                  {/* Hint de scroll */}
-                  <div className="bg-blue-50 dark:bg-blue-950/30 border-b border-blue-200 dark:border-blue-800 px-4 py-2">
-                    <p className="text-xs text-blue-700 dark:text-blue-400 text-center flex items-center justify-center gap-2">
-                      <ChevronLeft className="w-3 h-3" />
-                      <span className="hidden sm:inline">
-                        Use o scroll horizontal para ver todos os horários
-                      </span>
-                      <span className="sm:hidden">
-                        Deslize para ver todos os horários
-                      </span>
-                      <ChevronRight className="w-3 h-3" />
-                    </p>
-                  </div>
-
                   <div className="overflow-x-auto custom-scrollbar">
                     <div className="min-w-max">
                       <div className="bg-linear-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-800 border-b border-slate-200 dark:border-slate-700">
@@ -528,7 +525,7 @@ export const Scheduling = () => {
                             <div className="flex items-center space-x-2">
                               <BookOpen className="h-4 w-4 text-slate-500 dark:text-slate-400" />
                               <span className="font-semibold text-slate-900 dark:text-white text-sm md:text-base">
-                                Salas
+                                {t("schedule.rooms")}
                               </span>
                             </div>
                           </div>
@@ -554,7 +551,7 @@ export const Scheduling = () => {
                             <div className="flex flex-col items-center space-y-3">
                               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400"></div>
                               <span className="text-sm text-slate-600 dark:text-slate-300">
-                                Atualizando agendamentos...
+                                {t("schedule.updatingSchedules")}
                               </span>
                             </div>
                           </div>
@@ -574,7 +571,9 @@ export const Scheduling = () => {
                               </div>
                               <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center space-x-1">
                                 <Users className="h-3 w-3" />
-                                <span>{classroom.capacity} lugares</span>
+                                <span>
+                                  {classroom.capacity} {t("schedule.places")}
+                                </span>
                               </div>
                             </div>
 
@@ -635,7 +634,7 @@ export const Scheduling = () => {
                       <div className="flex flex-col items-center space-y-3">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400"></div>
                         <span className="text-sm text-slate-600 dark:text-slate-300">
-                          Atualizando agendamentos...
+                          {t("schedule.updatingSchedules")}
                         </span>
                       </div>
                     </div>
@@ -655,7 +654,9 @@ export const Scheduling = () => {
                             </h3>
                             <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center space-x-1">
                               <Users className="h-3 w-3" />
-                              <span>{classroom.capacity} lugares</span>
+                              <span>
+                                {classroom.capacity} {t("schedule.places")}
+                              </span>
                             </div>
                           </div>
                           <BookOpen className="h-5 w-5 text-slate-400 dark:text-slate-500" />
@@ -722,25 +723,25 @@ export const Scheduling = () => {
               {!classroomsLoading && classrooms.length > 0 && (
                 <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 p-4 md:p-6">
                   <h3 className="font-semibold text-slate-900 dark:text-white mb-3 text-sm md:text-base">
-                    Legenda
+                    {t("schedule.legend")}
                   </h3>
                   <div className="flex flex-wrap gap-4 md:gap-6">
                     <div className="flex items-center space-x-2">
                       <div className="w-4 h-4 bg-linear-to-r from-blue-50 to-blue-100 border-l-4 border-blue-500 rounded-sm"></div>
                       <span className="text-sm text-slate-600 dark:text-slate-400">
-                        Ocupado
+                        {t("schedule.occupied")}
                       </span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <div className="w-4 h-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-sm"></div>
                       <span className="text-sm text-slate-600 dark:text-slate-400">
-                        Disponível
+                        {t("schedule.available")}
                       </span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Plus className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                       <span className="text-sm text-slate-600 dark:text-slate-400">
-                        Clique para agendar
+                        {t("schedule.clickToSchedule")}
                       </span>
                     </div>
                   </div>

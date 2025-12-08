@@ -14,6 +14,7 @@ import { DESTROY_LESSON } from "../../graphql/mutations/destroy/DestroyLesson";
 import { LIST_LESSONS } from "../../graphql/queries/ListLessons";
 import type { ILesson } from "../../interfaces/ILesson";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 interface ListLessonsData {
   listLessons: {
@@ -33,6 +34,7 @@ export const RescheduleGridModal = ({
   onClose,
   refetchScheduling,
 }: RescheduleGridModalProps) => {
+  const { t, i18n } = useTranslation();
   const [step, setStep] = useState<Step>("type");
   const [rescheduleType, setRescheduleType] = useState<RescheduleType>("daily");
   const [sourceDate, setSourceDate] = useState("");
@@ -43,6 +45,8 @@ export const RescheduleGridModal = ({
   const [createLesson] = useMutation(CREATE_LESSON);
   const [destroyLesson] = useMutation(DESTROY_LESSON);
   const [fetchLessons] = useLazyQuery<ListLessonsData>(LIST_LESSONS);
+
+  const locale = i18n.language === "pt-BR" ? "pt-BR" : "en-US";
 
   // Calcular o domingo da semana para uma data
   const getSunday = (date: Date): Date => {
@@ -76,7 +80,6 @@ export const RescheduleGridModal = ({
       let totalCount = 0;
 
       if (rescheduleType === "daily") {
-        // Buscar aulas do dia de destino
         const target = new Date(targetDate + "T00:00:00");
         const startOfDay = new Date(target);
         startOfDay.setHours(0, 0, 0, 0);
@@ -92,7 +95,6 @@ export const RescheduleGridModal = ({
 
         totalCount = data?.listLessons?.results?.length || 0;
       } else {
-        // Buscar aulas da semana de destino
         const targetWeekStart = getSunday(new Date(targetDate + "T00:00:00"));
         const targetWeekDates = getWeekDates(targetWeekStart);
 
@@ -132,17 +134,19 @@ export const RescheduleGridModal = ({
     try {
       if (rescheduleType === "daily") {
         await rescheduleDailyGrid();
-        toast.success("Grade do dia reagendada com sucesso!");
+        toast.success(t("schedule.rescheduleGridModal.toast.dailySuccess"));
       } else {
         await rescheduleWeeklyGrid();
-        toast.success("Grade da semana reagendada com sucesso!");
+        toast.success(t("schedule.rescheduleGridModal.toast.weeklySuccess"));
       }
 
       refetchScheduling();
       onClose();
     } catch (error: any) {
       console.error("Erro ao reagendar:", error);
-      toast.error(error?.message || "Erro ao reagendar grade");
+      toast.error(
+        error?.message || t("schedule.rescheduleGridModal.toast.error")
+      );
     } finally {
       setIsProcessing(false);
     }
@@ -152,7 +156,6 @@ export const RescheduleGridModal = ({
     const source = new Date(sourceDate + "T00:00:00");
     const target = new Date(targetDate + "T00:00:00");
 
-    // PASSO 1: Buscar aulas do dia de origem PRIMEIRO (antes de deletar)
     const startOfDay = new Date(source);
     startOfDay.setHours(0, 0, 0, 0);
     const endOfDay = new Date(source);
@@ -167,7 +170,6 @@ export const RescheduleGridModal = ({
 
     const sourceLessons = data?.listLessons?.results || [];
 
-    // PASSO 2: Deletar todas as aulas do dia de destino
     const targetStartOfDay = new Date(target);
     targetStartOfDay.setHours(0, 0, 0, 0);
     const targetEndOfDay = new Date(target);
@@ -182,19 +184,16 @@ export const RescheduleGridModal = ({
 
     const targetLessons = targetData?.listLessons?.results || [];
 
-    // Deletar todas as aulas de destino
     for (const lesson of targetLessons) {
       await destroyLesson({
         variables: { id: lesson.id },
       });
     }
 
-    // Calcular diferença de dias
     const diffDays = Math.floor(
       (target.getTime() - source.getTime()) / (1000 * 60 * 60 * 24)
     );
 
-    // Duplicar cada aula para a data de destino
     for (const lesson of sourceLessons) {
       const lessonDate = new Date(lesson.datetime);
       const newDate = new Date(lessonDate);
@@ -220,7 +219,6 @@ export const RescheduleGridModal = ({
     const sourceWeekDates = getWeekDates(sourceWeekStart);
     const targetWeekDates = getWeekDates(targetWeekStart);
 
-    // PASSO 1: Buscar todas as aulas da semana de origem PRIMEIRO (antes de deletar)
     const allSourceLessons: Array<{ lesson: ILesson; dayIndex: number }> = [];
 
     for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
@@ -240,13 +238,11 @@ export const RescheduleGridModal = ({
 
       const dayLessons = data?.listLessons?.results || [];
 
-      // Armazenar as aulas com o índice do dia
       dayLessons.forEach((lesson) => {
         allSourceLessons.push({ lesson, dayIndex });
       });
     }
 
-    // PASSO 2: Deletar todas as aulas da semana de destino
     for (const targetDay of targetWeekDates) {
       const startOfDay = new Date(targetDay);
       startOfDay.setHours(0, 0, 0, 0);
@@ -269,12 +265,10 @@ export const RescheduleGridModal = ({
       }
     }
 
-    // PASSO 3: Duplicar as aulas armazenadas para a semana de destino
     for (const { lesson, dayIndex } of allSourceLessons) {
       const sourceDay = sourceWeekDates[dayIndex];
       const targetDay = targetWeekDates[dayIndex];
 
-      // Calcular diferença de dias
       const diffDays = Math.floor(
         (targetDay.getTime() - sourceDay.getTime()) / (1000 * 60 * 60 * 24)
       );
@@ -307,7 +301,7 @@ export const RescheduleGridModal = ({
       >
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
-            Reagendar Grade
+            {t("schedule.rescheduleGridModal.title")}
           </h3>
           <button
             onClick={onClose}
@@ -321,7 +315,7 @@ export const RescheduleGridModal = ({
         {step === "type" && (
           <div className="space-y-4">
             <p className="text-slate-600 dark:text-slate-300 text-sm mb-4">
-              Selecione o tipo de reagendamento:
+              {t("schedule.rescheduleGridModal.selectType")}
             </p>
 
             <button
@@ -332,10 +326,10 @@ export const RescheduleGridModal = ({
                 <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
                 <div>
                   <h4 className="font-semibold text-slate-800 dark:text-white mb-1">
-                    Reagendar Dia
+                    {t("schedule.rescheduleGridModal.rescheduleDay")}
                   </h4>
                   <p className="text-sm text-slate-600 dark:text-slate-300">
-                    Duplicar todas as aulas de um dia específico para outra data
+                    {t("schedule.rescheduleGridModal.rescheduleDayDescription")}
                   </p>
                 </div>
               </div>
@@ -349,11 +343,12 @@ export const RescheduleGridModal = ({
                 <CalendarDays className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
                 <div>
                   <h4 className="font-semibold text-slate-800 dark:text-white mb-1">
-                    Reagendar Semana
+                    {t("schedule.rescheduleGridModal.rescheduleWeek")}
                   </h4>
                   <p className="text-sm text-slate-600 dark:text-slate-300">
-                    Duplicar todas as aulas de uma semana (domingo a domingo)
-                    para outra semana
+                    {t(
+                      "schedule.rescheduleGridModal.rescheduleWeekDescription"
+                    )}
                   </p>
                 </div>
               </div>
@@ -368,14 +363,14 @@ export const RescheduleGridModal = ({
               disabled={isProcessing}
               className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium mb-2 disabled:opacity-50"
             >
-              ← Voltar
+              {t("schedule.rescheduleGridModal.back")}
             </button>
 
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
                 {rescheduleType === "daily"
-                  ? "Data de Origem"
-                  : "Semana de Origem (qualquer dia da semana)"}
+                  ? t("schedule.rescheduleGridModal.sourceDate")
+                  : t("schedule.rescheduleGridModal.sourceWeek")}
               </label>
               <input
                 type="date"
@@ -386,15 +381,15 @@ export const RescheduleGridModal = ({
               />
               {rescheduleType === "weekly" && sourceDate && (
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                  Semana:{" "}
+                  {t("schedule.rescheduleGridModal.week")}{" "}
                   {getSunday(
                     new Date(sourceDate + "T00:00:00")
-                  ).toLocaleDateString("pt-BR")}{" "}
-                  a{" "}
+                  ).toLocaleDateString(locale)}{" "}
+                  {t("schedule.rescheduleGridModal.to")}{" "}
                   {new Date(
                     getSunday(new Date(sourceDate + "T00:00:00")).getTime() +
                       6 * 24 * 60 * 60 * 1000
-                  ).toLocaleDateString("pt-BR")}
+                  ).toLocaleDateString(locale)}
                 </p>
               )}
             </div>
@@ -402,8 +397,8 @@ export const RescheduleGridModal = ({
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
                 {rescheduleType === "daily"
-                  ? "Data de Destino"
-                  : "Semana de Destino (qualquer dia da semana)"}
+                  ? t("schedule.rescheduleGridModal.targetDate")
+                  : t("schedule.rescheduleGridModal.targetWeek")}
               </label>
               <input
                 type="date"
@@ -414,15 +409,15 @@ export const RescheduleGridModal = ({
               />
               {rescheduleType === "weekly" && targetDate && (
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                  Semana:{" "}
+                  {t("schedule.rescheduleGridModal.week")}{" "}
                   {getSunday(
                     new Date(targetDate + "T00:00:00")
-                  ).toLocaleDateString("pt-BR")}{" "}
-                  a{" "}
+                  ).toLocaleDateString(locale)}{" "}
+                  {t("schedule.rescheduleGridModal.to")}{" "}
                   {new Date(
                     getSunday(new Date(targetDate + "T00:00:00")).getTime() +
                       6 * 24 * 60 * 60 * 1000
-                  ).toLocaleDateString("pt-BR")}
+                  ).toLocaleDateString(locale)}
                 </p>
               )}
             </div>
@@ -431,8 +426,7 @@ export const RescheduleGridModal = ({
               <div className="flex items-start gap-2 p-3 bg-yellow-50 dark:bg-yellow-950/30 border border-yellow-200 dark:border-yellow-900 rounded-lg">
                 <AlertCircle className="w-4 h-4 text-yellow-600 dark:text-yellow-500 mt-0.5 shrink-0" />
                 <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                  As datas de origem e destino são iguais. As aulas serão
-                  duplicadas na mesma data.
+                  {t("schedule.rescheduleGridModal.sameDateWarning")}
                 </p>
               </div>
             )}
@@ -443,7 +437,7 @@ export const RescheduleGridModal = ({
                 disabled={isProcessing}
                 className="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                Cancelar
+                {t("schedule.rescheduleGridModal.cancel")}
               </button>
               <button
                 onClick={handleCheckTargetLessons}
@@ -451,7 +445,9 @@ export const RescheduleGridModal = ({
                 className="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-slate-400 dark:disabled:bg-slate-600 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
               >
                 {isProcessing && <Loader2 className="w-4 h-4 animate-spin" />}
-                {isProcessing ? "Verificando..." : "Próximo"}
+                {isProcessing
+                  ? t("schedule.rescheduleGridModal.checking")
+                  : t("schedule.rescheduleGridModal.next")}
               </button>
             </div>
           </div>
@@ -464,78 +460,71 @@ export const RescheduleGridModal = ({
               disabled={isProcessing}
               className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium mb-2 disabled:opacity-50"
             >
-              ← Voltar
+              {t("schedule.rescheduleGridModal.back")}
             </button>
 
             <div className="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 rounded-lg">
               <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-500 mt-0.5 shrink-0" />
               <div className="flex-1">
                 <h4 className="font-semibold text-red-900 dark:text-red-200 mb-1">
-                  Atenção: Esta ação não pode ser desfeita
+                  {t("schedule.rescheduleGridModal.attention")}
                 </h4>
                 <p className="text-sm text-red-800 dark:text-red-300">
                   {targetLessonsCount > 0 ? (
-                    <>
-                      {rescheduleType === "daily" ? (
-                        <>
-                          <strong>{targetLessonsCount}</strong>{" "}
-                          {targetLessonsCount === 1
-                            ? "aula será excluída"
-                            : "aulas serão excluídas"}{" "}
-                          do dia{" "}
-                          {new Date(
-                            targetDate + "T00:00:00"
-                          ).toLocaleDateString("pt-BR")}{" "}
-                          antes de duplicar as aulas do dia de origem.
-                        </>
-                      ) : (
-                        <>
-                          <strong>{targetLessonsCount}</strong>{" "}
-                          {targetLessonsCount === 1
-                            ? "aula será excluída"
-                            : "aulas serão excluídas"}{" "}
-                          da semana de{" "}
-                          {getSunday(
+                    rescheduleType === "daily" ? (
+                      <>
+                        <strong>{targetLessonsCount}</strong>{" "}
+                        {targetLessonsCount === 1
+                          ? t(
+                              "schedule.rescheduleGridModal.willBeDeleted"
+                            ).replace("classes", "class")
+                          : t(
+                              "schedule.rescheduleGridModal.willBeDeleted"
+                            )}{" "}
+                        {new Date(targetDate + "T00:00:00").toLocaleDateString(
+                          locale
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <strong>{targetLessonsCount}</strong>{" "}
+                        {targetLessonsCount === 1
+                          ? t(
+                              "schedule.rescheduleGridModal.willBeDeleted"
+                            ).replace("classes", "class")
+                          : t(
+                              "schedule.rescheduleGridModal.willBeDeleted"
+                            )}{" "}
+                        {getSunday(
+                          new Date(targetDate + "T00:00:00")
+                        ).toLocaleDateString(locale)}{" "}
+                        {t("schedule.rescheduleGridModal.to")}{" "}
+                        {new Date(
+                          getSunday(
                             new Date(targetDate + "T00:00:00")
-                          ).toLocaleDateString("pt-BR")}{" "}
-                          a{" "}
-                          {new Date(
-                            getSunday(
-                              new Date(targetDate + "T00:00:00")
-                            ).getTime() +
-                              6 * 24 * 60 * 60 * 1000
-                          ).toLocaleDateString("pt-BR")}{" "}
-                          antes de duplicar as aulas da semana de origem.
-                        </>
-                      )}
-                    </>
+                          ).getTime() +
+                            6 * 24 * 60 * 60 * 1000
+                        ).toLocaleDateString(locale)}
+                      </>
+                    )
+                  ) : rescheduleType === "daily" ? (
+                    t("schedule.rescheduleGridModal.dailyNoClassesWarning", {
+                      date: new Date(
+                        targetDate + "T00:00:00"
+                      ).toLocaleDateString(locale),
+                    })
                   ) : (
-                    <>
-                      {rescheduleType === "daily" ? (
-                        <>
-                          Não há aulas agendadas para o dia{" "}
-                          {new Date(
-                            targetDate + "T00:00:00"
-                          ).toLocaleDateString("pt-BR")}
-                          . As aulas do dia de origem serão duplicadas.
-                        </>
-                      ) : (
-                        <>
-                          Não há aulas agendadas para a semana de{" "}
-                          {getSunday(
-                            new Date(targetDate + "T00:00:00")
-                          ).toLocaleDateString("pt-BR")}{" "}
-                          a{" "}
-                          {new Date(
-                            getSunday(
-                              new Date(targetDate + "T00:00:00")
-                            ).getTime() +
-                              6 * 24 * 60 * 60 * 1000
-                          ).toLocaleDateString("pt-BR")}
-                          . As aulas da semana de origem serão duplicadas.
-                        </>
-                      )}
-                    </>
+                    t("schedule.rescheduleGridModal.weeklyNoClassesWarning", {
+                      startDate: getSunday(
+                        new Date(targetDate + "T00:00:00")
+                      ).toLocaleDateString(locale),
+                      endDate: new Date(
+                        getSunday(
+                          new Date(targetDate + "T00:00:00")
+                        ).getTime() +
+                          6 * 24 * 60 * 60 * 1000
+                      ).toLocaleDateString(locale),
+                    })
                   )}
                 </p>
               </div>
@@ -543,32 +532,30 @@ export const RescheduleGridModal = ({
 
             <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
               <h4 className="font-semibold text-slate-900 dark:text-white mb-2">
-                Resumo da operação:
+                {t("schedule.rescheduleGridModal.operationSummary")}
               </h4>
               <div className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
                 <div className="flex items-start gap-2">
                   <Copy className="w-4 h-4 text-slate-500 dark:text-slate-400 mt-0.5 shrink-0" />
                   <div>
-                    <strong>Origem:</strong>{" "}
+                    <strong>{t("schedule.rescheduleGridModal.source")}</strong>{" "}
                     {rescheduleType === "daily" ? (
-                      <>
-                        {new Date(sourceDate + "T00:00:00").toLocaleDateString(
-                          "pt-BR"
-                        )}
-                      </>
+                      new Date(sourceDate + "T00:00:00").toLocaleDateString(
+                        locale
+                      )
                     ) : (
                       <>
-                        Semana de{" "}
+                        {t("schedule.rescheduleGridModal.week")}{" "}
                         {getSunday(
                           new Date(sourceDate + "T00:00:00")
-                        ).toLocaleDateString("pt-BR")}{" "}
-                        a{" "}
+                        ).toLocaleDateString(locale)}{" "}
+                        {t("schedule.rescheduleGridModal.to")}{" "}
                         {new Date(
                           getSunday(
                             new Date(sourceDate + "T00:00:00")
                           ).getTime() +
                             6 * 24 * 60 * 60 * 1000
-                        ).toLocaleDateString("pt-BR")}
+                        ).toLocaleDateString(locale)}
                       </>
                     )}
                   </div>
@@ -576,34 +563,34 @@ export const RescheduleGridModal = ({
                 <div className="flex items-start gap-2">
                   <Trash2 className="w-4 h-4 text-red-500 dark:text-red-400 mt-0.5 shrink-0" />
                   <div>
-                    <strong>Destino:</strong>{" "}
+                    <strong>
+                      {t("schedule.rescheduleGridModal.destination")}
+                    </strong>{" "}
                     {rescheduleType === "daily" ? (
-                      <>
-                        {new Date(targetDate + "T00:00:00").toLocaleDateString(
-                          "pt-BR"
-                        )}
-                      </>
+                      new Date(targetDate + "T00:00:00").toLocaleDateString(
+                        locale
+                      )
                     ) : (
                       <>
-                        Semana de{" "}
+                        {t("schedule.rescheduleGridModal.week")}{" "}
                         {getSunday(
                           new Date(targetDate + "T00:00:00")
-                        ).toLocaleDateString("pt-BR")}{" "}
-                        a{" "}
+                        ).toLocaleDateString(locale)}{" "}
+                        {t("schedule.rescheduleGridModal.to")}{" "}
                         {new Date(
                           getSunday(
                             new Date(targetDate + "T00:00:00")
                           ).getTime() +
                             6 * 24 * 60 * 60 * 1000
-                        ).toLocaleDateString("pt-BR")}
+                        ).toLocaleDateString(locale)}
                       </>
                     )}
                     {targetLessonsCount > 0 && (
                       <span className="text-red-600 dark:text-red-400 font-medium">
                         {" "}
                         ({targetLessonsCount}{" "}
-                        {targetLessonsCount === 1 ? "aula" : "aulas"} serão
-                        excluídas)
+                        {targetLessonsCount === 1 ? "class" : "classes"}{" "}
+                        {t("schedule.rescheduleGridModal.willBeDeleted")})
                       </span>
                     )}
                   </div>
@@ -617,7 +604,7 @@ export const RescheduleGridModal = ({
                 disabled={isProcessing}
                 className="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                Cancelar
+                {t("schedule.rescheduleGridModal.cancel")}
               </button>
               <button
                 onClick={handleReschedule}
@@ -625,7 +612,9 @@ export const RescheduleGridModal = ({
                 className="px-4 py-2 bg-red-600 dark:bg-red-500 text-white rounded-lg hover:bg-red-700 dark:hover:bg-red-600 disabled:bg-slate-400 dark:disabled:bg-slate-600 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
               >
                 {isProcessing && <Loader2 className="w-4 h-4 animate-spin" />}
-                {isProcessing ? "Reagendando..." : "Confirmar Reagendamento"}
+                {isProcessing
+                  ? t("schedule.rescheduleGridModal.rescheduling")
+                  : t("schedule.rescheduleGridModal.confirmReschedule")}
               </button>
             </div>
           </div>
