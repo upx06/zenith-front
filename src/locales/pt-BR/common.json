@@ -35,7 +35,8 @@
     "next": "Próxima"
   },
   "common": {
-    "class": "Classe",
+    "class": "Turma",
+    "classes": "Turmas",
     "student": "Aluno",
     "capacity": "Capacidade",
     "students": "alunos",
@@ -50,7 +51,9 @@
     "insufficient": "Insuficiente",
     "regular": "Regular",
     "good": "Bom",
-    "results": "Resultados"
+    "results": "Resultados",
+    "presences": "Presenças",
+    "absences": "Faltas"
   },
   "filters": {
     "name": "Filtrar por nome...",
@@ -117,6 +120,7 @@
     "noStudentEnrolled": "Nenhum estudante matriculado",
     "classNoStudentEnrolled": "Esta turma não possui estudantes matriculados",
     "noTopic": "Nenhum tópico registrado",
-    "examNoTopic": "Este exame não possui tópicos definidos"
+    "examNoTopic": "Este exame não possui tópicos definidos",
+    "pickClass": "Escolha uma turma para visualizar o relatório de alunos"
   }
 }

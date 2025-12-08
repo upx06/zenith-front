@@ -36,6 +36,7 @@
   },
   "common": {
     "class": "Class",
+    "classes": "Classes",
     "student": "Student",
     "capacity": "Capacity",
     "students": "students",
@@ -50,7 +51,9 @@
     "insufficient": "Insufficient",
     "regular": "Regular",
     "good": "Good",
-    "results": "Resultados"
+    "results": "Results",
+    "presences": "Presences",
+    "absences": "Absences"
   },
   "filters": {
     "name": "Filter by name...",
@@ -117,6 +120,7 @@
     "noStudentEnrolled": "No students enrolled",
     "classNoStudentEnrolled": "This class has no enrolled students",
     "noTopic": "No topics registered",
-    "examNoTopic": "This exam has no defined topics"
+    "examNoTopic": "This exam has no defined topics",
+    "pickClass": "Select a class to view the student's reports"
   }
 }

@@ -84,7 +84,7 @@ export const ExamDetailsModal = ({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600 p-6 text-white">
+        <div className="bgblue-600 p-6 text-white">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
               <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center shrink-0">
@@ -170,7 +170,7 @@ export const ExamDetailsModal = ({
             <div>
               <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3 uppercase tracking-wide flex items-center gap-2">
                 <ClipboardList className="w-4 h-4" />
-                {t("exam.examDetailsModal.criteira")}
+                {t("exam.examDetailsModal.criteria")}
               </h3>
 
               {exam.topics?.length === 0 ? (

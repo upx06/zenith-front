@@ -11,8 +11,11 @@ import type { IListLessonsByClass } from "../../interfaces/IListLessonsByClass";
 import type { IListFrequenciesByClass } from "../../interfaces/IListFrequenciesByClass";
 import type { IStudentReport } from "../../interfaces/IStudentReport";
 import { Users, BookOpen, CheckCircle, XCircle, Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export const ClassReport = () => {
+  const { t } = useTranslation();
+
   const [selectedClassId, setSelectedClassId] = useState<string>("");
 
   const { data: classesData, loading: classesLoading } = useQuery<IListClasses>(
@@ -107,10 +110,10 @@ export const ClassReport = () => {
             <div className="flex flex-row justify-between gap-4 pt-5 md:pt-0">
               <div>
                 <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white uppercase">
-                  Relatório dos Alunos
+                  {t("report.title")}
                 </h1>
                 <p className="text-slate-600 dark:text-slate-300 text-sm md:text-base">
-                  Visualize presenças e faltas de cada aluno
+                  {t("report.subtitle")}
                 </p>
               </div>
             </div>
@@ -120,7 +123,7 @@ export const ClassReport = () => {
                 <div className="flex items-center gap-2 text-slate-700 min-w-fit">
                   <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   <span className="text-sm font-medium text-slate-600 dark:text-white">
-                    Turma:
+                    {t("common.common.class")}:
                   </span>
                 </div>
                 <select
@@ -129,13 +132,16 @@ export const ClassReport = () => {
                   disabled={classesLoading}
                   className="w-full pl-3 pr-8 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                 >
-                  <option value="">Selecione uma turma</option>
+                  <option value="">
+                    {t("common.formPlaceholders.selectClass")}
+                  </option>
                   {classes
                     .filter((c) => c.enrollments && c.enrollments.length > 0)
                     .map((classItem) => (
                       <option key={classItem.id} value={classItem.id}>
                         {classItem.name} - {classItem.level} (
-                        {classItem.enrollments?.length || 0} aluno
+                        {classItem.enrollments?.length || 0}{" "}
+                        {t("common.common.student")}
                         {classItem.enrollments?.length === 1 ? "" : "s"})
                       </option>
                     ))}
@@ -149,10 +155,10 @@ export const ClassReport = () => {
                   <Loader2 className="w-12 h-12 text-blue-600 animate-spin" />
                   <div>
                     <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
-                      Carregando dados...
+                      {t("common.status.loadingData")}
                     </h3>
                     <p className="text-sm text-slate-600 dark:text-slate-300">
-                      Buscando informações da turma
+                      {t("report.searchInfo")}
                     </p>
                   </div>
                 </div>
@@ -172,7 +178,7 @@ export const ClassReport = () => {
                         </span>
                       </div>
                       <span className="text-xs text-slate-600 dark:text-slate-300">
-                        {studentsReport.length} aluno
+                        {studentsReport.length} {t("common.common.student")}
                         {studentsReport.length === 1 ? "" : "s"}
                       </span>
                     </div>
@@ -181,19 +187,25 @@ export const ClassReport = () => {
                   {studentsReport.length === 0 ? (
                     <div className="p-8 text-center">
                       <p className="text-slate-600 dark:text-slate-300">
-                        Nenhum aluno encontrado nesta turma
+                        {t("clas.manageClassModal.noStudentEnrolled")}
                       </p>
                     </div>
                   ) : (
                     <>
                       {/* Header da tabela - Desktop */}
                       <div className="hidden md:grid md:grid-cols-12 gap-4 bg-slate-50 dark:bg-slate-800 px-6 py-4 text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide">
-                        <div className="col-span-5">Aluno</div>
-                        <div className="col-span-2 text-center">
-                          Total de Aulas
+                        <div className="col-span-5">
+                          {t("common.common.student")}
                         </div>
-                        <div className="col-span-2 text-center">Presenças</div>
-                        <div className="col-span-3 text-center">Faltas</div>
+                        <div className="col-span-2 text-center">
+                          {t("common.common.classes")}
+                        </div>
+                        <div className="col-span-2 text-center">
+                          {t("common.common.presences")}
+                        </div>
+                        <div className="col-span-3 text-center">
+                          {t("common.common.absences")}
+                        </div>
                       </div>
 
                       {/* Linhas da tabela */}
@@ -226,7 +238,7 @@ export const ClassReport = () => {
                                 <div className="flex flex-col items-center p-2 bg-slate-50 dark:bg-slate-800 rounded-lg">
                                   <BookOpen className="w-4 h-4 text-slate-400 dark:text-slate-500 mb-1" />
                                   <span className="text-xs text-slate-500 dark:text-slate-400 mb-1">
-                                    Aulas
+                                    {t("common.common.classes")}
                                   </span>
                                   <span className="text-sm font-bold text-slate-700 dark:text-slate-200">
                                     {student.totalLessons}
@@ -235,7 +247,7 @@ export const ClassReport = () => {
                                 <div className="flex flex-col items-center p-2 bg-blue-50 dark:bg-blue-950/30 rounded-lg">
                                   <CheckCircle className="w-4 h-4 text-blue-500 dark:text-blue-400 mb-1" />
                                   <span className="text-xs text-blue-600 dark:text-blue-400 mb-1">
-                                    Presenças
+                                    {t("common.common.presences")}
                                   </span>
                                   <span className="text-sm font-bold text-blue-700 dark:text-blue-400">
                                     {student.presences}
@@ -244,7 +256,7 @@ export const ClassReport = () => {
                                 <div className="flex flex-col items-center p-2 bg-red-50 dark:bg-red-950/30 rounded-lg">
                                   <XCircle className="w-4 h-4 text-red-500 dark:text-red-400 mb-1" />
                                   <span className="text-xs text-red-600 dark:text-red-400 mb-1">
-                                    Faltas
+                                    {t("common.common.absences")}
                                   </span>
                                   <span className="text-sm font-bold text-red-700 dark:text-red-400">
                                     {student.absences}
@@ -309,10 +321,10 @@ export const ClassReport = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
-                      Selecione uma turma
+                      {t("common.formPlaceholders.selectClass")}
                     </h3>
                     <p className="text-sm text-slate-600 dark:text-slate-300">
-                      Escolha uma turma para visualizar o relatório de alunos
+                      {t("common.random.pickClass")}
                     </p>
                   </div>
                 </div>

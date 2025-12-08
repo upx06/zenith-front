@@ -6,6 +6,7 @@ import classroom from "./classroom.json";
 import clas from "./clas.json";
 import toast from "./toast.json";
 import exam from "./exam.json";
+import report from "./report.json";
 
 export default {
   common,
@@ -16,4 +17,5 @@ export default {
   classroom,
   toast,
   exam,
+  report,
 };
