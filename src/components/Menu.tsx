@@ -15,45 +15,67 @@ import { useState } from "react";
 import { NavLink } from "react-router";
 import { ThemeToggle } from "./ThemeToggle";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 export const Menu = () => {
+  const { t } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const sidebarItems = [
-    { id: "home", path: "/home", label: "Início", icon: Home },
+    { id: "home", path: "/home", label: t("menu.home"), icon: Home },
     {
       id: "dashboard",
       path: "/dashboard",
-      label: "Dashboard",
+      label: t("menu.dashboard"),
       icon: ChartNoAxesCombined,
     },
-    { id: "agenda", path: "/scheduling", label: "Agenda", icon: Calendar1Icon },
+    {
+      id: "agenda",
+      path: "/scheduling",
+      label: t("menu.agenda"),
+      icon: Calendar1Icon,
+    },
     {
       id: "frequencias",
       path: "/frequencies",
-      label: "Frequências",
+      label: t("menu.frequencies"),
       icon: ClipboardCheck,
     },
     {
       id: "relatorios",
       path: "/reports/class",
-      label: "Relatórios",
+      label: t("menu.reports"),
       icon: BarChart3,
     },
     {
       id: "avaliacoes",
       path: "/evaluations",
-      label: "Avaliações",
+      label: t("menu.evaluations"),
       icon: ClipboardList,
     },
-    { id: "turmas", path: "/classes", label: "Turmas", icon: BookOpen },
-    { id: "alunos", path: "/students", label: "Alunos", icon: GraduationCap },
-    { id: "professores", path: "/teachers", label: "Professores", icon: Users },
-    { id: "sala", path: "/classroom", label: "Sala de Aula", icon: Home },
+    {
+      id: "turmas",
+      path: "/classes",
+      label: t("menu.classes"),
+      icon: BookOpen,
+    },
+    {
+      id: "alunos",
+      path: "/students",
+      label: t("menu.students"),
+      icon: GraduationCap,
+    },
+    {
+      id: "professores",
+      path: "/teachers",
+      label: t("menu.teachers"),
+      icon: Users,
+    },
+    { id: "sala", path: "/classroom", label: t("menu.classroom"), icon: Home },
     {
       id: "futureFeatures",
       path: "/future-features",
-      label: "Melhorias Futuras",
+      label: t("menu.futureFeatures"),
       icon: ClockPlus,
     },
   ];
@@ -118,7 +140,7 @@ export const Menu = () => {
               to="/"
               onClick={handleLogout}
               className="p-2.5 rounded-lg transition-all duration-200 bg-transparent hover:bg-gray-100 dark:bg-slate-800/50 dark:hover:bg-slate-700 hover:scale-105 active:scale-95 border border-gray-200 dark:border-slate-700 shadow-sm dark:shadow-slate-950/30"
-              title="Desconectar"
+              title={t("menu.logout")}
             >
               <LogOut className="w-5 h-5 text-red-700 hover:text-red-900 dark:text-red-500 dark:hover:text-red-300 transition-colors" />
             </NavLink>
@@ -178,7 +200,7 @@ export const Menu = () => {
               to="/"
               onClick={handleLogout}
               className="p-2.5 rounded-lg transition-all duration-200 bg-transparent hover:bg-gray-100 dark:bg-slate-800/50 dark:hover:bg-slate-700 hover:scale-105 active:scale-95 border border-gray-200 dark:border-slate-700 shadow-sm dark:shadow-slate-950/30"
-              title="Desconectar"
+              title={t("menu.logout")}
             >
               <LogOut className="w-5 h-5 text-red-700 hover:text-red-900 dark:text-red-500 dark:hover:text-red-300 transition-colors" />
             </NavLink>

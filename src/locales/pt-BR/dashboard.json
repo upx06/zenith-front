@@ -1,0 +1,15 @@
+{
+  "title": "Painel",
+  "subtitle": "Visão geral do sistema",
+  "studentTotal": "Total de alunos",
+  "activeClasses": "Aulas ativas",
+  "scheduledClasses": "Aulas agendadas",
+  "onGoing": "Em andamento",
+  "nextWeek": "Próxima semana",
+  "classesPerDay": "Aulas por dia da semana",
+  "studentsPerLevel": "Alunos por nível",
+  "averageAttendance": "Evolução da Presença Média",
+  "teachersMoreClasses": "Professores com mais aulas",
+  "averageIncomeByLevel": "Renda Média por Nível",
+  "studensByLanguage": "Alunos por idioma"
+}

@@ -1,7 +1,10 @@
 import { Menu } from "../../components/Menu";
 import { GraduationCap } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export const Home = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex">
       <Menu />
@@ -20,25 +23,22 @@ export const Home = () => {
                 Rejoy | Zenith
               </h1>
               <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-                Sistema de gerenciamento completo para a escola de idiomas Rejoy
+                {t("home.title")}
               </p>
             </div>
 
             <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm dark:shadow-slate-950/50 border border-slate-200 dark:border-slate-700 p-6 md:p-8 mb-8">
               <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                O Zenith foi desenvolvido para simplificar a gestão das rotinas
-                escolares, centralizando informações de professores, alunos,
-                turmas e muito mais em uma única plataforma intuitiva e
-                eficiente.
+                {t("home.description")}
               </p>
             </div>
 
             {/* <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
-                Começar
+                {t("home.startButton")}
               </button>
               <button className="bg-white hover:bg-slate-50 text-slate-700 px-8 py-3 rounded-lg font-semibold border border-slate-300 transition-colors">
-                Saiba Mais
+                {t("home.learnMoreButton")}
               </button>
             </div> */}
           </div>

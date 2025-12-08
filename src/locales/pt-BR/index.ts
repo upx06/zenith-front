@@ -8,6 +8,9 @@ import toast from "./toast.json";
 import exam from "./exam.json";
 import report from "./report.json";
 import frequency from "./frequency.json";
+import dashboard from "./dashboard.json";
+import home from "./home.json";
+import menu from "./menu.json";
 
 export default {
   common,
@@ -20,4 +23,7 @@ export default {
   exam,
   report,
   frequency,
+  dashboard,
+  home,
+  menu,
 };

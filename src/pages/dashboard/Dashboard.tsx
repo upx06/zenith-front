@@ -1,4 +1,5 @@
 import { Menu } from "../../components/Menu";
+import { useTranslation } from "react-i18next";
 import {
   Users,
   GraduationCap,
@@ -85,6 +86,8 @@ const languageDistributionData = [
 ];
 
 export const Dashboard = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex">
       <Menu />
@@ -99,10 +102,10 @@ export const Dashboard = () => {
             <div className="flex flex-row justify-between gap-4 pt-5 md:pt-0">
               <div>
                 <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white uppercase">
-                  Dashboard
+                  {t("dashboard.title")}
                 </h1>
                 <p className="text-slate-600 dark:text-slate-300 text-sm md:text-base">
-                  Visão geral do sistema
+                  {t("dashboard.subtitle")}
                 </p>
               </div>
             </div>
@@ -114,7 +117,7 @@ export const Dashboard = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-1">
-                      Total de Alunos
+                      {t("dashboard.studentTotal")}
                     </p>
                     <p className="text-3xl font-bold text-slate-800 dark:text-white">
                       {stats.totalStudents}
@@ -137,7 +140,7 @@ export const Dashboard = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-1">
-                      Professores
+                      {t("common.common.teachers")}
                     </p>
                     <p className="text-3xl font-bold text-slate-800 dark:text-white">
                       {stats.totalTeachers}
@@ -160,7 +163,7 @@ export const Dashboard = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-1">
-                      Turmas Ativas
+                      {t("dashboard.activeClasses")}
                     </p>
                     <p className="text-3xl font-bold text-slate-800 dark:text-white">
                       {stats.activeClasses}
@@ -168,7 +171,7 @@ export const Dashboard = () => {
                     <div className="flex items-center gap-1 mt-2">
                       <Clock className="w-4 h-4 text-blue-600" />
                       <span className="text-xs text-blue-600 font-medium">
-                        Em andamento
+                        {t("dashboard.onGoing")}
                       </span>
                     </div>
                   </div>
@@ -183,7 +186,7 @@ export const Dashboard = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-1">
-                      Aulas Agendadas
+                      {t("dashboard.scheduledClasses")}
                     </p>
                     <p className="text-3xl font-bold text-slate-800 dark:text-white">
                       {stats.upcomingLessons}
@@ -191,7 +194,7 @@ export const Dashboard = () => {
                     <div className="flex items-center gap-1 mt-2">
                       <Calendar className="w-4 h-4 text-amber-600" />
                       <span className="text-xs text-amber-600 font-medium">
-                        Próxima semana
+                        {t("dashboard.nextWeek")}
                       </span>
                     </div>
                   </div>
@@ -209,7 +212,7 @@ export const Dashboard = () => {
                 <div className="flex items-center gap-2 mb-4">
                   <BarChart3 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
-                    Aulas por Dia da Semana
+                    {t("dashboard.classesPerDay")}
                   </h3>
                 </div>
                 <ResponsiveContainer width="100%" height={300}>
@@ -234,7 +237,7 @@ export const Dashboard = () => {
                 <div className="flex items-center gap-2 mb-4">
                   <Award className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                   <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
-                    Alunos por Nível
+                    {t("dashboard.studentsPerLevel")}
                   </h3>
                 </div>
                 <ResponsiveContainer width="100%" height={300}>
@@ -274,7 +277,7 @@ export const Dashboard = () => {
                 <div className="flex items-center gap-2 mb-4">
                   <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400" />
                   <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
-                    Evolução da Presença Média
+                    {t("dashboard.averageAttendance")}
                   </h3>
                 </div>
                 <ResponsiveContainer width="100%" height={300}>
@@ -306,7 +309,7 @@ export const Dashboard = () => {
                 <div className="flex items-center gap-2 mb-4">
                   <GraduationCap className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                   <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
-                    Professores com Mais Aulas
+                    {t("dashboard.teachersMoreClasses")}
                   </h3>
                 </div>
                 <ResponsiveContainer width="100%" height={300}>
@@ -340,7 +343,7 @@ export const Dashboard = () => {
                 <div className="flex items-center gap-2 mb-4">
                   <Award className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                   <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
-                    Rendimento Médio por Nível
+                    {t("dashboard.averageIncomeByLevel")}
                   </h3>
                 </div>
                 <ResponsiveContainer width="100%" height={300}>
@@ -365,7 +368,7 @@ export const Dashboard = () => {
                 <div className="flex items-center gap-2 mb-4">
                   <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
-                    Alunos por Idioma
+                    {t("dashboard.studensByLanguage")}
                   </h3>
                 </div>
                 <ResponsiveContainer width="100%" height={300}>

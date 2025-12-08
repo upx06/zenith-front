@@ -1,0 +1,15 @@
+{
+  "title": "Dashboard",
+  "subtitle": "System overview",
+  "studentTotal": "Student's total",
+  "activeClasses": "Active classes",
+  "scheduledClasses": "Scheduled Classes",
+  "onGoing": "On going",
+  "nextWeek": "Next week",
+  "classesPerDay": "Classes by day of the week",
+  "studentsPerLevel": "Students by level",
+  "averageAttendance": "Evolution of Average Attendance",
+  "teachersMoreClasses": "Teachers with More Classes",
+  "averageIncomeByLevel": "Average Income by Level",
+  "studensByLanguage": "Students by Language"
+}
