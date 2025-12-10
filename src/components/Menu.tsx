@@ -9,7 +9,6 @@ import {
   ChartNoAxesCombined,
   ClipboardList,
   BarChart3,
-  ClockPlus,
 } from "lucide-react";
 import { useState } from "react";
 import { NavLink } from "react-router";
@@ -72,12 +71,6 @@ export const Menu = () => {
       icon: Users,
     },
     { id: "sala", path: "/classroom", label: t("menu.classroom"), icon: Home },
-    {
-      id: "futureFeatures",
-      path: "/future-features",
-      label: t("menu.futureFeatures"),
-      icon: ClockPlus,
-    },
   ];
 
   const handleLogout = () => {

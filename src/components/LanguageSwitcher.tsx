@@ -8,11 +8,6 @@ export const LanguageSwitcher = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-    setIsOpen(false);
-  };
-
   const languageConfig: Record<
     string,
     { flagCode: string; label: string; name: string }
@@ -21,8 +16,23 @@ export const LanguageSwitcher = () => {
     "en-US": { flagCode: "us", label: "EN-US", name: "English" },
   };
 
-  const currentLanguage = i18n.language || "pt-BR";
-  const currentConfig = languageConfig[currentLanguage];
+  // Mapeia códigos curtos para completos
+  const getFullLanguageCode = (lang: string): string => {
+    const mappings: Record<string, string> = {
+      pt: "pt-BR",
+      en: "en-US",
+    };
+    return mappings[lang] || lang;
+  };
+
+  // Converte "pt" para "pt-BR" para compatibilidade
+  const currentLanguageFull = getFullLanguageCode(i18n.language || "pt-BR");
+  const currentConfig = languageConfig[currentLanguageFull];
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+    setIsOpen(false);
+  };
 
   // Fechar dropdown quando clicar fora
   useEffect(() => {
@@ -70,37 +80,35 @@ export const LanguageSwitcher = () => {
 
       {isOpen && (
         <div className="absolute bottom-full left-0 right-0 mb-1 z-50 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-lg dark:shadow-slate-950/50 overflow-hidden">
-          {availableLanguages.map((lang) => (
-            <button
-              key={lang}
-              onClick={() => changeLanguage(lang)}
-              className={`
-                w-full flex items-center gap-2 px-3 py-2.5
-                text-xs font-medium
-                transition-colors
-                ${
-                  currentLanguage === lang
-                    ? "bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
-                    : "text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700"
-                }
-              `}
-            >
-              <img
-                src={`https://flagcdn.com/w20/${languageConfig[lang].flagCode}.png`}
-                srcSet={`https://flagcdn.com/w40/${languageConfig[lang].flagCode}.png 2x`}
-                alt={languageConfig[lang].name}
-                className="w-5 h-auto"
-              />
-              <div className="flex flex-col items-start">
-                <span className="font-semibold">
-                  {languageConfig[lang].label}
-                </span>
-                {/* <span className="text-[10px] opacity-70">
-                  {languageConfig[lang].name}
-                </span> */}
-              </div>
-            </button>
-          ))}
+          {availableLanguages.map((lang) => {
+            const config = languageConfig[lang];
+            return (
+              <button
+                key={lang}
+                onClick={() => changeLanguage(lang)}
+                className={`
+                  w-full flex items-center gap-2 px-3 py-2.5
+                  text-xs font-medium
+                  transition-colors
+                  ${
+                    currentLanguageFull === lang
+                      ? "bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
+                      : "text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700"
+                  }
+                `}
+              >
+                <img
+                  src={`https://flagcdn.com/w20/${config.flagCode}.png`}
+                  srcSet={`https://flagcdn.com/w40/${config.flagCode}.png 2x`}
+                  alt={config.name}
+                  className="w-5 h-auto"
+                />
+                <div className="flex flex-col items-start">
+                  <span className="font-semibold">{config.label}</span>
+                </div>
+              </button>
+            );
+          })}
         </div>
       )}
     </div>
